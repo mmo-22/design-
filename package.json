@@ -1,0 +1,15 @@
+{
+  "name": "bthlab-designs-sandbox",
+  "version": "1.0.0",
+  "description": "BthLab Designs Sandbox - معرض تصاميم تجريبي للفعاليات (مستقل عن المشروع الأساسي)",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "engines": {
+    "node": ">=18"
+  },
+  "dependencies": {
+    "express": "^4.19.2"
+  }
+}
