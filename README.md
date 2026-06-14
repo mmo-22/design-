@@ -34,3 +34,9 @@ npm start
 - 📋 **Sidebar Pro**: sidebar كلاسيكي احترافي
 - ✨ **Glass Hub**: glassmorphism بخلفية متحركة
 - ⚡ **Compact Pro**: مدمج وعملي
+
+### لوحات تحكم الفعاليات
+- 🪟 **Split View**: تحكم + معاينة حية للأوفرلي
+- 🧭 **Vertical Wizard**: تدفق خطوات للفعاليات المعقدة
+- 🎮 **Command Center**: لوحة شاملة بثلاث أعمدة
+- 🎈 **Floating Hub**: مدمج بصري للفعاليات السريعة
