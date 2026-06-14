@@ -1,1 +1,379 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>🎨 BthLab Designs Sandbox — معرض التصاميم</title>
+<link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;900&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#06060b;--bg2:#0a0a14;--card:#0c0c16;--card2:#10101e;
+  --accent:#0891b2;--accent2:#22d3ee;--gold:#f5c542;
+  --text:#e8eaf2;--muted:#8a8fa3;--border:#1c1c2e;
+  --red:#ef4444;--green:#22c55e;--purple:#a855f7;--blue:#3b82f6
+}
+*{margin:0;padding:0;box-sizing:border-box}
+body{
+  background:var(--bg);color:var(--text);font-family:'Tajawal',sans-serif;
+  min-height:100vh;padding:24px 16px 60px;
+  background-image:
+    radial-gradient(ellipse at 20% 0%,rgba(8,145,178,.12) 0%,transparent 50%),
+    radial-gradient(ellipse at 80% 100%,rgba(168,85,247,.1) 0%,transparent 50%);
+}
 
+.wrap{max-width:1180px;margin:0 auto}
+
+/* الرأس */
+.hero{text-align:center;padding:30px 10px 40px;position:relative}
+.badge{display:inline-block;background:rgba(8,145,178,.15);border:1px solid var(--accent);color:var(--accent2);padding:5px 16px;border-radius:30px;font-size:.75rem;font-weight:900;margin-bottom:14px;letter-spacing:.5px}
+.hero h1{
+  font-size:clamp(1.8rem,5vw,2.6rem);font-weight:900;
+  background:linear-gradient(90deg,var(--accent2),var(--gold) 50%,var(--purple));
+  -webkit-background-clip:text;background-clip:text;color:transparent;
+  margin-bottom:10px;line-height:1.3
+}
+.hero p{color:var(--muted);font-size:.95rem;max-width:640px;margin:0 auto;line-height:1.7}
+.disclaimer{
+  display:inline-flex;align-items:center;gap:8px;
+  background:rgba(245,197,66,.08);border:1px solid rgba(245,197,66,.3);
+  color:var(--gold);padding:8px 18px;border-radius:14px;
+  font-size:.78rem;margin-top:16px;font-weight:700
+}
+
+/* الإحصائيات */
+.stats{
+  display:grid;grid-template-columns:repeat(3,1fr);gap:10px;
+  max-width:560px;margin:24px auto 0
+}
+.stat{
+  background:var(--card);border:1px solid var(--border);border-radius:14px;
+  padding:12px;text-align:center
+}
+.stat b{display:block;font-size:1.5rem;color:var(--accent2);font-weight:900}
+.stat span{font-size:.72rem;color:var(--muted)}
+
+/* القسم */
+.section{margin-top:42px}
+.section-h{display:flex;align-items:center;gap:10px;margin-bottom:16px;padding:0 4px}
+.section-h .ico{font-size:1.4rem}
+.section-h h2{font-size:1.1rem;font-weight:900}
+.section-h .line{flex:1;height:1px;background:linear-gradient(90deg,var(--border),transparent)}
+.section-h .count{background:var(--card);border:1px solid var(--border);color:var(--muted);padding:3px 10px;border-radius:12px;font-size:.7rem;font-weight:900}
+
+/* البطاقات */
+.grid{display:grid;gap:14px}
+.grid.g1{grid-template-columns:1fr}
+.grid.g2{grid-template-columns:repeat(auto-fit,minmax(280px,1fr))}
+.grid.g3{grid-template-columns:repeat(auto-fit,minmax(280px,1fr))}
+
+.card{
+  background:linear-gradient(145deg,var(--card),var(--card2));
+  border:1px solid var(--border);border-radius:18px;
+  padding:18px;cursor:pointer;text-decoration:none;color:inherit;
+  position:relative;overflow:hidden;
+  transition:all .3s cubic-bezier(.2,.8,.3,1)
+}
+.card::before{
+  content:"";position:absolute;inset:0;border-radius:18px;
+  background:linear-gradient(145deg,var(--card-glow,rgba(34,211,238,.0)),transparent 60%);
+  opacity:0;transition:opacity .3s
+}
+.card:hover{transform:translateY(-3px);border-color:var(--card-border,var(--accent))}
+.card:hover::before{opacity:1}
+.card:active{transform:translateY(0)}
+
+.card-preview{
+  height:120px;border-radius:12px;margin-bottom:14px;
+  background:var(--prev-bg,#0a0612);
+  display:flex;align-items:center;justify-content:center;
+  overflow:hidden;position:relative;
+  border:1px solid var(--border)
+}
+.card-title{
+  display:flex;align-items:center;gap:8px;
+  font-size:1.05rem;font-weight:900;margin-bottom:6px;color:#fff;position:relative;z-index:2
+}
+.card-desc{font-size:.8rem;color:var(--muted);line-height:1.65;position:relative;z-index:2}
+.card-tags{display:flex;gap:6px;flex-wrap:wrap;margin-top:10px;position:relative;z-index:2}
+.tag{background:#0c0c16cc;border:1px solid var(--border);color:var(--muted);padding:2px 8px;border-radius:8px;font-size:.65rem;font-weight:700}
+
+.card-arrow{
+  position:absolute;bottom:14px;left:14px;
+  width:32px;height:32px;border-radius:50%;
+  background:var(--card-arrow,var(--accent));color:#fff;
+  display:flex;align-items:center;justify-content:center;
+  font-size:1rem;font-weight:900;
+  transition:.3s;opacity:.85
+}
+.card:hover .card-arrow{opacity:1;transform:translateX(-3px)}
+
+/* معاينات مصغرة بألوان مختلفة */
+.prev-wheel-neon{background:radial-gradient(circle at center,#0891b2 0%,#0a0612 70%)}
+.prev-wheel-neon::after{content:"🎡";position:absolute;font-size:3rem;filter:drop-shadow(0 0 20px #22d3ee)}
+.prev-wheel-dyn{background:conic-gradient(from 0deg,#0891b2,#db2777,#f5c542,#22c55e,#a855f7,#0891b2)}
+.prev-wheel-dyn::after{content:"";position:absolute;width:34px;height:34px;background:#0a0612;border-radius:50%;border:3px solid #fff}
+.prev-war{background:linear-gradient(135deg,#1e0a0a 0%,#0a1430 100%)}
+.prev-war::after{content:"⚔️";position:absolute;font-size:3rem;filter:drop-shadow(0 0 15px #f5c542)}
+.prev-horse{background:linear-gradient(#0a1228 0%,#0a1228 40%,#173017 42%,#1d3a1b 100%)}
+.prev-horse::after{content:"🐎";position:absolute;font-size:2.8rem;left:24px;filter:drop-shadow(0 3px 6px rgba(0,0,0,.6))}
+.prev-ice{background:radial-gradient(ellipse at center,#0c2438 0%,#040a12 100%)}
+.prev-ice::after{content:"🧊";position:absolute;font-size:3rem;filter:drop-shadow(0 0 18px rgba(125,211,252,.6))}
+.prev-castle{background:linear-gradient(#0b0f24,#241636);position:relative}
+.prev-castle::after{content:"🏰  🏯";position:absolute;font-size:1.6rem;letter-spacing:18px}
+.prev-knockout{background:radial-gradient(ellipse at top,#2a1215 0%,#06060b 70%)}
+.prev-knockout::after{content:"💀";position:absolute;font-size:3rem;filter:drop-shadow(0 0 15px rgba(239,68,68,.6))}
+.prev-guess{background:radial-gradient(ellipse at center,#1e1145 0%,#06060b 80%)}
+.prev-guess::after{content:"🔤";position:absolute;font-size:2.6rem;filter:drop-shadow(0 0 15px rgba(168,85,247,.7))}
+
+/* قسم التسجيل */
+.prev-reg{background:radial-gradient(ellipse at 30% 100%,#0c2440 0%,#06060b 70%);position:relative;overflow:hidden}
+.prev-reg::after{display:none}
+.prev-reg .b{position:absolute;background:linear-gradient(135deg,rgba(34,211,238,.2),rgba(8,145,178,.1));border:1.5px solid rgba(34,211,238,.45);border-radius:30px;padding:3px 9px;font-size:.55rem;font-weight:900;color:#22d3ee;white-space:nowrap;box-shadow:0 0 8px rgba(34,211,238,.3)}
+.prev-reg .b:nth-child(1){bottom:18%;right:18%}
+.prev-reg .b:nth-child(2){bottom:40%;right:46%}
+.prev-reg .b:nth-child(3){bottom:55%;right:22%}
+.prev-reg .b:nth-child(4){bottom:30%;right:62%}
+.prev-reg .b:nth-child(5){bottom:65%;right:48%}
+
+/* معاينات صفحات الأدمن */
+.prev-bento{background:#0a0a14;padding:8px;display:grid;grid-template-columns:repeat(6,1fr);grid-template-rows:repeat(3,1fr);gap:4px}
+.prev-bento::after{display:none}
+.prev-bento i{background:linear-gradient(145deg,#1c1c2e,#0c0c16);border:1px solid #2a2a44;border-radius:4px}
+.prev-bento i:nth-child(1){grid-column:span 4;grid-row:span 2;background:linear-gradient(145deg,#0e1530,#0c0c16)}
+.prev-bento i:nth-child(2){grid-column:span 2}
+.prev-bento i:nth-child(3){grid-column:span 2}
+.prev-bento i:nth-child(4){grid-column:span 4;grid-row:span 1}
+.prev-bento i:nth-child(5){grid-column:span 2;grid-row:span 1}
+
+.prev-sidebar{background:#0a0a14;display:grid;grid-template-columns:60px 1fr;gap:6px;padding:6px}
+.prev-sidebar::after{display:none}
+.prev-sidebar i:first-child{background:#06060b;border:1px solid #1c1c2e;border-radius:6px;display:flex;flex-direction:column;gap:4px;padding:6px}
+.prev-sidebar i:first-child::before{content:"";display:block;height:4px;background:#22d3ee;border-radius:2px;width:60%;margin-bottom:4px}
+.prev-sidebar i:first-child::after{content:"";display:block;height:3px;background:#2a2a44;border-radius:2px;width:80%}
+.prev-sidebar i:last-child{background:#10101e;border:1px solid #1c1c2e;border-radius:6px;display:grid;grid-template-columns:repeat(4,1fr);gap:4px;padding:6px}
+.prev-sidebar i:last-child::before{content:"";grid-column:span 4;height:6px;background:#2a2a44;border-radius:3px}
+
+.prev-glass{background:radial-gradient(ellipse at 20% 20%,rgba(8,145,178,.3),transparent 50%),radial-gradient(ellipse at 80% 80%,rgba(168,85,247,.25),transparent 50%),#06060b;position:relative;overflow:hidden}
+.prev-glass::before{content:"";position:absolute;inset:14px;border-radius:8px;background:rgba(255,255,255,.05);backdrop-filter:blur(10px);border:1px solid rgba(255,255,255,.12)}
+.prev-glass::after{content:"✨";position:absolute;font-size:2rem;filter:drop-shadow(0 0 12px rgba(255,255,255,.5))}
+
+.prev-compact{background:#08080f;padding:6px;display:grid;grid-template-columns:1fr 1fr 1fr 1fr;grid-template-rows:repeat(3,1fr);gap:3px}
+.prev-compact::after{display:none}
+.prev-compact i{background:#0f0f1c;border:1px solid #1c1c2e;border-radius:3px}
+.prev-compact i:nth-child(1){grid-column:span 4;background:linear-gradient(135deg,#0f0f1c,#101030)}
+
+/* تذييل */
+.footer{
+  text-align:center;margin-top:60px;padding:20px;
+  color:var(--muted);font-size:.78rem;line-height:1.8
+}
+.footer b{color:var(--accent2)}
+.footer code{background:var(--card);padding:2px 8px;border-radius:6px;color:var(--gold);font-family:monospace;font-size:.85em}
+
+/* انيميشن دخول */
+@keyframes fadeUp{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:translateY(0)}}
+.card{animation:fadeUp .5s backwards}
+.card:nth-child(1){animation-delay:.05s}
+.card:nth-child(2){animation-delay:.1s}
+.card:nth-child(3){animation-delay:.15s}
+.card:nth-child(4){animation-delay:.2s}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<div class="hero">
+  <span class="badge">🧪 SANDBOX — بيئة تجريبية</span>
+  <h1>معرض تصاميم BthLab</h1>
+  <p>كل التصاميم البصرية المقترحة للفعاليات بصفحة واحدة. اضغط على أي بطاقة لتجربة التصميم بشكل تفاعلي.</p>
+  <div class="disclaimer">⚠️ هذي البيئة منفصلة تماماً عن tiktok-live-reader و BthLab</div>
+
+  <div class="stats">
+    <div class="stat"><b>9</b><span>أقسام</span></div>
+    <div class="stat"><b>21</b><span>تصميم</span></div>
+    <div class="stat"><b>100%</b><span>تفاعلي</span></div>
+  </div>
+</div>
+
+<!-- العجلة -->
+<div class="section">
+  <div class="section-h">
+    <span class="ico">🎡</span>
+    <h2>العجلة</h2>
+    <div class="line"></div>
+    <span class="count">4 تصاميم</span>
+  </div>
+  <div class="grid g2">
+    <a href="/designs/wheel.html" class="card" style="--card-border:#22d3ee;--card-glow:rgba(34,211,238,.08);--card-arrow:#0891b2">
+      <div class="card-preview prev-wheel-neon"></div>
+      <div class="card-title">✨ عجلة بثلاثة أنماط</div>
+      <div class="card-desc">نيون متوهج + كازينو ذهبي بمصابيح LED + ثلاثي الأبعاد. مع أصوات التكات و confetti</div>
+      <div class="card-tags"><span class="tag">نيون</span><span class="tag">كازينو</span><span class="tag">3D</span></div>
+      <div class="card-arrow">←</div>
+    </a>
+    <a href="/designs/wheel-dynamic.html" class="card" style="--card-border:#22d3ee;--card-glow:rgba(34,211,238,.08);--card-arrow:#0891b2">
+      <div class="card-preview prev-wheel-dyn"></div>
+      <div class="card-title">🎨 العجلة الديناميكية</div>
+      <div class="card-desc">ألوان متدرجة تتوزع تلقائياً + صورة بروفايل المشارك داخل كل خانة. من 2 إلى 30 مشارك</div>
+      <div class="card-tags"><span class="tag">صور بروفايل</span><span class="tag">HSL تلقائي</span><span class="tag">قابل للتوسع</span></div>
+      <div class="card-arrow">←</div>
+    </a>
+  </div>
+</div>
+
+<!-- ألعاب الفرق -->
+<div class="section">
+  <div class="section-h">
+    <span class="ico">⚔️</span>
+    <h2>ألعاب الفرق والمعارك</h2>
+    <div class="line"></div>
+    <span class="count">4 فعاليات</span>
+  </div>
+  <div class="grid g2">
+    <a href="/designs/games.html#war" class="card" style="--card-border:#ef4444;--card-glow:rgba(239,68,68,.08);--card-arrow:#dc2626">
+      <div class="card-preview prev-war"></div>
+      <div class="card-title">⚔️ حرب الكلمات</div>
+      <div class="card-desc">ساحة معركة بفريقين، كلمات تنفجر، HP ينزل، اهتزاز شاشة وبرق ذهبي</div>
+      <div class="card-tags"><span class="tag">VS</span><span class="tag">انفجارات</span><span class="tag">اهتزاز</span></div>
+      <div class="card-arrow">←</div>
+    </a>
+    <a href="/designs/games.html#horse" class="card" style="--card-border:#22c55e;--card-glow:rgba(34,197,94,.08);--card-arrow:#16a34a">
+      <div class="card-preview prev-horse"></div>
+      <div class="card-title">🐎 سباق الخيل</div>
+      <div class="card-desc">مضمار ليلي بجمهور، 4 خيول بحركة ركض حقيقية، خط نهاية شطرنجي وترتيب لحظي</div>
+      <div class="card-tags"><span class="tag">4 فرق</span><span class="tag">ركض</span><span class="tag">ترتيب لحظي</span></div>
+      <div class="card-arrow">←</div>
+    </a>
+    <a href="/designs/games.html#ice" class="card" style="--card-border:#7dd3fc;--card-glow:rgba(125,211,252,.08);--card-arrow:#0ea5e9">
+      <div class="card-preview prev-ice"></div>
+      <div class="card-title">🧊 الجليد</div>
+      <div class="card-desc">مكعبات جليد زجاجية شفافة، تشقق على 3 مراحل، تهشم لشظايا تتطاير</div>
+      <div class="card-tags"><span class="tag">3 مراحل</span><span class="tag">شظايا</span><span class="tag">شفافية</span></div>
+      <div class="card-arrow">←</div>
+    </a>
+    <a href="/designs/games.html#castle" class="card" style="--card-border:#f5c542;--card-glow:rgba(245,197,66,.08);--card-arrow:#d97706">
+      <div class="card-preview prev-castle"></div>
+      <div class="card-title">🏰 حرب القلاع</div>
+      <div class="card-desc">مشهد ليلي بنجوم، قذائف نارية بمسار قوسي، انفجارات وومضات حمراء</div>
+      <div class="card-tags"><span class="tag">قذائف قوسية</span><span class="tag">نجوم</span><span class="tag">انفجارات</span></div>
+      <div class="card-arrow">←</div>
+    </a>
+  </div>
+</div>
+
+<!-- البطولات -->
+<div class="section">
+  <div class="section-h">
+    <span class="ico">💀</span>
+    <h2>فعالية الخروج (البطولة)</h2>
+    <div class="line"></div>
+    <span class="count">3 أنماط</span>
+  </div>
+  <div class="grid g1">
+    <a href="/designs/knockout.html" class="card" style="--card-border:#ef4444;--card-glow:rgba(239,68,68,.08);--card-arrow:#dc2626">
+      <div class="card-preview prev-knockout"></div>
+      <div class="card-title">💀 الخروج بثلاثة أنماط</div>
+      <div class="card-desc">حلبة الإقصاء (الكل بشاشة واحدة) + شجرة البطولة (bracket) + الموت المفاجئ (1 ضد 1 بقلوب). الثلاثة يتكاملون كمراحل لنفس البطولة</div>
+      <div class="card-tags"><span class="tag">حلبة</span><span class="tag">bracket</span><span class="tag">قلوب</span><span class="tag">spotlight</span></div>
+      <div class="card-arrow">←</div>
+    </a>
+  </div>
+</div>
+
+<!-- خمن الكلمة -->
+<div class="section">
+  <div class="section-h">
+    <span class="ico">🔤</span>
+    <h2>خمن الكلمة</h2>
+    <div class="line"></div>
+    <span class="count">3 أنماط</span>
+  </div>
+  <div class="grid g1">
+    <a href="/designs/guessword.html" class="card" style="--card-border:#a855f7;--card-glow:rgba(168,85,247,.08);--card-arrow:#9333ea">
+      <div class="card-preview prev-guess"></div>
+      <div class="card-title">🔤 خمن الكلمة بثلاثة أنماط</div>
+      <div class="card-desc">بطاقات تنقلب بحركة 3D + الكشف التدريجي (ضباب يوضح) + مطر التخمينات (تخمينات الشات تطير حية). كل نمط يصلح كفعالية مستقلة</div>
+      <div class="card-tags"><span class="tag">flip 3D</span><span class="tag">blur</span><span class="tag">مطر تخمينات</span></div>
+      <div class="card-arrow">←</div>
+    </a>
+  </div>
+</div>
+
+<!-- التسجيل -->
+<div class="section">
+  <div class="section-h">
+    <span class="ico">📝</span>
+    <h2>تسجيل المشاهدين</h2>
+    <div class="line"></div>
+    <span class="count">4 أنماط</span>
+  </div>
+  <div class="grid g1">
+    <a href="/designs/registration.html" class="card" style="--card-border:#22d3ee;--card-glow:rgba(34,211,238,.08);--card-arrow:#0891b2">
+      <div class="card-preview prev-reg">
+        <span class="b">نورة</span><span class="b">سلطان</span><span class="b">ريم</span><span class="b">خالد</span><span class="b">العنود</span>
+      </div>
+      <div class="card-title">📝 شاشة التسجيل بأربعة أنماط</div>
+      <div class="card-desc">فقاعات عائمة + مدرجات ملعب تمتلئ + إناء يانصيب بتذاكر تتساقط + لوحة أسماء cyberpunk. مع عداد ومؤقت تنازلي وأمر الدخول</div>
+      <div class="card-tags"><span class="tag">فقاعات</span><span class="tag">مدرجات</span><span class="tag">يانصيب</span><span class="tag">cyberpunk</span></div>
+      <div class="card-arrow">←</div>
+    </a>
+  </div>
+</div>
+
+<!-- لوحة الأدمن -->
+<div class="section">
+  <div class="section-h">
+    <span class="ico">🎛️</span>
+    <h2>لوحة الأدمن</h2>
+    <div class="line"></div>
+    <span class="count">4 تصاميم</span>
+  </div>
+  <div class="grid g2">
+    <a href="/admin/bento.html" class="card" style="--card-border:#22d3ee;--card-glow:rgba(34,211,238,.08);--card-arrow:#0891b2">
+      <div class="card-preview prev-bento">
+        <i></i><i></i><i></i><i></i><i></i>
+      </div>
+      <div class="card-title">🟦 Bento Modern</div>
+      <div class="card-desc">شبكة bento عصرية بأحجام مختلفة. بطاقة كبيرة للبث + إحصائيات + فعاليات قابلة للتشغيل + نشاط حي</div>
+      <div class="card-tags"><span class="tag">bento grid</span><span class="tag">حديث</span><span class="tag">مفضل</span></div>
+      <div class="card-arrow">←</div>
+    </a>
+
+    <a href="/admin/sidebar.html" class="card" style="--card-border:#22d3ee;--card-glow:rgba(34,211,238,.08);--card-arrow:#0891b2">
+      <div class="card-preview prev-sidebar">
+        <i></i><i></i>
+      </div>
+      <div class="card-title">📋 Sidebar Pro</div>
+      <div class="card-desc">قائمة جانبية احترافية بأقسام متعددة + KPIs + جدول الفعاليات بـ toggle + feed مباشر. نمط برامج SaaS الاحترافية</div>
+      <div class="card-tags"><span class="tag">sidebar</span><span class="tag">احترافي</span><span class="tag">SaaS</span></div>
+      <div class="card-arrow">←</div>
+    </a>
+
+    <a href="/admin/glass.html" class="card" style="--card-border:#a855f7;--card-glow:rgba(168,85,247,.08);--card-arrow:#9333ea">
+      <div class="card-preview prev-glass"></div>
+      <div class="card-title">✨ Glass Hub</div>
+      <div class="card-desc">Glassmorphism بـ blur وشفافية + خلفية متحركة بـ blobs ملونة + بطاقات بإطار زجاجي. شكل futuristic</div>
+      <div class="card-tags"><span class="tag">glassmorphism</span><span class="tag">blur</span><span class="tag">futuristic</span></div>
+      <div class="card-arrow">←</div>
+    </a>
+
+    <a href="/admin/compact.html" class="card" style="--card-border:#22d3ee;--card-glow:rgba(34,211,238,.08);--card-arrow:#0891b2">
+      <div class="card-preview prev-compact">
+        <i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i>
+      </div>
+      <div class="card-title">⚡ Compact Pro</div>
+      <div class="card-desc">مدمج وعملي — كل المعلومات بشاشة واحدة بدون scroll. جدول فعاليات بأزرار تشغيل سريعة + sidebar مدمج. مثالي للموبايل</div>
+      <div class="card-tags"><span class="tag">مدمج</span><span class="tag">عملي</span><span class="tag">موبايل</span></div>
+      <div class="card-arrow">←</div>
+    </a>
+  </div>
+</div>
+
+<div class="footer">
+  <p>🧪 <b>بيئة تجريبية مستقلة</b> — لا تؤثر على المشروع الأساسي</p>
+  <p style="margin-top:8px">للتطبيق على المشروع الحقيقي بعد اختيار التصاميم: <code>تطبيق على tiktok-live-reader</code></p>
+</div>
+
+</div>
+</body>
+</html>
