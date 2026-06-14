@@ -1,0 +1,329 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>أدمن — Glass Hub</title>
+<link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;900&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#06060b;--glass:rgba(255,255,255,.04);--glass2:rgba(255,255,255,.07);
+  --border:rgba(255,255,255,.1);--border-h:rgba(255,255,255,.2);
+  --accent:#0891b2;--accent2:#22d3ee;--gold:#f5c542;--purple:#a855f7;
+  --text:#e8eaf2;--muted:#9ca3af;
+  --green:#22c55e;--red:#ef4444
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html,body{overflow-x:hidden}
+body{background:var(--bg);color:var(--text);font-family:'Tajawal',sans-serif;min-height:100vh;position:relative}
+
+/* خلفية متحركة بـ blobs */
+.bg{position:fixed;inset:0;overflow:hidden;z-index:0;pointer-events:none}
+.blob{position:absolute;border-radius:50%;filter:blur(80px);opacity:.5;animation:float 18s infinite ease-in-out}
+.b1{width:500px;height:500px;background:#0891b2;top:-150px;right:-100px;animation-delay:0s}
+.b2{width:420px;height:420px;background:#a855f7;bottom:-120px;left:-80px;animation-delay:-6s}
+.b3{width:380px;height:380px;background:#dc2626;top:30%;left:40%;animation-delay:-12s;opacity:.3}
+@keyframes float{0%,100%{transform:translate(0,0) scale(1)}33%{transform:translate(50px,-30px) scale(1.1)}66%{transform:translate(-30px,40px) scale(.9)}}
+
+.wrap{position:relative;z-index:1;padding:18px;max-width:1280px;margin:0 auto}
+
+/* Glass card style */
+.glass{
+  background:var(--glass);
+  backdrop-filter:blur(24px) saturate(140%);
+  -webkit-backdrop-filter:blur(24px) saturate(140%);
+  border:1px solid var(--border);border-radius:20px;
+  box-shadow:0 8px 32px rgba(0,0,0,.3),inset 0 1px 0 rgba(255,255,255,.08);
+  transition:.3s
+}
+.glass:hover{background:var(--glass2);border-color:var(--border-h)}
+
+/* Top */
+.topbar{display:flex;align-items:center;justify-content:space-between;padding:14px 20px;margin-bottom:18px}
+.brand{display:flex;align-items:center;gap:12px}
+.brand .logo{
+  width:42px;height:42px;border-radius:13px;
+  background:linear-gradient(135deg,var(--accent),var(--accent2));
+  display:flex;align-items:center;justify-content:center;font-weight:900;font-size:1.3rem;
+  box-shadow:0 0 24px rgba(34,211,238,.4)
+}
+.brand .nm{font-weight:900;font-size:1.1rem}
+.brand .sub{font-size:.7rem;color:var(--accent2)}
+.top-right{display:flex;align-items:center;gap:10px}
+.live-pill{display:flex;align-items:center;gap:8px;padding:7px 16px;border-radius:30px;background:rgba(239,68,68,.15);border:1px solid rgba(239,68,68,.35);color:#fecaca;font-weight:900;font-size:.8rem}
+.live-dot{width:8px;height:8px;border-radius:50%;background:#ef4444;box-shadow:0 0 14px #ef4444;animation:pulse 1.4s infinite}
+@keyframes pulse{50%{opacity:.4}}
+.user-pill{display:flex;align-items:center;gap:10px;padding:5px 14px 5px 5px;border-radius:30px}
+.user-pill .av{width:30px;height:30px;border-radius:50%;background:linear-gradient(135deg,var(--purple),#6d28d9);display:flex;align-items:center;justify-content:center;font-weight:900;font-size:.85rem}
+
+/* Hero stream card */
+.hero{padding:24px;margin-bottom:18px;position:relative;overflow:hidden}
+.hero::before{content:"";position:absolute;top:-100px;right:-100px;width:300px;height:300px;background:radial-gradient(circle,rgba(34,211,238,.18),transparent 65%);pointer-events:none}
+.hero-row{display:flex;align-items:center;gap:18px;position:relative}
+.hero-av{
+  width:80px;height:80px;border-radius:50%;
+  background:linear-gradient(135deg,#dc2626,#f59e0b);
+  display:flex;align-items:center;justify-content:center;
+  font-weight:900;font-size:2rem;border:3px solid var(--gold);
+  box-shadow:0 0 0 6px rgba(245,197,66,.15),0 0 30px rgba(245,197,66,.3);flex-shrink:0
+}
+.hero-info{flex:1;min-width:0}
+.hero-info h1{font-size:1.5rem;font-weight:900;margin-bottom:4px}
+.hero-info .uname{color:var(--accent2);font-size:.88rem}
+.hero-info .meta{color:var(--muted);font-size:.78rem;margin-top:6px;display:flex;gap:14px;flex-wrap:wrap}
+.hero-info .meta span{display:flex;align-items:center;gap:5px}
+.hero-actions{display:flex;gap:8px;flex-shrink:0}
+.hbtn{padding:9px 16px;border:1px solid var(--border-h);background:rgba(255,255,255,.04);color:var(--text);border-radius:14px;font-family:inherit;font-weight:900;font-size:.82rem;cursor:pointer;transition:.2s;backdrop-filter:blur(10px)}
+.hbtn:hover{background:rgba(255,255,255,.08);border-color:var(--accent2)}
+.hbtn.danger{background:rgba(239,68,68,.15);border-color:rgba(239,68,68,.4);color:#fca5a5}
+
+/* KPI strip */
+.kpis{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-bottom:18px}
+.kpi{padding:16px 18px;position:relative;overflow:hidden}
+.kpi .label{font-size:.74rem;color:var(--muted);margin-bottom:8px;display:flex;align-items:center;gap:6px;font-weight:700}
+.kpi .val{font-size:1.7rem;font-weight:900}
+.kpi .delta{font-size:.7rem;font-weight:900;margin-top:3px}
+.kpi .delta.up{color:#86efac}
+.kpi .delta.dn{color:#fca5a5}
+.kpi .glow{position:absolute;top:-30px;left:-30px;width:120px;height:120px;border-radius:50%;filter:blur(40px);opacity:.4}
+
+/* Main grid */
+.grid{display:grid;grid-template-columns:1fr 360px;gap:18px}
+@media(max-width:1000px){.grid{grid-template-columns:1fr}}
+
+/* Activities */
+.acts-card{padding:18px}
+.section-h{display:flex;justify-content:space-between;align-items:center;margin-bottom:14px}
+.section-h h3{font-size:1rem;font-weight:900}
+.section-h .count{background:var(--glass2);border:1px solid var(--border);color:var(--muted);padding:3px 12px;border-radius:14px;font-size:.7rem;font-weight:900}
+.acts-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(140px,1fr));gap:12px}
+.act{
+  background:var(--glass);border:1px solid var(--border);border-radius:16px;
+  padding:14px 12px;text-align:center;cursor:pointer;transition:.25s;
+  position:relative;overflow:hidden
+}
+.act:hover{transform:translateY(-3px);background:var(--glass2);border-color:var(--accent2);box-shadow:0 8px 20px rgba(0,0,0,.3)}
+.act .ico{font-size:1.6rem;margin-bottom:6px;filter:drop-shadow(0 0 12px currentColor)}
+.act .nm{font-size:.78rem;font-weight:900}
+.act .stat{font-size:.62rem;color:var(--muted);margin-top:3px}
+.act.on{background:linear-gradient(145deg,rgba(34,197,94,.16),rgba(34,197,94,.04));border-color:rgba(34,197,94,.45)}
+.act.on::after{content:"●";position:absolute;top:6px;right:8px;color:#86efac;font-size:.6rem;animation:pulse 1.4s infinite}
+
+/* Activity feed */
+.feed-card{padding:18px;display:flex;flex-direction:column}
+.feed-list{display:flex;flex-direction:column;gap:8px;max-height:480px;overflow:hidden}
+.fe{
+  display:flex;gap:10px;padding:9px 12px;border-radius:14px;
+  background:var(--glass);border:1px solid var(--border);
+  animation:slideIn .4s
+}
+@keyframes slideIn{from{opacity:0;transform:translateY(-6px)}to{opacity:1}}
+.fe .av{width:30px;height:30px;border-radius:50%;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-weight:900;font-size:.75rem}
+.fe .body{flex:1;min-width:0}
+.fe .nm{font-weight:900;font-size:.78rem}
+.fe .msg{font-size:.74rem;color:var(--muted);line-height:1.4;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.fe.gift{background:linear-gradient(145deg,rgba(245,197,66,.12),rgba(245,197,66,.02));border-color:rgba(245,197,66,.3)}
+.fe.gift .msg{color:#fde68a}
+
+/* Toggle */
+.toggle{
+  width:38px;height:22px;border-radius:30px;background:rgba(255,255,255,.1);position:relative;
+  cursor:pointer;transition:.25s;display:inline-block;vertical-align:middle
+}
+.toggle::after{content:"";position:absolute;top:2px;right:2px;width:18px;height:18px;border-radius:50%;background:#fff;transition:.25s}
+.toggle.on{background:var(--green)}
+.toggle.on::after{right:18px}
+
+/* Back */
+.back{position:fixed;top:14px;left:14px;background:rgba(12,12,22,.6);backdrop-filter:blur(20px);color:var(--accent2);border:1px solid var(--accent);border-radius:30px;padding:8px 16px;font-weight:900;font-size:.78rem;text-decoration:none;z-index:200}
+
+@media(max-width:720px){
+  .kpis{grid-template-columns:repeat(2,1fr)}
+  .hero-row{flex-wrap:wrap}
+  .hero-actions{width:100%}
+}
+</style>
+</head>
+<body>
+<a href="/" class="back">← المعرض</a>
+
+<div class="bg">
+  <div class="blob b1"></div>
+  <div class="blob b2"></div>
+  <div class="blob b3"></div>
+</div>
+
+<div class="wrap">
+
+  <!-- Top -->
+  <div class="topbar glass">
+    <div class="brand">
+      <div class="logo">B</div>
+      <div>
+        <div class="nm">BthLab</div>
+        <div class="sub">Glass Hub</div>
+      </div>
+    </div>
+    <div class="top-right">
+      <span class="live-pill"><span class="live-dot"></span> مباشر · 47د</span>
+      <div class="user-pill glass"><div class="av">م</div> محمد</div>
+    </div>
+  </div>
+
+  <!-- Hero -->
+  <div class="hero glass">
+    <div class="hero-row">
+      <div class="hero-av">🎮</div>
+      <div class="hero-info">
+        <h1>أبو فهد للألعاب</h1>
+        <div class="uname">@abufahad_gaming</div>
+        <div class="meta">
+          <span>👥 <b id="m-viewers">2,847</b> مشاهد</span>
+          <span>💖 <b id="m-likes">28.4K</b> إعجاب</span>
+          <span>🎁 <b id="m-gifts">142</b> هدية</span>
+        </div>
+      </div>
+      <div class="hero-actions">
+        <button class="hbtn">🔗 OBS</button>
+        <button class="hbtn">⚙️ إعدادات</button>
+        <button class="hbtn danger">⛔ قطع</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- KPIs -->
+  <div class="kpis">
+    <div class="kpi glass">
+      <div class="glow" style="background:#22d3ee"></div>
+      <div class="label">📈 المعدل/دقيقة</div>
+      <div class="val" id="k1">142</div>
+      <div class="delta up">▲ 12%</div>
+    </div>
+    <div class="kpi glass">
+      <div class="glow" style="background:#a855f7"></div>
+      <div class="label">⚡ التفاعل</div>
+      <div class="val">8.7<span style="font-size:1.1rem">%</span></div>
+      <div class="delta dn">▼ 1.2%</div>
+    </div>
+    <div class="kpi glass">
+      <div class="glow" style="background:#22c55e"></div>
+      <div class="label">💎 متابعين جدد</div>
+      <div class="val" id="k3">+184</div>
+      <div class="delta up">▲ خلال البث</div>
+    </div>
+    <div class="kpi glass">
+      <div class="glow" style="background:#f5c542"></div>
+      <div class="label">💰 الإيراد التقديري</div>
+      <div class="val">$<span id="k4">94</span></div>
+      <div class="delta up">▲ +18%</div>
+    </div>
+  </div>
+
+  <!-- Main grid -->
+  <div class="grid">
+
+    <!-- Activities -->
+    <div class="acts-card glass">
+      <div class="section-h">
+        <h3>🎮 الفعاليات</h3>
+        <span class="count">8 متاحة</span>
+      </div>
+      <div class="acts-grid">
+        <div class="act on" onclick="this.classList.toggle('on')">
+          <div class="ico" style="color:#22d3ee">🎡</div>
+          <div class="nm">عجلة الحظ</div>
+          <div class="stat">28 لفة</div>
+        </div>
+        <div class="act" onclick="this.classList.toggle('on')">
+          <div class="ico" style="color:#ef4444">⚔️</div>
+          <div class="nm">حرب الكلمات</div>
+          <div class="stat">جاهزة</div>
+        </div>
+        <div class="act on" onclick="this.classList.toggle('on')">
+          <div class="ico" style="color:#22c55e">🐎</div>
+          <div class="nm">سباق الخيل</div>
+          <div class="stat">4 فرق</div>
+        </div>
+        <div class="act" onclick="this.classList.toggle('on')">
+          <div class="ico" style="color:#7dd3fc">🧊</div>
+          <div class="nm">الجليد</div>
+          <div class="stat">6 لاعبين</div>
+        </div>
+        <div class="act" onclick="this.classList.toggle('on')">
+          <div class="ico" style="color:#f5c542">🏰</div>
+          <div class="nm">حرب القلاع</div>
+          <div class="stat">جاهزة</div>
+        </div>
+        <div class="act on" onclick="this.classList.toggle('on')">
+          <div class="ico" style="color:#ef4444">💀</div>
+          <div class="nm">فعالية الخروج</div>
+          <div class="stat">22 لاعب</div>
+        </div>
+        <div class="act" onclick="this.classList.toggle('on')">
+          <div class="ico" style="color:#a855f7">🔤</div>
+          <div class="nm">خمن الكلمة</div>
+          <div class="stat">جاهزة</div>
+        </div>
+        <div class="act" onclick="this.classList.toggle('on')">
+          <div class="ico" style="color:#fb923c">🎤</div>
+          <div class="nm">المليونير</div>
+          <div class="stat">15 سؤال</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Feed -->
+    <div class="feed-card glass">
+      <div class="section-h">
+        <h3>⚡ النشاط الحي</h3>
+        <span class="count">مباشر</span>
+      </div>
+      <div class="feed-list" id="feed"></div>
+    </div>
+
+  </div>
+</div>
+
+<script>
+let viewers=2847, likes=28400, gifts=142, fol=184, rev=94, k1=142;
+setInterval(()=>{
+  viewers+=Math.floor(Math.random()*15-5);
+  likes+=Math.floor(Math.random()*40);
+  if(Math.random()>.6)gifts++;
+  if(Math.random()>.7)fol++;
+  if(Math.random()>.8)rev++;
+  k1=120+Math.floor(Math.random()*40);
+  document.getElementById("m-viewers").textContent=viewers.toLocaleString("ar-EG");
+  document.getElementById("m-likes").textContent=(likes/1000).toFixed(1)+"K";
+  document.getElementById("m-gifts").textContent=gifts;
+  document.getElementById("k1").textContent=k1;
+  document.getElementById("k3").textContent="+"+fol;
+  document.getElementById("k4").textContent=rev;
+},1800);
+
+const EV=[
+  {n:"نورة",g:false,m:"شكراً للبث الرائع! 🌹",c:"#db2777"},
+  {n:"سلطان",g:true,m:"🎁 أرسل وردة × 5",c:"#0891b2"},
+  {n:"ريم",g:false,m:"يا قمر، متى الفعالية؟",c:"#7c3aed"},
+  {n:"خالد",g:true,m:"🦁 أرسل أسد",c:"#059669"},
+  {n:"العنود",g:false,m:"ادخلوني العجلة 🎡",c:"#d97706"},
+  {n:"مشعل",g:false,m:"حرب الكلمات حلوة 🔥",c:"#dc2626"},
+  {n:"سارة",g:true,m:"🌟 أرسل نجمة × 3",c:"#2563eb"},
+  {n:"فيصل",g:false,m:"🔥🔥🔥",c:"#9333ea"},
+  {n:"جود",g:false,m:"تابعت! 💕",c:"#16a34a"},
+  {n:"تركي",g:true,m:"🎉 أرسل احتفال",c:"#ea580c"}
+];
+function add(){
+  const e=EV[Math.floor(Math.random()*EV.length)];
+  const d=document.createElement("div");
+  d.className="fe"+(e.g?" gift":"");
+  d.innerHTML=`<div class="av" style="background:${e.c}">${e.n[0]}</div><div class="body"><div class="nm">${e.n}</div><div class="msg">${e.m}</div></div>`;
+  const f=document.getElementById("feed");
+  f.insertBefore(d,f.firstChild);
+  while(f.children.length>8)f.removeChild(f.lastChild);
+}
+for(let i=0;i<5;i++)setTimeout(add,i*180);
+setInterval(add,2000);
+</script>
+</body>
+</html>

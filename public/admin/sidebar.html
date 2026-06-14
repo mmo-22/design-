@@ -1,0 +1,337 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>أدمن — Sidebar Pro</title>
+<link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;900&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#0a0a14;--side:#06060b;--card:#10101e;--card2:#161628;--border:#1c1c2e;
+  --accent:#0891b2;--accent2:#22d3ee;--gold:#f5c542;
+  --text:#e8eaf2;--muted:#8a8fa3;
+  --green:#22c55e;--red:#ef4444;--purple:#a855f7
+}
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:var(--bg);color:var(--text);font-family:'Tajawal',sans-serif;min-height:100vh;display:flex}
+
+/* Sidebar */
+.side{
+  width:240px;background:var(--side);border-left:1px solid var(--border);
+  display:flex;flex-direction:column;padding:18px 14px;
+  position:sticky;top:0;height:100vh;flex-shrink:0
+}
+.side-brand{display:flex;align-items:center;gap:10px;padding:0 6px 16px;border-bottom:1px solid var(--border);margin-bottom:12px}
+.side-brand .logo{width:38px;height:38px;border-radius:11px;background:linear-gradient(135deg,var(--accent),var(--accent2));display:flex;align-items:center;justify-content:center;font-weight:900;font-size:1.2rem}
+.side-brand .nm{font-weight:900;font-size:1rem}
+.side-brand .sub{font-size:.66rem;color:var(--muted)}
+
+.side-section{margin:14px 0 6px;padding:0 8px;font-size:.65rem;color:var(--muted);font-weight:900;letter-spacing:1.5px}
+.nav-item{
+  display:flex;align-items:center;gap:10px;padding:9px 10px;border-radius:10px;
+  color:var(--muted);cursor:pointer;font-weight:700;font-size:.85rem;margin-bottom:3px;
+  transition:.2s;position:relative
+}
+.nav-item:hover{background:rgba(255,255,255,.03);color:var(--text)}
+.nav-item.active{background:linear-gradient(135deg,rgba(8,145,178,.2),rgba(34,211,238,.06));color:var(--accent2)}
+.nav-item.active::before{content:"";position:absolute;right:-14px;top:8px;bottom:8px;width:3px;background:var(--accent2);border-radius:3px}
+.nav-item .badge{margin-right:auto;background:var(--red);color:#fff;font-size:.6rem;padding:1px 7px;border-radius:10px;font-weight:900}
+.nav-item .ico{font-size:1.05rem;width:22px;text-align:center}
+
+.side-bottom{margin-top:auto;padding-top:14px;border-top:1px solid var(--border)}
+.user-block{display:flex;align-items:center;gap:10px;padding:8px;border-radius:12px;background:var(--card);cursor:pointer}
+.user-block .av{width:36px;height:36px;border-radius:50%;background:linear-gradient(135deg,var(--purple),#6d28d9);display:flex;align-items:center;justify-content:center;font-weight:900}
+.user-block .un{font-weight:900;font-size:.85rem}
+.user-block .em{font-size:.68rem;color:var(--muted)}
+
+/* Main */
+.main{flex:1;padding:20px 24px;min-width:0}
+
+/* Top header */
+.head{display:flex;align-items:center;justify-content:space-between;margin-bottom:22px}
+.head h1{font-size:1.45rem;font-weight:900}
+.head .crumb{font-size:.78rem;color:var(--muted);margin-top:2px}
+.head .right{display:flex;align-items:center;gap:10px}
+.search{display:flex;align-items:center;gap:8px;background:var(--card);border:1px solid var(--border);border-radius:30px;padding:8px 14px;width:260px}
+.search input{background:transparent;border:none;outline:none;color:var(--text);font-family:inherit;font-size:.85rem;flex:1}
+.search input::placeholder{color:var(--muted)}
+.live-tag{display:flex;align-items:center;gap:7px;background:rgba(239,68,68,.13);border:1px solid rgba(239,68,68,.4);color:#fca5a5;padding:6px 13px;border-radius:30px;font-weight:900;font-size:.78rem}
+.live-dot{width:8px;height:8px;border-radius:50%;background:var(--red);box-shadow:0 0 12px var(--red);animation:pulse 1.4s infinite}
+@keyframes pulse{50%{opacity:.4}}
+
+/* KPI cards */
+.kpis{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-bottom:22px}
+.kpi{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:16px;position:relative;overflow:hidden}
+.kpi:hover{border-color:rgba(34,211,238,.3)}
+.kpi-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px}
+.kpi-label{font-size:.78rem;color:var(--muted);font-weight:700}
+.kpi-ico{width:34px;height:34px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:1.05rem}
+.kpi-val{font-size:1.7rem;font-weight:900;line-height:1.1}
+.kpi-delta{font-size:.7rem;font-weight:900;margin-top:4px;display:flex;align-items:center;gap:4px}
+.kpi-delta.up{color:var(--green)}
+.kpi-delta.dn{color:var(--red)}
+
+/* Main grid */
+.main-grid{display:grid;grid-template-columns:1fr 360px;gap:18px;margin-bottom:18px}
+
+/* Stream panel */
+.stream-card{background:var(--card);border:1px solid var(--border);border-radius:16px;overflow:hidden}
+.stream-head{padding:14px 18px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:between;gap:12px}
+.stream-head h3{font-size:.95rem;font-weight:900;flex:1}
+.icon-btn{background:transparent;border:1px solid var(--border);color:var(--muted);border-radius:10px;width:32px;height:32px;cursor:pointer;font-size:.9rem}
+.icon-btn:hover{color:var(--accent2);border-color:var(--accent)}
+
+.streamer-row{display:flex;align-items:center;gap:14px;padding:18px}
+.streamer-av{width:62px;height:62px;border-radius:50%;background:linear-gradient(135deg,#dc2626,#f59e0b);display:flex;align-items:center;justify-content:center;font-weight:900;font-size:1.6rem;border:3px solid var(--gold);box-shadow:0 0 0 4px rgba(245,197,66,.1)}
+.streamer-info h2{font-size:1.15rem;font-weight:900;margin-bottom:2px}
+.streamer-info .uname{font-size:.8rem;color:var(--accent2)}
+.streamer-info .dur{font-size:.75rem;color:var(--muted);margin-top:6px}
+
+.act-section{padding:14px 18px;border-top:1px solid var(--border)}
+.act-section h4{font-size:.78rem;color:var(--muted);font-weight:900;letter-spacing:1px;margin-bottom:10px}
+.acts-table{display:flex;flex-direction:column;gap:6px}
+.act-row{display:flex;align-items:center;gap:12px;padding:9px 10px;border-radius:10px;background:rgba(255,255,255,.02);border:1px solid var(--border);transition:.2s}
+.act-row:hover{border-color:rgba(34,211,238,.3)}
+.act-row .ico{width:34px;height:34px;border-radius:9px;background:linear-gradient(135deg,#1c1c2e,#2a2a44);display:flex;align-items:center;justify-content:center;font-size:1.05rem}
+.act-row .name{flex:1;font-weight:900;font-size:.85rem}
+.act-row .stat{font-size:.7rem;color:var(--muted);font-weight:700}
+.toggle{
+  width:38px;height:22px;border-radius:30px;background:#2a2a44;position:relative;
+  cursor:pointer;transition:.25s
+}
+.toggle::after{content:"";position:absolute;top:2px;right:2px;width:18px;height:18px;border-radius:50%;background:#fff;transition:.25s}
+.toggle.on{background:var(--green)}
+.toggle.on::after{right:18px}
+
+/* Activity panel */
+.activity-card{background:var(--card);border:1px solid var(--border);border-radius:16px;display:flex;flex-direction:column;overflow:hidden}
+.activity-head{padding:14px 18px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between}
+.activity-head h3{font-size:.95rem;font-weight:900}
+.activity-head .tabs{display:flex;gap:4px}
+.actab{background:transparent;border:none;color:var(--muted);font-family:inherit;font-weight:900;font-size:.74rem;padding:5px 12px;border-radius:20px;cursor:pointer;transition:.2s}
+.actab.active{background:rgba(34,211,238,.13);color:var(--accent2)}
+.activity-list{flex:1;padding:14px 12px;display:flex;flex-direction:column;gap:8px;min-height:420px;max-height:520px;overflow:hidden}
+.event{display:flex;align-items:flex-start;gap:10px;padding:9px 10px;border-radius:12px;background:rgba(255,255,255,.02);border:1px solid var(--border);animation:slideIn .4s}
+@keyframes slideIn{from{opacity:0;transform:translateY(-6px)}to{opacity:1}}
+.event .av{width:30px;height:30px;border-radius:50%;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-weight:900;font-size:.75rem}
+.event .body{flex:1;min-width:0}
+.event .name{font-weight:900;font-size:.78rem;color:#fff}
+.event .msg{font-size:.74rem;color:var(--muted);line-height:1.5;margin-top:1px}
+.event .time{font-size:.62rem;color:var(--muted);margin-top:3px}
+.event.gift{background:linear-gradient(135deg,rgba(245,197,66,.08),rgba(245,197,66,.02));border-color:rgba(245,197,66,.25)}
+.event.gift .msg{color:var(--gold)}
+.event.follow{background:linear-gradient(135deg,rgba(34,197,94,.08),transparent);border-color:rgba(34,197,94,.25)}
+.event.follow .msg{color:#86efac}
+
+@media(max-width:1100px){
+  .kpis{grid-template-columns:repeat(2,1fr)}
+  .main-grid{grid-template-columns:1fr}
+}
+@media(max-width:720px){
+  .side{position:fixed;right:-260px;z-index:100;transition:right .3s}
+  .side.open{right:0}
+  .search{width:auto;flex:1}
+}
+
+/* Back */
+.back{position:fixed;top:14px;left:14px;background:rgba(12,12,22,.85);backdrop-filter:blur(10px);color:var(--accent2);border:1px solid var(--accent);border-radius:30px;padding:8px 16px;font-weight:900;font-size:.78rem;text-decoration:none;z-index:200}
+</style>
+</head>
+<body>
+<a href="/" class="back">← المعرض</a>
+
+<!-- Sidebar -->
+<aside class="side">
+  <div class="side-brand">
+    <div class="logo">B</div>
+    <div>
+      <div class="nm">BthLab</div>
+      <div class="sub">Sidebar Pro</div>
+    </div>
+  </div>
+
+  <div class="side-section">القائمة</div>
+  <div class="nav-item active"><span class="ico">📊</span> لوحة التحكم</div>
+  <div class="nav-item"><span class="ico">📡</span> البث المباشر <span class="badge">LIVE</span></div>
+  <div class="nav-item"><span class="ico">🎮</span> الفعاليات</div>
+  <div class="nav-item"><span class="ico">👥</span> المشتركين</div>
+  <div class="nav-item"><span class="ico">🎁</span> الهدايا والإيرادات</div>
+
+  <div class="side-section">الإدارة</div>
+  <div class="nav-item"><span class="ico">🔗</span> روابط OBS</div>
+  <div class="nav-item"><span class="ico">📈</span> الإحصائيات</div>
+  <div class="nav-item"><span class="ico">⚙️</span> الإعدادات</div>
+  <div class="nav-item"><span class="ico">💬</span> الدعم <span class="badge">3</span></div>
+
+  <div class="side-bottom">
+    <div class="user-block">
+      <div class="av">م</div>
+      <div>
+        <div class="un">محمد</div>
+        <div class="em">admin@bthlab.live</div>
+      </div>
+    </div>
+  </div>
+</aside>
+
+<!-- Main -->
+<main class="main">
+
+  <!-- Head -->
+  <div class="head">
+    <div>
+      <h1>لوحة التحكم</h1>
+      <div class="crumb">الرئيسية · لوحة التحكم</div>
+    </div>
+    <div class="right">
+      <div class="search">🔍 <input placeholder="ابحث..."></div>
+      <span class="live-tag"><span class="live-dot"></span> مباشر</span>
+    </div>
+  </div>
+
+  <!-- KPIs -->
+  <div class="kpis">
+    <div class="kpi">
+      <div class="kpi-head">
+        <div class="kpi-label">المشاهدين</div>
+        <div class="kpi-ico" style="background:rgba(34,211,238,.13);color:var(--accent2)">👥</div>
+      </div>
+      <div class="kpi-val" id="k-viewers">2,847</div>
+      <div class="kpi-delta up">▲ +12% عن الأمس</div>
+    </div>
+    <div class="kpi">
+      <div class="kpi-head">
+        <div class="kpi-label">الهدايا اليوم</div>
+        <div class="kpi-ico" style="background:rgba(245,197,66,.13);color:var(--gold)">🎁</div>
+      </div>
+      <div class="kpi-val" id="k-gifts">142</div>
+      <div class="kpi-delta up">▲ +28 منذ الصباح</div>
+    </div>
+    <div class="kpi">
+      <div class="kpi-head">
+        <div class="kpi-label">متابعين جدد</div>
+        <div class="kpi-ico" style="background:rgba(34,197,94,.13);color:var(--green)">💎</div>
+      </div>
+      <div class="kpi-val" id="k-fol">+184</div>
+      <div class="kpi-delta up">▲ خلال البث</div>
+    </div>
+    <div class="kpi">
+      <div class="kpi-head">
+        <div class="kpi-label">معدل التفاعل</div>
+        <div class="kpi-ico" style="background:rgba(168,85,247,.13);color:var(--purple)">⚡</div>
+      </div>
+      <div class="kpi-val">8.7%</div>
+      <div class="kpi-delta dn">▼ -1.2% عن الأمس</div>
+    </div>
+  </div>
+
+  <!-- Main grid -->
+  <div class="main-grid">
+
+    <!-- Stream + Activities -->
+    <div class="stream-card">
+      <div class="stream-head">
+        <h3>📡 البث الحالي</h3>
+        <button class="icon-btn">⋯</button>
+      </div>
+
+      <div class="streamer-row">
+        <div class="streamer-av">🎮</div>
+        <div class="streamer-info">
+          <h2>أبو فهد للألعاب</h2>
+          <div class="uname">@abufahad_gaming</div>
+          <div class="dur">⏱ بدأ قبل 47 دقيقة · 2,847 مشاهد</div>
+        </div>
+      </div>
+
+      <div class="act-section">
+        <h4>الفعاليات المتاحة</h4>
+        <div class="acts-table">
+          <div class="act-row">
+            <div class="ico">🎡</div>
+            <div class="name">عجلة الحظ</div>
+            <div class="stat">28 لفة اليوم</div>
+            <div class="toggle on" onclick="this.classList.toggle('on')"></div>
+          </div>
+          <div class="act-row">
+            <div class="ico">⚔️</div>
+            <div class="name">حرب الكلمات</div>
+            <div class="stat">جاهزة</div>
+            <div class="toggle" onclick="this.classList.toggle('on')"></div>
+          </div>
+          <div class="act-row">
+            <div class="ico">🐎</div>
+            <div class="name">سباق الخيل</div>
+            <div class="stat">شغّالة · 4 فرق</div>
+            <div class="toggle on" onclick="this.classList.toggle('on')"></div>
+          </div>
+          <div class="act-row">
+            <div class="ico">💀</div>
+            <div class="name">فعالية الخروج</div>
+            <div class="stat">22 لاعب باقي</div>
+            <div class="toggle on" onclick="this.classList.toggle('on')"></div>
+          </div>
+          <div class="act-row">
+            <div class="ico">🔤</div>
+            <div class="name">خمن الكلمة</div>
+            <div class="stat">جاهزة</div>
+            <div class="toggle" onclick="this.classList.toggle('on')"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Activity feed -->
+    <div class="activity-card">
+      <div class="activity-head">
+        <h3>⚡ النشاط الحي</h3>
+        <div class="tabs">
+          <button class="actab active">الكل</button>
+          <button class="actab">هدايا</button>
+        </div>
+      </div>
+      <div class="activity-list" id="feed"></div>
+    </div>
+
+  </div>
+
+</main>
+
+<script>
+let viewers=2847, gifts=142, fol=184;
+setInterval(()=>{
+  viewers+=Math.floor(Math.random()*15-5);
+  if(Math.random()>.6)gifts++;
+  if(Math.random()>.7)fol++;
+  document.getElementById("k-viewers").textContent=viewers.toLocaleString("ar-EG");
+  document.getElementById("k-gifts").textContent=gifts;
+  document.getElementById("k-fol").textContent="+"+fol;
+},2000);
+
+const EVENTS=[
+  {n:"نورة",t:"chat",m:"شكراً للبث الرائع! 🌹",c:"#db2777"},
+  {n:"سلطان",t:"gift",m:"🎁 أرسل وردة × 5",c:"#0891b2"},
+  {n:"ريم",t:"chat",m:"يا قمر، متى الفعالية؟",c:"#7c3aed"},
+  {n:"خالد",t:"follow",m:"💎 متابع جديد",c:"#059669"},
+  {n:"العنود",t:"chat",m:"ادخلوني العجلة 🎡",c:"#d97706"},
+  {n:"مشعل",t:"gift",m:"🦁 أرسل أسد",c:"#dc2626"},
+  {n:"سارة",t:"chat",m:"حرب الكلمات حلوة 🔥",c:"#2563eb"},
+  {n:"فيصل",t:"gift",m:"🌟 أرسل نجمة × 3",c:"#9333ea"},
+  {n:"جود",t:"follow",m:"💎 متابع جديد",c:"#16a34a"},
+  {n:"تركي",t:"chat",m:"معاكم من ساعتين! ❤️",c:"#ea580c"}
+];
+function addEvent(){
+  const e=EVENTS[Math.floor(Math.random()*EVENTS.length)];
+  const t=new Date(),ts=t.getHours()+":"+String(t.getMinutes()).padStart(2,"0");
+  const d=document.createElement("div");
+  d.className="event"+(e.t==="gift"?" gift":e.t==="follow"?" follow":"");
+  d.innerHTML=`<div class="av" style="background:${e.c}">${e.n[0]}</div><div class="body"><div class="name">${e.n}</div><div class="msg">${e.m}</div><div class="time">${ts}</div></div>`;
+  const f=document.getElementById("feed");
+  f.insertBefore(d,f.firstChild);
+  while(f.children.length>9)f.removeChild(f.lastChild);
+}
+for(let i=0;i<6;i++)setTimeout(addEvent,i*180);
+setInterval(addEvent,2000);
+</script>
+</body>
+</html>
