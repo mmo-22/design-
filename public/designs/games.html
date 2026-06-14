@@ -1,0 +1,355 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>نماذج تصاميم الفعاليات — BthLab</title>
+<link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;700;900&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#06060b;--card:#0c0c16;--accent:#0891b2;--accent2:#22d3ee;--gold:#f5c542;--text:#e8eaf2;--muted:#8a8fa3;
+--red:#ef4444;--blue:#3b82f6;--ice:#7dd3fc;--green:#22c55e}
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:var(--bg);color:var(--text);font-family:'Tajawal',sans-serif;min-height:100vh;padding:18px 12px 60px}
+header{text-align:center;margin-bottom:20px}
+header h1{font-size:1.4rem;font-weight:900;background:linear-gradient(90deg,var(--accent2),var(--accent));-webkit-background-clip:text;background-clip:text;color:transparent}
+header p{color:var(--muted);font-size:.82rem;margin-top:4px}
+.tabs{display:flex;gap:7px;justify-content:center;margin-bottom:20px;flex-wrap:wrap}
+.tab{background:var(--card);border:1px solid #1c1c2e;color:var(--muted);padding:9px 15px;border-radius:30px;font-family:inherit;font-size:.85rem;font-weight:900;cursor:pointer;transition:.25s}
+.tab.active{color:#fff;border-color:var(--accent);box-shadow:0 0 14px rgba(8,145,178,.45)}
+.panel{display:none;flex-direction:column;align-items:center}
+.panel.active{display:flex}
+.scene{position:relative;width:min(94vw,560px);aspect-ratio:16/10;border-radius:18px;overflow:hidden;border:1px solid #1c1c2e;margin-bottom:14px}
+.play{font-family:inherit;font-weight:900;font-size:1rem;color:#fff;background:linear-gradient(135deg,var(--accent),var(--accent2));border:none;border-radius:40px;padding:12px 40px;cursor:pointer;box-shadow:0 4px 22px rgba(8,145,178,.4)}
+.play:active{transform:scale(.95)}
+.note{margin-top:12px;font-size:.78rem;color:var(--muted);max-width:480px;text-align:center;line-height:1.8}
+.note b{color:var(--accent2)}
+
+/* ===== 1) حرب الكلمات ===== */
+#sc-war{background:radial-gradient(ellipse at 20% 30%,#1e0a0a 0%,#06060b 55%),radial-gradient(ellipse at 80% 70%,#0a1430 0%,transparent 55%)}
+.ww-side{position:absolute;top:0;bottom:0;width:50%;display:flex;flex-direction:column;align-items:center;padding-top:10px}
+.ww-r{right:0}.ww-l{left:0}
+.ww-title{font-weight:900;font-size:.95rem;padding:4px 16px;border-radius:20px;margin-bottom:6px}
+.ww-r .ww-title{background:rgba(239,68,68,.18);color:#fca5a5;border:1px solid #7f1d1d}
+.ww-l .ww-title{background:rgba(59,130,246,.18);color:#93c5fd;border:1px solid #1e3a8a}
+.hp{width:80%;height:14px;background:#111122;border-radius:10px;overflow:hidden;border:1px solid #222}
+.hp i{display:block;height:100%;transition:width .5s}
+.ww-r .hp i{background:linear-gradient(90deg,#ef4444,#f97316);width:100%}
+.ww-l .hp i{background:linear-gradient(90deg,#3b82f6,#22d3ee);width:100%}
+.ww-words{flex:1;width:100%;position:relative}
+.w-card{position:absolute;background:#0c0c16ee;border:1px solid;border-radius:10px;padding:5px 12px;font-weight:900;font-size:.85rem;opacity:0;white-space:nowrap}
+.ww-r .w-card{border-color:#ef4444;color:#fca5a5}
+.ww-l .w-card{border-color:#3b82f6;color:#93c5fd}
+@keyframes pop{0%{opacity:0;transform:scale(.4)}20%{opacity:1;transform:scale(1.12)}30%{transform:scale(1)}80%{opacity:1}100%{opacity:0;transform:translateY(-18px)}}
+.ww-vs{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);font-size:2rem;font-weight:900;color:var(--gold);text-shadow:0 0 24px rgba(245,197,66,.7);z-index:3}
+.bolt{position:absolute;top:8%;bottom:8%;left:50%;width:3px;background:linear-gradient(#f5c542,transparent 30%,#f5c542 50%,transparent 70%,#f5c542);transform:translateX(-50%);opacity:.5}
+.shake{animation:shk .35s}
+@keyframes shk{0%,100%{transform:translate(0)}25%{transform:translate(-5px,3px)}50%{transform:translate(5px,-3px)}75%{transform:translate(-3px,-2px)}}
+
+/* ===== 2) سباق الخيل ===== */
+#sc-horse{background:linear-gradient(#0a1228 0%,#0a1228 28%,#173017 30%,#1d3a1b 100%)}
+.sky{position:absolute;top:0;left:0;right:0;height:28%;overflow:hidden}
+.moon{position:absolute;top:12px;left:30px;width:34px;height:34px;border-radius:50%;background:#f5f0d8;box-shadow:0 0 30px rgba(245,240,216,.5)}
+.crowd{position:absolute;top:28%;left:0;right:0;height:7%;background:repeating-linear-gradient(90deg,#241c33 0 8px,#2e2344 8px 16px);border-bottom:2px solid #000}
+.track{position:absolute;top:35%;bottom:0;left:0;right:0}
+.lane{position:absolute;left:0;right:0;height:16%;border-bottom:2px dashed rgba(255,255,255,.12)}
+.finish{position:absolute;left:6%;top:0;bottom:0;width:10px;background:repeating-conic-gradient(#fff 0 25%,#000 0 50%) 0 0/10px 10px;opacity:.9}
+.horse{position:absolute;right:2%;font-size:1.7rem;transition:right .28s linear;filter:drop-shadow(0 3px 4px rgba(0,0,0,.6))}
+.horse.run{animation:gallop .3s infinite}
+@keyframes gallop{0%,100%{transform:translateY(0) scaleX(-1)}50%{transform:translateY(-5px) scaleX(-1)}}
+.horse{transform:scaleX(-1)}
+.h-tag{position:absolute;top:-14px;right:6px;font-size:.55rem;font-weight:900;background:#0c0c16dd;border-radius:8px;padding:1px 7px;transform:scaleX(-1)}
+.h-rank{position:absolute;top:8px;right:10px;background:#0c0c16dd;border:1px solid var(--gold);color:var(--gold);border-radius:12px;padding:4px 14px;font-weight:900;font-size:.8rem;z-index:5}
+
+/* ===== 3) الجليد ===== */
+#sc-ice{background:radial-gradient(ellipse at 50% 0%,#0c2438 0%,#06121d 60%,#040a12 100%)}
+.snow{position:absolute;color:#bae6fd;animation:snowfall linear infinite;font-size:.7rem;opacity:.7}
+@keyframes snowfall{to{transform:translateY(110%)}}
+.ice-grid{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;gap:14px;flex-wrap:wrap;padding:30px}
+.cube{position:relative;width:88px;height:88px;border-radius:14px;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:3px;
+background:linear-gradient(145deg,rgba(125,211,252,.32),rgba(56,131,180,.18));
+border:2px solid rgba(186,230,253,.5);box-shadow:inset 0 0 24px rgba(125,211,252,.3),0 6px 18px rgba(0,0,0,.5);
+backdrop-filter:blur(2px);transition:.3s}
+.cube .av{width:38px;height:38px;border-radius:50%;background:linear-gradient(135deg,#0891b2,#6d28d9);display:flex;align-items:center;justify-content:center;font-weight:900;filter:saturate(.4) brightness(.85)}
+.cube .nm{font-size:.62rem;font-weight:900;color:#bae6fd}
+.cube::after{content:"";position:absolute;inset:0;border-radius:14px;background:linear-gradient(115deg,transparent 30%,rgba(255,255,255,.35) 45%,transparent 60%);}
+.crack1{background-image:linear-gradient(145deg,rgba(125,211,252,.32),rgba(56,131,180,.18))}
+.crack1::before{content:"";position:absolute;inset:0;background:
+linear-gradient(75deg,transparent 48%,rgba(255,255,255,.6) 49.5%,transparent 51%);}
+.crack2::before{content:"";position:absolute;inset:0;background:
+linear-gradient(75deg,transparent 48%,rgba(255,255,255,.7) 49.5%,transparent 51%),
+linear-gradient(-35deg,transparent 47%,rgba(255,255,255,.6) 49%,transparent 51%),
+linear-gradient(10deg,transparent 58%,rgba(255,255,255,.5) 59.5%,transparent 61%);}
+.free{background:linear-gradient(145deg,rgba(34,197,94,.25),rgba(16,98,52,.2));border-color:var(--green);box-shadow:0 0 22px rgba(34,197,94,.4)}
+.free .av{filter:none}
+.free .nm{color:#86efac}
+.shatter{animation:shatterA .5s forwards}
+@keyframes shatterA{40%{transform:scale(1.12)}100%{transform:scale(1)}}
+.shard{position:absolute;width:10px;height:10px;background:rgba(186,230,253,.85);clip-path:polygon(50% 0,100% 100%,0 100%);animation:shardFly .7s forwards;z-index:9}
+@keyframes shardFly{to{transform:translate(var(--dx),var(--dy)) rotate(var(--rot));opacity:0}}
+.ice-head{position:absolute;top:8px;right:10px;background:#0c0c16dd;border:1px solid var(--ice);color:var(--ice);border-radius:12px;padding:4px 14px;font-weight:900;font-size:.8rem;z-index:5}
+
+/* ===== 4) حرب القلاع ===== */
+#sc-castle{background:linear-gradient(#0b0f24 0%,#1a1033 55%,#241636 70%,#120a1e 100%)}
+.stars{position:absolute;inset:0}
+.star{position:absolute;width:2px;height:2px;background:#fff;border-radius:50%;opacity:.6;animation:tw 2.4s infinite}
+@keyframes tw{50%{opacity:.15}}
+.ground{position:absolute;bottom:0;left:0;right:0;height:16%;background:#0d0a14;border-top:2px solid #2a2040}
+.castle{position:absolute;bottom:14%;font-size:3.6rem;filter:drop-shadow(0 4px 8px rgba(0,0,0,.7));transition:.3s}
+.cs-r{right:6%}.cs-l{left:6%}
+.cs-hp{position:absolute;bottom:calc(14% + 4.4rem);width:24%;height:12px;background:#111122;border-radius:8px;overflow:hidden;border:1px solid #222}
+.cs-hp i{display:block;height:100%;transition:width .4s}
+.cs-hp.r{right:4%}.cs-hp.r i{background:linear-gradient(90deg,#ef4444,#f97316);width:100%}
+.cs-hp.l{left:4%}.cs-hp.l i{background:linear-gradient(90deg,#3b82f6,#22d3ee);width:100%}
+.cs-name{position:absolute;bottom:calc(14% + 5.6rem);font-size:.72rem;font-weight:900;padding:2px 12px;border-radius:12px;background:#0c0c16dd}
+.cs-name.r{right:6%;color:#fca5a5;border:1px solid #7f1d1d}
+.cs-name.l{left:7%;color:#93c5fd;border:1px solid #1e3a8a}
+.proj{position:absolute;font-size:1.3rem;z-index:6;filter:drop-shadow(0 0 8px rgba(245,197,66,.8))}
+.boom{position:absolute;font-size:2.2rem;z-index:7;animation:boomA .55s forwards}
+@keyframes boomA{0%{transform:scale(.3);opacity:1}70%{transform:scale(1.4)}100%{transform:scale(1.7);opacity:0}}
+.dmg{animation:dmgA .4s}
+@keyframes dmgA{0%,100%{filter:drop-shadow(0 4px 8px rgba(0,0,0,.7))}50%{filter:drop-shadow(0 0 16px #ef4444) brightness(1.6)}}
+.cw-word{position:absolute;top:10px;left:50%;transform:translateX(-50%);background:#0c0c16ee;border:1px solid var(--gold);color:var(--gold);border-radius:12px;padding:5px 18px;font-weight:900;font-size:.9rem;z-index:8}
+</style>
+</head>
+<body>
+<header>
+  <h1>🎮 نماذج تصاميم الفعاليات</h1>
+  <p>اضغط "تشغيل العرض" في كل تبويب لمشاهدة المحاكاة</p>
+</header>
+
+<div class="tabs">
+  <button class="tab active" data-p="war">⚔️ حرب الكلمات</button>
+  <button class="tab" data-p="horse">🐎 سباق الخيل</button>
+  <button class="tab" data-p="ice">🧊 الجليد</button>
+  <button class="tab" data-p="castle">🏰 حرب القلاع</button>
+</div>
+
+<!-- حرب الكلمات -->
+<div class="panel active" id="panel-war">
+  <div class="scene" id="sc-war">
+    <div class="bolt"></div>
+    <div class="ww-vs">VS</div>
+    <div class="ww-side ww-r">
+      <div class="ww-title">🔴 فريق الصقور</div>
+      <div class="hp"><i id="hp-r"></i></div>
+      <div class="ww-words" id="words-r"></div>
+    </div>
+    <div class="ww-side ww-l">
+      <div class="ww-title">🔵 فريق النمور</div>
+      <div class="hp"><i id="hp-l"></i></div>
+      <div class="ww-words" id="words-l"></div>
+    </div>
+  </div>
+  <button class="play" onclick="playWar()">تشغيل العرض</button>
+  <p class="note">ساحة معركة: كل كلمة صحيحة من الشات <b>تنفجر</b> في جهة الفريق وتنزل HP الخصم، مع اهتزاز الشاشة عند الضربات القوية وبرق ذهبي بالنص</p>
+</div>
+
+<!-- سباق الخيل -->
+<div class="panel" id="panel-horse">
+  <div class="scene" id="sc-horse">
+    <div class="sky"><div class="moon"></div></div>
+    <div class="crowd"></div>
+    <div class="h-rank" id="h-rank">🏁 جاهز</div>
+    <div class="track" id="track"><div class="finish"></div></div>
+  </div>
+  <button class="play" onclick="playHorse()">تشغيل العرض</button>
+  <p class="note">مضمار ليلي بمدرجات جمهور: كل هدية/تعليق <b>يدفع خيل فريقه</b> للأمام بحركة ركض حقيقية، خط نهاية متحرك وترتيب لحظي فوق</p>
+</div>
+
+<!-- الجليد -->
+<div class="panel" id="panel-ice">
+  <div class="scene" id="sc-ice">
+    <div class="ice-head">🧊 حرروا أصحابكم!</div>
+    <div class="ice-grid" id="iceGrid"></div>
+  </div>
+  <button class="play" onclick="playIce()">تشغيل العرض</button>
+  <p class="note">كل مشارك <b>محبوس داخل مكعب جليد</b> بصورته. تعليقات الشات تشقق الجليد على 3 مراحل، وبالشق الأخير <b>يتهشم المكعب لشظايا تتطاير</b> ويتحرر بلون أخضر</p>
+</div>
+
+<!-- حرب القلاع -->
+<div class="panel" id="panel-castle">
+  <div class="scene" id="sc-castle">
+    <div class="stars" id="stars"></div>
+    <div class="cw-word" id="cw-word">اكتب: نار 🔥</div>
+    <div class="cs-name r">🔴 قلعة الصقور</div>
+    <div class="cs-name l">🔵 قلعة النمور</div>
+    <div class="cs-hp r"><i id="chp-r"></i></div>
+    <div class="cs-hp l"><i id="chp-l"></i></div>
+    <div class="castle cs-r" id="castle-r">🏰</div>
+    <div class="castle cs-l" id="castle-l">🏯</div>
+    <div class="ground"></div>
+  </div>
+  <button class="play" onclick="playCastle()">تشغيل العرض</button>
+  <p class="note">مشهد ليلي بنجوم: كل كلمة صحيحة تطلق <b>قذيفة نارية بمسار قوسي</b> على قلعة الخصم مع انفجار واهتزاز وومضة حمراء، والكلمة المطلوبة معلّقة فوق</p>
+</div>
+
+<script>
+let audioCtx;
+function snd(f,d=.08,v=.15,type="square"){
+  audioCtx=audioCtx||new (window.AudioContext||window.webkitAudioContext)();
+  const o=audioCtx.createOscillator(),g=audioCtx.createGain();
+  o.frequency.value=f;o.type=type;
+  g.gain.setValueAtTime(v,audioCtx.currentTime);
+  g.gain.exponentialRampToValueAtTime(.001,audioCtx.currentTime+d);
+  o.connect(g);g.connect(audioCtx.destination);o.start();o.stop(audioCtx.currentTime+d);
+}
+
+document.querySelectorAll(".tab").forEach(t=>t.onclick=()=>{
+  document.querySelectorAll(".tab,.panel").forEach(x=>x.classList.remove("active"));
+  t.classList.add("active");
+  document.getElementById("panel-"+t.dataset.p).classList.add("active");
+});
+
+/* ===== 1) حرب الكلمات ===== */
+const WORDS=["سيف","قمر","نخلة","صقر","بحر","جبل","نجم","فهد","ورد","ذهب"];
+function playWar(){
+  const hr=document.getElementById("hp-r"),hl=document.getElementById("hp-l");
+  hr.style.width="100%";hl.style.width="100%";
+  let r=100,l=100,i=0;
+  const iv=setInterval(()=>{
+    const side=Math.random()>.5?"r":"l";
+    const box=document.getElementById("words-"+side);
+    const c=document.createElement("div");
+    c.className="w-card";
+    c.textContent="💥 "+WORDS[i%WORDS.length];
+    c.style.right=(10+Math.random()*45)+"%";
+    c.style.top=(10+Math.random()*65)+"%";
+    c.style.animation="pop 1.3s forwards";
+    box.appendChild(c);setTimeout(()=>c.remove(),1300);
+    snd(side==="r"?500:700,.1,.18);
+    if(side==="r"){l-=12;hl.style.width=Math.max(l,0)+"%";}
+    else{r-=12;hr.style.width=Math.max(r,0)+"%";}
+    document.getElementById("sc-war").classList.add("shake");
+    setTimeout(()=>document.getElementById("sc-war").classList.remove("shake"),360);
+    if(++i>=8){clearInterval(iv);snd(1047,.4,.2,"sine");}
+  },650);
+}
+
+/* ===== 2) سباق الخيل ===== */
+const HCOLORS=["#ef4444","#3b82f6","#22c55e","#f5c542"];
+const HNAMES=["الصقور","النمور","الذئاب","العقبان"];
+let horses=[];
+(function buildTrack(){
+  const tr=document.getElementById("track");
+  for(let i=0;i<4;i++){
+    const lane=document.createElement("div");
+    lane.className="lane";lane.style.top=(i*20+4)+"%";
+    tr.appendChild(lane);
+    const h=document.createElement("div");
+    h.className="horse";h.innerHTML="🐎<span class='h-tag' style='color:"+HCOLORS[i]+"'>"+HNAMES[i]+"</span>";
+    h.style.top=(i*20+2)+"%";h.style.right="2%";
+    tr.appendChild(h);horses.push(h);
+  }
+})();
+function playHorse(){
+  horses.forEach(h=>{h.style.right="2%";h.classList.add("run");});
+  const pos=[2,2,2,2];let done=false;
+  const iv=setInterval(()=>{
+    const i=Math.floor(Math.random()*4);
+    pos[i]+=4+Math.random()*7;
+    horses[i].style.right=Math.min(pos[i],84)+"%";
+    snd(300+i*120,.05,.08);
+    const lead=pos.indexOf(Math.max(...pos));
+    document.getElementById("h-rank").textContent="🥇 "+HNAMES[lead];
+    if(pos[i]>=84&&!done){
+      done=true;clearInterval(iv);
+      horses.forEach(h=>h.classList.remove("run"));
+      document.getElementById("h-rank").textContent="🏆 فاز فريق "+HNAMES[i]+"!";
+      [523,659,784,1047].forEach((f,j)=>setTimeout(()=>snd(f,.2,.2,"sine"),j*110));
+    }
+  },280);
+}
+
+/* ===== 3) الجليد ===== */
+const INAMES=["نورة","سلطان","ريم","خالد","العنود","مشعل"];
+function buildIce(){
+  const g=document.getElementById("iceGrid");g.innerHTML="";
+  INAMES.forEach(n=>{
+    const c=document.createElement("div");
+    c.className="cube";c.dataset.stage="0";
+    c.innerHTML="<div class='av'>"+n[0]+"</div><div class='nm'>"+n+"</div>";
+    g.appendChild(c);
+  });
+}
+buildIce();
+function playIce(){
+  buildIce();
+  const cubes=[...document.querySelectorAll(".cube")];
+  const iv=setInterval(()=>{
+    const locked=cubes.filter(c=>+c.dataset.stage<3);
+    if(!locked.length){clearInterval(iv);return;}
+    const c=locked[Math.floor(Math.random()*locked.length)];
+    let s=+c.dataset.stage+1;c.dataset.stage=s;
+    snd(s<3?1800:400,.08,.15);
+    if(s===1)c.classList.add("crack1");
+    if(s===2){c.classList.remove("crack1");c.classList.add("crack2");}
+    if(s===3){
+      c.classList.remove("crack2");c.classList.add("free","shatter");
+      const rect=c.getBoundingClientRect(),scene=document.getElementById("sc-ice").getBoundingClientRect();
+      for(let k=0;k<10;k++){
+        const sh=document.createElement("div");sh.className="shard";
+        sh.style.left=(rect.left-scene.left+rect.width/2)+"px";
+        sh.style.top=(rect.top-scene.top+rect.height/2)+"px";
+        sh.style.setProperty("--dx",(Math.random()*120-60)+"px");
+        sh.style.setProperty("--dy",(Math.random()*120-60)+"px");
+        sh.style.setProperty("--rot",(Math.random()*360)+"deg");
+        document.getElementById("sc-ice").appendChild(sh);
+        setTimeout(()=>sh.remove(),700);
+      }
+      snd(2400,.25,.2,"sine");
+    }
+  },550);
+}
+
+/* ===== 4) حرب القلاع ===== */
+(function makeStars(){
+  const s=document.getElementById("stars");
+  for(let i=0;i<35;i++){
+    const d=document.createElement("div");d.className="star";
+    d.style.left=Math.random()*100+"%";d.style.top=Math.random()*60+"%";
+    d.style.animationDelay=(Math.random()*2)+"s";
+    s.appendChild(d);
+  }
+})();
+const CWORDS=["نار 🔥","صاعقة ⚡","حجر 🪨","سهم 🏹"];
+function playCastle(){
+  document.getElementById("chp-r").style.width="100%";
+  document.getElementById("chp-l").style.width="100%";
+  let r=100,l=100,i=0;
+  const scene=document.getElementById("sc-castle");
+  function shoot(){
+    if(i>=6){snd(1047,.4,.2,"sine");return;}
+    const fromR=Math.random()>.5;
+    document.getElementById("cw-word").textContent="اكتب: "+CWORDS[i%CWORDS.length];
+    const p=document.createElement("div");p.className="proj";p.textContent="🔥";
+    scene.appendChild(p);
+    const t0=performance.now(),dur=900;
+    const x0=fromR?86:8, x1=fromR?10:84;
+    snd(fromR?600:800,.12,.15);
+    function fr(now){
+      const t=Math.min((now-t0)/dur,1);
+      const x=x0+(x1-x0)*t;
+      const y=62-Math.sin(t*Math.PI)*42;
+      p.style.right=x+"%";p.style.top=y+"%";
+      if(t<1)requestAnimationFrame(fr);
+      else{
+        p.remove();
+        const b=document.createElement("div");b.className="boom";b.textContent="💥";
+        b.style.right=(x1-2)+"%";b.style.top="56%";
+        scene.appendChild(b);setTimeout(()=>b.remove(),560);
+        snd(180,.25,.22,"sawtooth");
+        const target=fromR?"l":"r";
+        const el=document.getElementById("castle-"+target);
+        el.classList.add("dmg");setTimeout(()=>el.classList.remove("dmg"),420);
+        if(target==="l"){l-=16;document.getElementById("chp-l").style.width=Math.max(l,0)+"%";}
+        else{r-=16;document.getElementById("chp-r").style.width=Math.max(r,0)+"%";}
+        i++;setTimeout(shoot,500);
+      }
+    }
+    requestAnimationFrame(fr);
+  }
+  shoot();
+}
+</script>
+<a href="/" style="position:fixed;top:14px;right:14px;background:#0c0c16;color:#22d3ee;border:1px solid #0891b2;border-radius:30px;padding:8px 16px;font-family:Tajawal,sans-serif;font-weight:900;font-size:.8rem;text-decoration:none;z-index:200;box-shadow:0 4px 14px rgba(0,0,0,.4)">← رجوع للقائمة</a></body>
+</html>

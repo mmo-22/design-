@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>خمن الكلمة — نماذج التصميم</title>
+<link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;700;900&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#06060b;--card:#0c0c16;--accent:#0891b2;--accent2:#22d3ee;--gold:#f5c542;--text:#e8eaf2;--muted:#8a8fa3;--green:#22c55e;--red:#ef4444;--purple:#a855f7}
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:var(--bg);color:var(--text);font-family:'Tajawal',sans-serif;min-height:100vh;padding:18px 12px 60px}
+header{text-align:center;margin-bottom:18px}
+header h1{font-size:1.4rem;font-weight:900;background:linear-gradient(90deg,var(--purple),var(--accent2));-webkit-background-clip:text;background-clip:text;color:transparent}
+header p{color:var(--muted);font-size:.82rem;margin-top:4px}
+.tabs{display:flex;gap:7px;justify-content:center;margin-bottom:18px;flex-wrap:wrap}
+.tab{background:var(--card);border:1px solid #1c1c2e;color:var(--muted);padding:9px 15px;border-radius:30px;font-family:inherit;font-size:.85rem;font-weight:900;cursor:pointer;transition:.25s}
+.tab.active{color:#fff;border-color:var(--purple);box-shadow:0 0 14px rgba(168,85,247,.45)}
+.panel{display:none;flex-direction:column;align-items:center}
+.panel.active{display:flex}
+.scene{position:relative;width:min(94vw,560px);aspect-ratio:16/10;border-radius:18px;overflow:hidden;border:1px solid #1c1c2e;margin-bottom:14px}
+.play{font-family:inherit;font-weight:900;font-size:1rem;color:#fff;background:linear-gradient(135deg,var(--purple),var(--accent2));border:none;border-radius:40px;padding:12px 40px;cursor:pointer;box-shadow:0 4px 22px rgba(168,85,247,.4)}
+.play:active{transform:scale(.95)}
+.note{margin-top:12px;font-size:.78rem;color:var(--muted);max-width:480px;text-align:center;line-height:1.8}
+.note b{color:#d8b4fe}
+.confetti{position:fixed;inset:0;pointer-events:none;z-index:99}
+.cf{position:absolute;width:9px;height:14px;animation:fall linear forwards}
+@keyframes fall{to{transform:translateY(110vh) rotate(720deg);opacity:.5}}
+@media (prefers-reduced-motion: reduce){.cf{display:none}}
+
+/* ===== 1) بطاقات تنقلب ===== */
+#sc-flip{background:radial-gradient(ellipse at 50% -20%,#1e1145 0%,#0a0618 60%,#06060b 100%)}
+.hint-card{position:absolute;top:10px;left:50%;transform:translateX(-50%);background:#0c0c16ee;border:1px solid var(--purple);border-radius:14px;padding:7px 22px;font-weight:900;font-size:.85rem;color:#d8b4fe;z-index:5;white-space:nowrap}
+.f-timer{position:absolute;top:48px;left:18%;right:18%;height:6px;background:#1a1a2c;border-radius:6px;overflow:hidden}
+.f-timer i{display:block;height:100%;width:100%;background:linear-gradient(90deg,#22c55e,#f59e0b,#ef4444)}
+.tiles{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);display:flex;gap:10px;direction:rtl}
+.tile{width:64px;height:78px;perspective:500px}
+.tile-in{position:relative;width:100%;height:100%;transform-style:preserve-3d;transition:transform .7s cubic-bezier(.2,.8,.3,1.2)}
+.tile.open .tile-in{transform:rotateY(180deg)}
+.tf,.tb{position:absolute;inset:0;backface-visibility:hidden;border-radius:12px;display:flex;align-items:center;justify-content:center;font-weight:900;font-size:2rem}
+.tf{background:linear-gradient(145deg,#1c1535,#0e0a20);border:2px solid #3b2a6d;color:#4c3a85}
+.tb{background:linear-gradient(145deg,var(--purple),#6d28d9);border:2px solid #d8b4fe;color:#fff;transform:rotateY(180deg);box-shadow:0 0 22px rgba(168,85,247,.6)}
+.f-pts{position:absolute;bottom:12px;left:50%;transform:translateX(-50%);background:#0c0c16dd;border:1px solid var(--gold);color:var(--gold);border-radius:12px;padding:5px 18px;font-weight:900;font-size:.85rem}
+.f-win{position:absolute;bottom:52px;left:50%;transform:translateX(-50%) scale(0);background:linear-gradient(135deg,#14532d,#166534);border:1.5px solid var(--green);color:#86efac;border-radius:30px;padding:7px 20px;font-weight:900;font-size:.85rem;z-index:6;transition:transform .4s cubic-bezier(.2,.8,.3,1.4);white-space:nowrap}
+.f-win.show{transform:translateX(-50%) scale(1)}
+
+/* ===== 2) الكشف التدريجي ===== */
+#sc-blur{background:radial-gradient(ellipse at 50% 120%,#0c2438 0%,#06121d 55%,#040a12 100%)}
+.b-stage{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:14px}
+.b-emoji{font-size:5.2rem;filter:blur(22px);transition:filter 1s;text-shadow:0 0 40px rgba(34,211,238,.3)}
+.b-hints{display:flex;gap:8px}
+.b-hint{background:#0c0c16dd;border:1px dashed #1c3a4d;color:#555;border-radius:12px;padding:5px 14px;font-weight:900;font-size:.72rem;transition:.4s}
+.b-hint.on{border:1px solid var(--accent2);color:var(--accent2);box-shadow:0 0 10px rgba(34,211,238,.3)}
+.b-prize{position:absolute;top:12px;left:50%;transform:translateX(-50%);background:#0c0c16ee;border:1px solid var(--gold);border-radius:14px;padding:7px 22px;font-weight:900;font-size:.95rem;color:var(--gold);z-index:5}
+.b-answer{position:absolute;bottom:14px;left:50%;transform:translateX(-50%) translateY(60px);background:linear-gradient(135deg,#14532d,#166534);border:1.5px solid var(--green);color:#86efac;border-radius:30px;padding:8px 24px;font-weight:900;font-size:.9rem;transition:.5s;white-space:nowrap}
+.b-answer.show{transform:translateX(-50%) translateY(0)}
+
+/* ===== 3) مطر التخمينات ===== */
+#sc-rain{background:linear-gradient(180deg,#0a0f24 0%,#120a1e 100%)}
+.r-word{position:absolute;top:12px;left:50%;transform:translateX(-50%);background:#0c0c16ee;border:1px solid var(--accent2);border-radius:14px;padding:7px 24px;font-weight:900;font-size:1rem;color:var(--accent2);letter-spacing:6px;z-index:5}
+.guess{position:absolute;display:flex;align-items:center;gap:7px;background:#0c0c16ee;border:1.5px solid #2a2a44;border-radius:30px;padding:5px 14px 5px 8px;font-weight:900;font-size:.78rem;white-space:nowrap;z-index:3}
+.guess .gav{width:26px;height:26px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:.7rem;font-weight:900}
+.guess.wrong{animation:gWrong 2.4s forwards}
+@keyframes gWrong{0%{transform:translateY(0);opacity:0}8%{opacity:1}70%{opacity:1;border-color:#7f1d1d}100%{transform:translateY(46vh) rotate(8deg);opacity:0}}
+.guess.right{animation:gRight 1.1s forwards;border-color:var(--green);box-shadow:0 0 24px rgba(34,197,94,.6);font-size:1rem;z-index:7}
+@keyframes gRight{0%{transform:scale(.6);opacity:0}40%{transform:scale(1.3);opacity:1}100%{transform:scale(1.15) translateY(-6px)}}
+.r-winner{position:absolute;bottom:12px;left:50%;transform:translateX(-50%) scale(0);display:flex;align-items:center;gap:10px;background:linear-gradient(135deg,#3b2a08,#1c1404);border:1.5px solid var(--gold);border-radius:40px;padding:7px 22px 7px 10px;z-index:8;transition:transform .45s cubic-bezier(.2,.8,.3,1.4)}
+.r-winner.show{transform:translateX(-50%) scale(1)}
+.r-winner .wav{width:40px;height:40px;border-radius:50%;border:2px solid var(--gold);display:flex;align-items:center;justify-content:center;font-weight:900;background:linear-gradient(135deg,#0891b2,#6d28d9)}
+.r-winner .wnm{font-weight:900;color:var(--gold);font-size:.95rem}
+.r-winner .wlb{font-size:.62rem;color:var(--muted)}
+</style>
+</head>
+<body>
+<header>
+  <h1>🔤 خمن الكلمة — نماذج التصميم</h1>
+  <p>3 أنماط عرض — اضغط تشغيل في كل تبويب</p>
+</header>
+
+<div class="tabs">
+  <button class="tab active" data-p="flip">🎴 بطاقات تنقلب</button>
+  <button class="tab" data-p="blur">🌫️ الكشف التدريجي</button>
+  <button class="tab" data-p="rain">💬 مطر التخمينات</button>
+</div>
+
+<!-- بطاقات تنقلب -->
+<div class="panel active" id="panel-flip">
+  <div class="scene" id="sc-flip">
+    <div class="hint-card">💡 التلميح: حيوان صحراوي</div>
+    <div class="f-timer"><i id="ftmr"></i></div>
+    <div class="tiles" id="tiles"></div>
+    <div class="f-win" id="fwin">🎉 فاز: أبو فهد — خمّنها قبل انكشاف الحروف!</div>
+    <div class="f-pts" id="fpts">💰 الجائزة: 100 نقطة</div>
+  </div>
+  <button class="play" onclick="playFlip()">تشغيل العرض</button>
+  <p class="note">حروف الكلمة بطاقات مقفلة بنمط برامج المسابقات: كل فترة <b>تنقلب بطاقة بحركة 3D</b> وتكشف حرف، والجائزة تنقص مع كل حرف ينكشف — يحفز الشات يخمن بدري</p>
+</div>
+
+<!-- الكشف التدريجي -->
+<div class="panel" id="panel-blur">
+  <div class="scene" id="sc-blur">
+    <div class="b-prize">💰 <span id="bprize">100</span> نقطة</div>
+    <div class="b-stage">
+      <div class="b-emoji" id="bemoji">🐪</div>
+      <div class="b-hints">
+        <div class="b-hint" id="bh1">🔠 4 حروف</div>
+        <div class="b-hint" id="bh2">📍 يعيش بالصحراء</div>
+        <div class="b-hint" id="bh3">🔤 يبدأ بـ "ج"</div>
+      </div>
+    </div>
+    <div class="b-answer" id="bans">✅ الإجابة: جمل — فازت نورة 🎉</div>
+  </div>
+  <button class="play" onclick="playBlur()">تشغيل العرض</button>
+  <p class="note">الصورة/الإيموجي يبدأ <b>ضبابي تماماً ويصير أوضح تدريجياً</b>، وتلميحات نصية تفتح وحدة ورا وحدة كل ما نقصت الجائزة. مناسب أيضاً لنمط "خمن من الصورة"</p>
+</div>
+
+<!-- مطر التخمينات -->
+<div class="panel" id="panel-rain">
+  <div class="scene" id="sc-rain">
+    <div class="r-word" id="rword">_ _ _ _</div>
+    <div class="r-winner" id="rwinner">
+      <div class="wav">ف</div>
+      <div><div class="wlb">أسرع تخمين صحيح 🏆</div><div class="wnm">فيصل</div></div>
+    </div>
+  </div>
+  <button class="play" onclick="playRain()">تشغيل العرض</button>
+  <p class="note">تخمينات الشات <b>تطير حية على الشاشة</b> بصورة واسم صاحبها: الغلط يحمرّ ويسقط تحت، والصح <b>يكبر ويثبت بالنص</b> بإطار أخضر، وبطاقة الفائز تطلع تحت بالذهبي — يعطي إحساس مباشر إن الشات هو اللاعب</p>
+</div>
+
+<div class="confetti" id="cfbox"></div>
+
+<script>
+let audioCtx;
+function snd(f,d=.08,v=.15,type="square"){
+  audioCtx=audioCtx||new (window.AudioContext||window.webkitAudioContext)();
+  const o=audioCtx.createOscillator(),g=audioCtx.createGain();
+  o.frequency.value=f;o.type=type;
+  g.gain.setValueAtTime(v,audioCtx.currentTime);
+  g.gain.exponentialRampToValueAtTime(.001,audioCtx.currentTime+d);
+  o.connect(g);g.connect(audioCtx.destination);o.start();o.stop(audioCtx.currentTime+d);
+}
+function winTune(){[523,659,784,1047].forEach((f,i)=>setTimeout(()=>snd(f,.2,.2,"sine"),i*110));}
+function confetti(){
+  const box=document.getElementById("cfbox"),colors=["#22d3ee","#f5c542","#a855f7","#22c55e","#ef4444"];
+  for(let i=0;i<55;i++){
+    const d=document.createElement("div");d.className="cf";
+    d.style.left=Math.random()*100+"vw";d.style.top="-20px";
+    d.style.background=colors[i%colors.length];
+    d.style.animationDuration=(2+Math.random()*2)+"s";
+    box.appendChild(d);setTimeout(()=>d.remove(),4200);
+  }
+}
+document.querySelectorAll(".tab").forEach(t=>t.onclick=()=>{
+  document.querySelectorAll(".tab,.panel").forEach(x=>x.classList.remove("active"));
+  t.classList.add("active");
+  document.getElementById("panel-"+t.dataset.p).classList.add("active");
+});
+
+/* ===== 1) بطاقات تنقلب ===== */
+const FWORD=["غ","ز","ا","ل"];
+function buildTiles(){
+  const t=document.getElementById("tiles");t.innerHTML="";
+  FWORD.forEach(ch=>{
+    const d=document.createElement("div");d.className="tile";
+    d.innerHTML="<div class='tile-in'><div class='tf'>؟</div><div class='tb'>"+ch+"</div></div>";
+    t.appendChild(d);
+  });
+  document.getElementById("fwin").classList.remove("show");
+  document.getElementById("fpts").textContent="💰 الجائزة: 100 نقطة";
+}
+buildTiles();
+function playFlip(){
+  buildTiles();
+  const t=document.getElementById("ftmr");
+  t.style.transition="none";t.style.width="100%";
+  requestAnimationFrame(()=>{t.style.transition="width 8s linear";t.style.width="0%";});
+  const tiles=[...document.querySelectorAll(".tile")];
+  let pts=100,k=0;
+  const order=[0,3,1];
+  const iv=setInterval(()=>{
+    if(k<order.length){
+      tiles[order[k]].classList.add("open");
+      snd(1200,.12,.15);
+      pts-=25;
+      document.getElementById("fpts").textContent="💰 الجائزة: "+pts+" نقطة";
+      k++;
+    } else {
+      clearInterval(iv);
+      tiles.forEach(x=>x.classList.add("open"));
+      document.getElementById("fwin").classList.add("show");
+      winTune();confetti();
+    }
+  },1700);
+}
+
+/* ===== 2) الكشف التدريجي ===== */
+function playBlur(){
+  const e=document.getElementById("bemoji");
+  e.style.filter="blur(22px)";
+  ["bh1","bh2","bh3"].forEach(id=>document.getElementById(id).classList.remove("on"));
+  document.getElementById("bans").classList.remove("show");
+  document.getElementById("bprize").textContent="100";
+  const steps=[
+    {blur:14,hint:"bh1",prize:80},
+    {blur:8, hint:"bh2",prize:60},
+    {blur:3, hint:"bh3",prize:40},
+  ];
+  let k=0;
+  const iv=setInterval(()=>{
+    if(k<steps.length){
+      const s=steps[k];
+      e.style.filter="blur("+s.blur+"px)";
+      document.getElementById(s.hint).classList.add("on");
+      document.getElementById("bprize").textContent=s.prize;
+      snd(800+k*200,.1,.15);
+      k++;
+    } else {
+      clearInterval(iv);
+      e.style.filter="blur(0)";
+      document.getElementById("bans").classList.add("show");
+      winTune();confetti();
+    }
+  },1500);
+}
+
+/* ===== 3) مطر التخمينات ===== */
+const RG=[
+  {n:"ريم",w:"قمر",c:"#db2777"},
+  {n:"خالد",w:"نجم",c:"#059669"},
+  {n:"سارة",w:"شمس",c:"#d97706"},
+  {n:"مشعل",w:"بحر",c:"#7c3aed"},
+  {n:"العنود",w:"غيم",c:"#dc2626"},
+];
+function playRain(){
+  const sc=document.getElementById("sc-rain");
+  sc.querySelectorAll(".guess").forEach(g=>g.remove());
+  document.getElementById("rwinner").classList.remove("show");
+  document.getElementById("rword").textContent="_ _ _ _";
+  let k=0;
+  const iv=setInterval(()=>{
+    if(k<RG.length){
+      const g=RG[k];
+      const d=document.createElement("div");
+      d.className="guess wrong";
+      d.style.right=(8+Math.random()*60)+"%";
+      d.style.top=(18+Math.random()*30)+"%";
+      d.innerHTML="<div class='gav' style='background:"+g.c+"'>"+g.n[0]+"</div>"+g.n+": "+g.w+" ❌";
+      sc.appendChild(d);setTimeout(()=>d.remove(),2400);
+      snd(280,.1,.12,"sawtooth");
+      k++;
+    } else {
+      clearInterval(iv);
+      const d=document.createElement("div");
+      d.className="guess right";
+      d.style.right="34%";d.style.top="40%";
+      d.innerHTML="<div class='gav' style='background:#0891b2'>ف</div>فيصل: غزال ✅";
+      sc.appendChild(d);
+      document.getElementById("rword").textContent="غ ز ا ل";
+      setTimeout(()=>document.getElementById("rwinner").classList.add("show"),500);
+      winTune();confetti();
+    }
+  },800);
+}
+</script>
+<a href="/" style="position:fixed;top:14px;right:14px;background:#0c0c16;color:#22d3ee;border:1px solid #0891b2;border-radius:30px;padding:8px 16px;font-family:Tajawal,sans-serif;font-weight:900;font-size:.8rem;text-decoration:none;z-index:200;box-shadow:0 4px 14px rgba(0,0,0,.4)">← رجوع للقائمة</a></body>
+</html>

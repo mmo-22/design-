@@ -1,0 +1,462 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>تسجيل المشاهدين — نماذج التصميم</title>
+<link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;900&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#06060b;--card:#0c0c16;--card2:#10101e;--border:#1c1c2e;
+  --accent:#0891b2;--accent2:#22d3ee;--gold:#f5c542;
+  --text:#e8eaf2;--muted:#8a8fa3;
+  --green:#22c55e;--red:#ef4444;--purple:#a855f7;--orange:#f97316
+}
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:var(--bg);color:var(--text);font-family:'Tajawal',sans-serif;min-height:100vh;padding:18px 12px 60px}
+header{text-align:center;margin-bottom:18px}
+header h1{font-size:1.4rem;font-weight:900;background:linear-gradient(90deg,var(--accent2),var(--gold));-webkit-background-clip:text;background-clip:text;color:transparent}
+header p{color:var(--muted);font-size:.82rem;margin-top:4px}
+.tabs{display:flex;gap:7px;justify-content:center;margin-bottom:18px;flex-wrap:wrap}
+.tab{background:var(--card);border:1px solid var(--border);color:var(--muted);padding:9px 15px;border-radius:30px;font-family:inherit;font-size:.85rem;font-weight:900;cursor:pointer;transition:.25s}
+.tab.active{color:#fff;border-color:var(--accent);box-shadow:0 0 14px rgba(8,145,178,.45)}
+.panel{display:none;flex-direction:column;align-items:center}
+.panel.active{display:flex}
+.scene{position:relative;width:min(94vw,560px);aspect-ratio:16/10;border-radius:18px;overflow:hidden;border:1px solid var(--border);margin-bottom:14px}
+.play{font-family:inherit;font-weight:900;font-size:1rem;color:#fff;background:linear-gradient(135deg,var(--accent),var(--accent2));border:none;border-radius:40px;padding:12px 40px;cursor:pointer;box-shadow:0 4px 22px rgba(8,145,178,.4)}
+.play:active{transform:scale(.95)}
+.play:disabled{opacity:.5;cursor:not-allowed}
+.note{margin-top:12px;font-size:.78rem;color:var(--muted);max-width:480px;text-align:center;line-height:1.8}
+.note b{color:var(--accent2)}
+
+/* Common header bar in scenes */
+.sc-head{
+  position:absolute;top:0;left:0;right:0;padding:10px 16px;z-index:8;
+  display:flex;align-items:center;justify-content:space-between;gap:10px
+}
+.sc-title{font-weight:900;font-size:.95rem;display:flex;align-items:center;gap:7px}
+.sc-counter{display:flex;align-items:center;gap:8px;background:#0c0c16ee;border:1px solid var(--accent);border-radius:30px;padding:5px 14px;font-weight:900;font-size:.85rem;color:var(--accent2);backdrop-filter:blur(8px)}
+.sc-counter .live{width:7px;height:7px;border-radius:50%;background:var(--green);animation:pulse 1.4s infinite}
+@keyframes pulse{50%{opacity:.35}}
+.sc-timer{
+  position:absolute;top:48px;left:14%;right:14%;height:6px;background:rgba(255,255,255,.08);border-radius:6px;overflow:hidden;z-index:8
+}
+.sc-timer i{display:block;height:100%;width:100%;background:linear-gradient(90deg,#22c55e,#f59e0b 50%,#ef4444);transition:width linear}
+.cmd-hint{position:absolute;bottom:10px;left:50%;transform:translateX(-50%);background:#0c0c16ee;border:1px solid var(--gold);color:var(--gold);border-radius:30px;padding:6px 18px;font-weight:900;font-size:.78rem;z-index:8;backdrop-filter:blur(8px)}
+
+/* ============================================================ */
+/* 1) Floating Bubbles                                          */
+/* ============================================================ */
+#sc-bubbles{background:radial-gradient(ellipse at 30% 100%,#0c2440 0%,#06060b 60%),radial-gradient(ellipse at 70% 0%,#1e0a3d 0%,transparent 50%)}
+.particle{position:absolute;border-radius:50%;background:rgba(34,211,238,.15);pointer-events:none;animation:floatUp 8s linear infinite}
+@keyframes floatUp{from{transform:translateY(0);opacity:0}10%{opacity:.7}90%{opacity:.7}to{transform:translateY(-120%);opacity:0}}
+.bubble{
+  position:absolute;display:flex;align-items:center;gap:7px;
+  background:linear-gradient(135deg,rgba(34,211,238,.15),rgba(8,145,178,.08));
+  backdrop-filter:blur(12px);border:1.5px solid rgba(34,211,238,.4);
+  border-radius:40px;padding:5px 14px 5px 5px;font-weight:900;font-size:.78rem;
+  white-space:nowrap;box-shadow:0 0 18px rgba(34,211,238,.25);
+  animation:bubble-rise 6s ease-out forwards
+}
+@keyframes bubble-rise{
+  0%{transform:translateY(0) scale(.5);opacity:0}
+  10%{transform:translateY(-30px) scale(1.1);opacity:1}
+  20%{transform:translateY(-50px) scale(1);opacity:1}
+  90%{opacity:1}
+  100%{transform:translateY(-380px) scale(1);opacity:0}
+}
+.bubble .bav{width:28px;height:28px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:900;font-size:.78rem;border:2px solid rgba(255,255,255,.3)}
+.bub-final{
+  position:absolute;top:50%;left:50%;transform:translate(-50%,-50%) scale(0);
+  background:linear-gradient(135deg,#3b2a08,#1c1404);border:2px solid var(--gold);
+  color:var(--gold);border-radius:50px;padding:14px 32px;font-weight:900;font-size:1rem;
+  z-index:9;transition:transform .5s cubic-bezier(.2,.8,.3,1.4);white-space:nowrap
+}
+.bub-final.show{transform:translate(-50%,-50%) scale(1)}
+
+/* ============================================================ */
+/* 2) Stadium Seats                                             */
+/* ============================================================ */
+#sc-stadium{background:radial-gradient(ellipse at 50% 100%,#0a3d0a 0%,#0a1428 60%,#06060b 100%)}
+.stadium-light{position:absolute;top:-10%;width:120px;height:200px;background:radial-gradient(ellipse at top,rgba(245,197,66,.15),transparent 60%);pointer-events:none}
+.sl-1{left:8%}.sl-2{left:42%}.sl-3{left:76%}
+.field{position:absolute;bottom:6%;left:8%;right:8%;height:14%;background:linear-gradient(180deg,#1a3a1a,#0d2010);border-radius:50% 50% 8px 8px/40% 40% 8px 8px;border:1px solid #2d5a2d}
+.field-text{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);font-weight:900;font-size:.7rem;color:#22c55e;letter-spacing:2px}
+.seats{position:absolute;top:78px;left:5%;right:5%;bottom:24%;display:grid;grid-template-columns:repeat(12,1fr);grid-template-rows:repeat(5,1fr);gap:4px;padding:6px}
+.seat{
+  border-radius:5px 5px 2px 2px;background:#1a1a2c;border:1px solid #2a2a44;
+  display:flex;align-items:center;justify-content:center;
+  font-size:.55rem;font-weight:900;color:transparent;
+  transition:all .4s cubic-bezier(.2,.8,.3,1.5);position:relative
+}
+.seat.taken{animation:seatFill .5s cubic-bezier(.2,.8,.3,1.4) forwards}
+@keyframes seatFill{
+  0%{transform:scale(.6);opacity:0}
+  60%{transform:scale(1.25)}
+  100%{transform:scale(1);opacity:1}
+}
+.seat.taken{color:#fff;border-color:rgba(255,255,255,.5)}
+.seat.taken::after{content:"";position:absolute;inset:-1px;border-radius:5px 5px 2px 2px;box-shadow:0 0 8px var(--seat-glow,#22d3ee);opacity:.6}
+.stadium-final{
+  position:absolute;bottom:24%;left:50%;transform:translateX(-50%) translateY(20px);opacity:0;
+  background:linear-gradient(135deg,#14532d,#166534);border:2px solid var(--green);
+  color:#86efac;border-radius:30px;padding:8px 22px;font-weight:900;font-size:.9rem;
+  transition:.5s;z-index:9;white-space:nowrap
+}
+.stadium-final.show{opacity:1;transform:translateX(-50%) translateY(0)}
+
+/* ============================================================ */
+/* 3) Lottery Jar                                               */
+/* ============================================================ */
+#sc-jar{background:radial-gradient(ellipse at 50% 0%,#1a0a2e 0%,#06060b 70%)}
+.spotlight{position:absolute;top:60px;left:50%;transform:translateX(-50%);width:60%;height:80%;background:radial-gradient(ellipse at top,rgba(245,197,66,.2),transparent 50%);pointer-events:none}
+.jar{
+  position:absolute;bottom:14%;left:50%;transform:translateX(-50%);
+  width:45%;aspect-ratio:1/1.2;
+  background:linear-gradient(135deg,rgba(255,255,255,.04),rgba(255,255,255,.02));
+  border:2px solid rgba(255,255,255,.15);
+  border-radius:8px 8px 50% 50%/8px 8px 25% 25%;
+  backdrop-filter:blur(4px);overflow:hidden;
+  box-shadow:inset 0 -10px 30px rgba(245,197,66,.15),0 10px 30px rgba(0,0,0,.5)
+}
+.jar::before{content:"";position:absolute;top:5%;left:8%;width:25%;height:50%;background:linear-gradient(120deg,rgba(255,255,255,.15),transparent);border-radius:50%;pointer-events:none}
+.jar-rim{position:absolute;top:calc(14% + min(94vw,560px)*.43 - 8px);left:calc(50% - min(94vw,560px)*.24);width:48%;max-width:280px;height:14px;background:linear-gradient(180deg,#2a2a44,#1a1a2c);border-radius:8px;z-index:3}
+.tickets-stack{position:absolute;bottom:0;left:0;right:0;display:flex;flex-wrap:wrap;align-items:flex-end;justify-content:center;gap:2px;padding:8px;direction:rtl}
+.t-stacked{
+  background:linear-gradient(135deg,#f5c542,#d97706);color:#3b2a08;
+  font-weight:900;font-size:.55rem;padding:2px 7px;border-radius:6px;
+  white-space:nowrap;animation:tStack .4s ease-out forwards;
+  box-shadow:0 1px 3px rgba(0,0,0,.4)
+}
+@keyframes tStack{from{opacity:0;transform:scale(.5)}to{opacity:1;transform:scale(1)}}
+.t-falling{
+  position:absolute;top:-10%;background:linear-gradient(135deg,#f5c542,#fbbf24);color:#3b2a08;
+  font-weight:900;font-size:.78rem;padding:5px 13px;border-radius:8px;
+  box-shadow:0 4px 12px rgba(245,197,66,.5);white-space:nowrap;z-index:5;
+  animation:tFall 1.8s cubic-bezier(.5,.05,.5,1.2) forwards
+}
+@keyframes tFall{
+  0%{transform:translateY(0) rotate(-6deg);opacity:1}
+  60%{transform:translateY(60%) rotate(8deg)}
+  85%{transform:translateY(75%) rotate(-3deg)}
+  100%{transform:translateY(78%) rotate(0);opacity:0}
+}
+.jar-final{
+  position:absolute;top:50%;left:50%;transform:translate(-50%,-50%) scale(0);
+  background:linear-gradient(135deg,#3b2a08,#1c1404);border:2px solid var(--gold);
+  color:var(--gold);border-radius:40px;padding:12px 28px;font-weight:900;font-size:.95rem;
+  z-index:10;transition:transform .5s cubic-bezier(.2,.8,.3,1.4)
+}
+.jar-final.show{transform:translate(-50%,-50%) scale(1)}
+
+/* ============================================================ */
+/* 4) Marquee Wall                                              */
+/* ============================================================ */
+#sc-wall{background:linear-gradient(180deg,#0a0a1e 0%,#06060b 100%);position:relative}
+.wall-grid{position:absolute;inset:0;background-image:linear-gradient(rgba(34,211,238,.05) 1px,transparent 1px),linear-gradient(90deg,rgba(34,211,238,.05) 1px,transparent 1px);background-size:30px 30px;pointer-events:none}
+.wall-glow{position:absolute;top:0;left:0;right:0;height:60%;background:radial-gradient(ellipse at center top,rgba(34,211,238,.15),transparent 60%);pointer-events:none}
+.plates{position:absolute;top:74px;left:8%;right:8%;bottom:46px;display:flex;flex-wrap:wrap;gap:6px;align-content:flex-start;overflow:hidden;align-content:flex-start}
+.plate{
+  display:flex;align-items:center;gap:7px;
+  background:linear-gradient(135deg,#0c2438,#06121d);
+  border:1.5px solid var(--accent);border-radius:8px;padding:5px 12px 5px 5px;
+  font-weight:900;font-size:.74rem;color:var(--accent2);
+  box-shadow:0 0 12px rgba(34,211,238,.3),inset 0 1px 0 rgba(255,255,255,.08);
+  animation:plateIn .45s cubic-bezier(.2,.8,.3,1.3) forwards;opacity:0;
+  font-family:'Tajawal',sans-serif
+}
+.plate .pav{
+  width:24px;height:24px;border-radius:5px;
+  display:flex;align-items:center;justify-content:center;
+  font-weight:900;font-size:.7rem;color:#fff;
+  border:1px solid rgba(255,255,255,.2)
+}
+.plate .num{font-size:.6rem;color:var(--muted);background:#06121d;padding:1px 6px;border-radius:4px;border:1px solid #1c3a4d}
+@keyframes plateIn{
+  0%{opacity:0;transform:translateX(40px) scale(.85)}
+  50%{opacity:1;transform:translateX(-6px) scale(1.05)}
+  100%{opacity:1;transform:translateX(0) scale(1)}
+}
+.wall-final{
+  position:absolute;top:50%;left:50%;transform:translate(-50%,-50%) scale(0);
+  background:linear-gradient(135deg,#14532d,#166534);border:2px solid var(--green);
+  color:#86efac;border-radius:40px;padding:12px 28px;font-weight:900;font-size:.95rem;
+  z-index:10;transition:transform .5s cubic-bezier(.2,.8,.3,1.4);box-shadow:0 0 30px rgba(34,197,94,.4)
+}
+.wall-final.show{transform:translate(-50%,-50%) scale(1)}
+
+.confetti{position:fixed;inset:0;pointer-events:none;z-index:99}
+.cf{position:absolute;width:9px;height:14px;animation:fall linear forwards}
+@keyframes fall{to{transform:translateY(110vh) rotate(720deg);opacity:.5}}
+@media (prefers-reduced-motion: reduce){.cf{display:none}}
+</style>
+</head>
+<body>
+<header>
+  <h1>📝 تسجيل المشاهدين</h1>
+  <p>4 أنماط للوحة تسجيل المشاركين قبل بدء الفعالية — اضغط تشغيل في كل تبويب</p>
+</header>
+
+<div class="tabs">
+  <button class="tab active" data-p="bubbles">🫧 فقاعات عائمة</button>
+  <button class="tab" data-p="stadium">🏟️ مدرجات الملعب</button>
+  <button class="tab" data-p="jar">🏺 إناء اليانصيب</button>
+  <button class="tab" data-p="wall">🌐 لوحة الأسماء</button>
+</div>
+
+<!-- 1) Floating Bubbles -->
+<div class="panel active" id="panel-bubbles">
+  <div class="scene" id="sc-bubbles">
+    <div class="sc-head">
+      <div class="sc-title">🎡 سجّل دخولك للعجلة</div>
+      <div class="sc-counter"><span class="live"></span> <span id="c-bub">0</span> مشارك</div>
+    </div>
+    <div class="sc-timer"><i id="t-bub"></i></div>
+    <div class="cmd-hint">💬 اكتب: <b>!دخول</b></div>
+    <div class="bub-final" id="f-bub">🎉 انتهى التسجيل — 12 مشارك جاهز!</div>
+  </div>
+  <button class="play" onclick="playBub(this)">تشغيل العرض</button>
+  <p class="note">فقاعات شفافة بـ <b>blur</b> تطفو من الأسفل للأعلى، كل فقاعة فيها صورة واسم مشارك. <b>خفيفة وأنيقة</b> ومناسبة لكل الفعاليات</p>
+</div>
+
+<!-- 2) Stadium Seats -->
+<div class="panel" id="panel-stadium">
+  <div class="scene" id="sc-stadium">
+    <div class="stadium-light sl-1"></div>
+    <div class="stadium-light sl-2"></div>
+    <div class="stadium-light sl-3"></div>
+    <div class="sc-head">
+      <div class="sc-title">🏟️ احجز مقعدك في البطولة</div>
+      <div class="sc-counter"><span class="live"></span> <span id="c-st">0</span>/60</div>
+    </div>
+    <div class="sc-timer"><i id="t-st"></i></div>
+    <div class="seats" id="seats"></div>
+    <div class="field"><div class="field-text">— الميدان —</div></div>
+    <div class="cmd-hint">💬 اكتب: <b>!دخول</b></div>
+    <div class="stadium-final" id="f-st">🏁 امتلأت المدرجات! 60 مشارك جاهز</div>
+  </div>
+  <button class="play" onclick="playStadium(this)">تشغيل العرض</button>
+  <p class="note">مقاعد ملعب تمتلئ تدريجياً — كل مشاهد يحجز <b>مقعداً يضوي بلونه</b>. مثالية للبطولات الكبيرة لإظهار حجم المشاركة</p>
+</div>
+
+<!-- 3) Lottery Jar -->
+<div class="panel" id="panel-jar">
+  <div class="scene" id="sc-jar">
+    <div class="spotlight"></div>
+    <div class="sc-head">
+      <div class="sc-title">🎟️ ضع تذكرتك في الإناء</div>
+      <div class="sc-counter"><span class="live"></span> <span id="c-jar">0</span> تذكرة</div>
+    </div>
+    <div class="sc-timer"><i id="t-jar"></i></div>
+    <div class="jar">
+      <div class="tickets-stack" id="stack"></div>
+    </div>
+    <div class="cmd-hint">💬 اكتب: <b>!دخول</b></div>
+    <div class="jar-final" id="f-jar">🎰 جاهز للسحب — 14 تذكرة</div>
+  </div>
+  <button class="play" onclick="playJar(this)">تشغيل العرض</button>
+  <p class="note">كل مشاهد يدخل = <b>تذكرة ذهبية تتساقط</b> داخل إناء زجاجي وتتكدس فيه. سينمائي ومثالي للسحوبات والقرعة</p>
+</div>
+
+<!-- 4) Marquee Wall -->
+<div class="panel" id="panel-wall">
+  <div class="scene" id="sc-wall">
+    <div class="wall-grid"></div>
+    <div class="wall-glow"></div>
+    <div class="sc-head">
+      <div class="sc-title">📋 لوحة المشاركين</div>
+      <div class="sc-counter"><span class="live"></span> <span id="c-wall">0</span> مسجّل</div>
+    </div>
+    <div class="sc-timer"><i id="t-wall"></i></div>
+    <div class="plates" id="plates"></div>
+    <div class="cmd-hint">💬 اكتب: <b>!دخول</b></div>
+    <div class="wall-final" id="f-wall">✅ التسجيل أُغلق — 16 مشارك</div>
+  </div>
+  <button class="play" onclick="playWall(this)">تشغيل العرض</button>
+  <p class="note">لوحات أسماء <b>بنمط cyberpunk</b> تظهر بحركة slide مع توهج، خلفية شبكية ولوحة عداد فوق. مثالية للفعاليات السريعة بعدد مشاركين متوسط</p>
+</div>
+
+<div class="confetti" id="cfbox"></div>
+
+<a href="/" style="position:fixed;top:14px;right:14px;background:rgba(12,12,22,.85);backdrop-filter:blur(10px);color:#22d3ee;border:1px solid #0891b2;border-radius:30px;padding:8px 16px;font-family:Tajawal,sans-serif;font-weight:900;font-size:.78rem;text-decoration:none;z-index:200">← المعرض</a>
+
+<script>
+const NAMES=[
+  ["نورة","ن","#db2777"],["سلطان","س","#0891b2"],["ريم","ر","#7c3aed"],
+  ["خالد","خ","#059669"],["العنود","ع","#d97706"],["مشعل","م","#dc2626"],
+  ["سارة","س","#2563eb"],["فيصل","ف","#9333ea"],["جود","ج","#16a34a"],
+  ["تركي","ت","#ea580c"],["هند","ه","#be185d"],["ناصر","ن","#0e7490"],
+  ["لمى","ل","#7e22ce"],["شهد","ش","#0369a1"],["مها","م","#a16207"],
+  ["بندر","ب","#15803d"]
+];
+let audioCtx;
+function snd(f,d=.08,v=.12,type="sine"){
+  audioCtx=audioCtx||new (window.AudioContext||window.webkitAudioContext)();
+  const o=audioCtx.createOscillator(),g=audioCtx.createGain();
+  o.frequency.value=f;o.type=type;
+  g.gain.setValueAtTime(v,audioCtx.currentTime);
+  g.gain.exponentialRampToValueAtTime(.001,audioCtx.currentTime+d);
+  o.connect(g);g.connect(audioCtx.destination);o.start();o.stop(audioCtx.currentTime+d);
+}
+function winTune(){[523,659,784,1047].forEach((f,i)=>setTimeout(()=>snd(f,.2,.2),i*110));}
+function confetti(){
+  const box=document.getElementById("cfbox"),colors=["#22d3ee","#f5c542","#a855f7","#22c55e","#ef4444"];
+  for(let i=0;i<55;i++){
+    const d=document.createElement("div");d.className="cf";
+    d.style.left=Math.random()*100+"vw";d.style.top="-20px";
+    d.style.background=colors[i%colors.length];
+    d.style.animationDuration=(2+Math.random()*2)+"s";
+    box.appendChild(d);setTimeout(()=>d.remove(),4200);
+  }
+}
+
+document.querySelectorAll(".tab").forEach(t=>t.onclick=()=>{
+  document.querySelectorAll(".tab,.panel").forEach(x=>x.classList.remove("active"));
+  t.classList.add("active");
+  document.getElementById("panel-"+t.dataset.p).classList.add("active");
+});
+
+/* ============== 1) Bubbles ============== */
+function setTimer(id,dur){
+  const t=document.getElementById(id);
+  t.style.transition="none";t.style.width="100%";
+  requestAnimationFrame(()=>{t.style.transition="width "+dur+"ms linear";t.style.width="0%";});
+}
+function playBub(btn){
+  btn.disabled=true;
+  const sc=document.getElementById("sc-bubbles");
+  sc.querySelectorAll(".bubble,.particle").forEach(x=>x.remove());
+  document.getElementById("f-bub").classList.remove("show");
+  document.getElementById("c-bub").textContent="0";
+  /* particles */
+  for(let i=0;i<8;i++){
+    const p=document.createElement("div");p.className="particle";
+    const s=4+Math.random()*8;
+    p.style.width=p.style.height=s+"px";
+    p.style.left=Math.random()*95+"%";
+    p.style.bottom="-10px";
+    p.style.animationDelay=(Math.random()*8)+"s";
+    sc.appendChild(p);
+  }
+  setTimer("t-bub",12000);
+  let count=0,k=0;
+  const order=[...Array(12).keys()].sort(()=>Math.random()-.5);
+  const iv=setInterval(()=>{
+    if(k>=12){clearInterval(iv);return;}
+    const n=NAMES[order[k]];
+    const b=document.createElement("div");
+    b.className="bubble";
+    b.innerHTML=`<div class="bav" style="background:${n[2]}">${n[1]}</div>${n[0]}`;
+    b.style.left=(8+Math.random()*72)+"%";
+    b.style.bottom="0";
+    sc.appendChild(b);
+    setTimeout(()=>b.remove(),6000);
+    snd(800+Math.random()*400,.06,.08);
+    count++;document.getElementById("c-bub").textContent=count;k++;
+  },900);
+  setTimeout(()=>{
+    document.getElementById("f-bub").classList.add("show");
+    winTune();confetti();btn.disabled=false;
+  },12500);
+}
+
+/* ============== 2) Stadium ============== */
+function buildSeats(){
+  const c=document.getElementById("seats");c.innerHTML="";
+  for(let i=0;i<60;i++){
+    const s=document.createElement("div");s.className="seat";
+    c.appendChild(s);
+  }
+}
+buildSeats();
+function playStadium(btn){
+  btn.disabled=true;
+  buildSeats();
+  document.getElementById("f-st").classList.remove("show");
+  document.getElementById("c-st").textContent="0";
+  setTimer("t-st",14000);
+  const seats=[...document.querySelectorAll(".seat")];
+  const order=[...Array(60).keys()].sort(()=>Math.random()-.5);
+  let k=0;
+  const palette=["#22d3ee","#a855f7","#f5c542","#22c55e","#ef4444","#fb923c","#3b82f6","#ec4899"];
+  const iv=setInterval(()=>{
+    if(k>=60){clearInterval(iv);return;}
+    const i=order[k],s=seats[i];
+    const c=palette[k%palette.length];
+    s.style.background=`linear-gradient(135deg,${c},${c}aa)`;
+    s.style.setProperty("--seat-glow",c);
+    const n=NAMES[k%NAMES.length];
+    s.textContent=n[1];
+    s.classList.add("taken");
+    snd(600+k*15,.04,.06);
+    k++;document.getElementById("c-st").textContent=k;
+  },210);
+  setTimeout(()=>{
+    document.getElementById("f-st").classList.add("show");
+    winTune();confetti();btn.disabled=false;
+  },14500);
+}
+
+/* ============== 3) Jar ============== */
+function playJar(btn){
+  btn.disabled=true;
+  const sc=document.getElementById("sc-jar");
+  document.getElementById("stack").innerHTML="";
+  sc.querySelectorAll(".t-falling").forEach(x=>x.remove());
+  document.getElementById("f-jar").classList.remove("show");
+  document.getElementById("c-jar").textContent="0";
+  setTimer("t-jar",13000);
+  let k=0;
+  const iv=setInterval(()=>{
+    if(k>=14){clearInterval(iv);
+      setTimeout(()=>{
+        document.getElementById("f-jar").classList.add("show");
+        winTune();confetti();btn.disabled=false;
+      },800);
+      return;
+    }
+    const n=NAMES[k%NAMES.length];
+    /* falling ticket */
+    const f=document.createElement("div");
+    f.className="t-falling";f.textContent="🎟️ "+n[0];
+    f.style.left=(35+Math.random()*15)+"%";
+    sc.appendChild(f);
+    snd(900+k*40,.12,.1);
+    /* stacked */
+    setTimeout(()=>{
+      f.remove();
+      const s=document.createElement("div");
+      s.className="t-stacked";s.textContent=n[0];
+      document.getElementById("stack").appendChild(s);
+      document.getElementById("c-jar").textContent=k+1;
+    },1500);
+    k++;
+  },850);
+}
+
+/* ============== 4) Marquee Wall ============== */
+function playWall(btn){
+  btn.disabled=true;
+  document.getElementById("plates").innerHTML="";
+  document.getElementById("f-wall").classList.remove("show");
+  document.getElementById("c-wall").textContent="0";
+  setTimer("t-wall",13000);
+  let k=0;
+  const iv=setInterval(()=>{
+    if(k>=16){clearInterval(iv);return;}
+    const n=NAMES[k];
+    const p=document.createElement("div");
+    p.className="plate";
+    p.innerHTML=`<span class="num">${String(k+1).padStart(2,"0")}</span><div class="pav" style="background:${n[2]}">${n[1]}</div>${n[0]}`;
+    document.getElementById("plates").appendChild(p);
+    snd(1200,.05,.07,"square");
+    k++;document.getElementById("c-wall").textContent=k;
+  },720);
+  setTimeout(()=>{
+    document.getElementById("f-wall").classList.add("show");
+    winTune();confetti();btn.disabled=false;
+  },13500);
+}
+</script>
+</body>
+</html>

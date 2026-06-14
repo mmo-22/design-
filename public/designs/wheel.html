@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>نماذج تصاميم العجلة — BthLab</title>
+<link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;900&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#06060b; --card:#0c0c16; --accent:#0891b2; --accent2:#22d3ee;
+  --gold:#f5c542; --text:#e8eaf2; --muted:#8a8fa3;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:var(--bg);color:var(--text);font-family:'Tajawal',sans-serif;min-height:100vh;padding:20px 14px 60px}
+header{text-align:center;margin-bottom:28px}
+header h1{font-size:1.5rem;font-weight:900;background:linear-gradient(90deg,var(--accent2),var(--accent));-webkit-background-clip:text;background-clip:text;color:transparent}
+header p{color:var(--muted);font-size:.85rem;margin-top:4px}
+.tabs{display:flex;gap:8px;justify-content:center;margin-bottom:24px;flex-wrap:wrap}
+.tab{background:var(--card);border:1px solid #1c1c2e;color:var(--muted);padding:9px 18px;border-radius:30px;font-family:inherit;font-size:.9rem;font-weight:700;cursor:pointer;transition:.25s}
+.tab.active{color:#fff;border-color:var(--accent);box-shadow:0 0 14px rgba(8,145,178,.45)}
+.panel{display:none;flex-direction:column;align-items:center}
+.panel.active{display:flex}
+.desc{background:var(--card);border:1px solid #1c1c2e;border-radius:14px;padding:12px 16px;font-size:.85rem;color:var(--muted);max-width:420px;text-align:center;margin-bottom:22px;line-height:1.7}
+.desc b{color:var(--accent2)}
+.stage{position:relative;width:min(86vw,340px);height:min(86vw,340px);margin-bottom:26px}
+canvas{width:100%;height:100%;display:block}
+.pointer{position:absolute;top:-8px;left:50%;transform:translateX(-50%);width:0;height:0;border-left:14px solid transparent;border-right:14px solid transparent;border-top:24px solid var(--gold);filter:drop-shadow(0 2px 6px rgba(0,0,0,.6));z-index:5;transform-origin:top center}
+.spin-btn{font-family:inherit;font-weight:900;font-size:1.05rem;color:#fff;background:linear-gradient(135deg,var(--accent),var(--accent2));border:none;border-radius:40px;padding:13px 46px;cursor:pointer;transition:.2s;box-shadow:0 4px 22px rgba(8,145,178,.4)}
+.spin-btn:active{transform:scale(.95)}
+.spin-btn:disabled{opacity:.5}
+.result{margin-top:16px;font-size:1.15rem;font-weight:900;min-height:30px;color:var(--gold)}
+
+/* نيون */
+#stage-neon{filter:drop-shadow(0 0 18px rgba(34,211,238,.35))}
+#stage-neon.spinning{filter:drop-shadow(0 0 38px rgba(34,211,238,.8))}
+#stage-neon{transition:filter .6s}
+
+/* 3D */
+#stage-3d{perspective:900px}
+#stage-3d canvas{transform:rotateX(28deg);border-radius:50%;box-shadow:0 30px 50px -12px rgba(0,0,0,.85), 0 0 0 6px #14142a, 0 0 30px rgba(8,145,178,.3)}
+#stage-3d .pointer{top:6px}
+
+/* كازينو */
+#stage-casino canvas{border-radius:50%}
+.leds{position:absolute;inset:0;pointer-events:none}
+.led{position:absolute;width:9px;height:9px;border-radius:50%;background:#3a2f10;transition:background .1s, box-shadow .1s}
+.led.on{background:var(--gold);box-shadow:0 0 10px var(--gold),0 0 20px rgba(245,197,66,.6)}
+
+.confetti{position:fixed;top:0;left:0;width:100%;height:100%;pointer-events:none;z-index:99}
+.cf{position:absolute;width:9px;height:14px;opacity:.95;animation:fall linear forwards}
+@keyframes fall{to{transform:translateY(110vh) rotate(720deg);opacity:.6}}
+@media (prefers-reduced-motion: reduce){.cf{display:none}}
+</style>
+</head>
+<body>
+<header>
+  <h1>🎡 نماذج تصاميم العجلة</h1>
+  <p>جرّب اللف في كل تصميم — مع صوت التكات والاحتفال</p>
+</header>
+
+<div class="tabs">
+  <button class="tab active" data-p="neon">✨ نيون</button>
+  <button class="tab" data-p="casino">🎰 كازينو</button>
+  <button class="tab" data-p="3d">🎡 ثلاثي الأبعاد</button>
+</div>
+
+<div class="panel active" id="panel-neon">
+  <div class="desc">حواف <b>متوهجة</b> بألوان الثيم، التوهج يشتد وقت اللف ويهدأ عند التوقف — مناسب للأوفرلي على البث الداكن</div>
+  <div class="stage" id="stage-neon"><div class="pointer" id="ptr-neon"></div><canvas id="cv-neon" width="680" height="680"></canvas></div>
+  <button class="spin-btn" onclick="spin('neon')">لف العجلة</button>
+  <div class="result" id="res-neon"></div>
+</div>
+
+<div class="panel" id="panel-casino">
+  <div class="desc">إطار <b>ذهبي</b> مع مصابيح LED تلمع بالتتابع وقت اللف، وتومض كلها مع بعض عند الفوز</div>
+  <div class="stage" id="stage-casino"><div class="leds" id="leds"></div><div class="pointer" id="ptr-casino"></div><canvas id="cv-casino" width="680" height="680"></canvas></div>
+  <button class="spin-btn" onclick="spin('casino')">لف العجلة</button>
+  <div class="result" id="res-casino"></div>
+</div>
+
+<div class="panel" id="panel-3d">
+  <div class="desc">ميلان <b>منظوري 3D</b> مع ظل عميق يعطي إحساس عجلة حقيقية على الطاولة</div>
+  <div class="stage" id="stage-3d"><div class="pointer" id="ptr-3d"></div><canvas id="cv-3d" width="680" height="680"></canvas></div>
+  <button class="spin-btn" onclick="spin('3d')">لف العجلة</button>
+  <div class="result" id="res-3d"></div>
+</div>
+
+<div class="confetti" id="confetti"></div>
+
+<script>
+const SEGS = ["جائزة 🎁","غنّي مقطع 🎤","أمان 🛡️","لفة ثانية 🔄","تحدي ⚔️","جوكر 🃏","بان مؤقت ⛔","x2 💎"];
+const PALETTES = {
+  neon:   ["#0891b2","#0e7490","#155e75","#164e63","#0891b2","#0e7490","#155e75","#164e63"],
+  casino: ["#7f1d1d","#14532d","#7f1d1d","#14532d","#7f1d1d","#14532d","#7f1d1d","#b45309"],
+  "3d":   ["#1e1b4b","#0891b2","#312e81","#0e7490","#1e1b4b","#0891b2","#312e81","#0e7490"]
+};
+const angles = {neon:0, casino:0, "3d":0};
+let audioCtx;
+
+function tick(freq=2200,dur=.03,vol=.15){
+  audioCtx = audioCtx || new (window.AudioContext||window.webkitAudioContext)();
+  const o=audioCtx.createOscillator(), g=audioCtx.createGain();
+  o.frequency.value=freq; o.type="square";
+  g.gain.setValueAtTime(vol,audioCtx.currentTime);
+  g.gain.exponentialRampToValueAtTime(.001,audioCtx.currentTime+dur);
+  o.connect(g); g.connect(audioCtx.destination);
+  o.start(); o.stop(audioCtx.currentTime+dur);
+}
+function winSound(){
+  [523,659,784,1047].forEach((f,i)=>setTimeout(()=>tick(f,.18,.2),i*110));
+}
+
+function drawWheel(id, angle){
+  const cv=document.getElementById("cv-"+id), ctx=cv.getContext("2d");
+  const W=cv.width, C=W/2, R=C-30;
+  ctx.clearRect(0,0,W,W);
+  ctx.save(); ctx.translate(C,C); ctx.rotate(angle);
+  const n=SEGS.length, step=2*Math.PI/n, pal=PALETTES[id];
+  for(let i=0;i<n;i++){
+    ctx.beginPath(); ctx.moveTo(0,0);
+    ctx.arc(0,0,R,i*step,(i+1)*step); ctx.closePath();
+    if(id==="neon"){
+      const gr=ctx.createRadialGradient(0,0,R*.2,0,0,R);
+      gr.addColorStop(0,"#0a0a14"); gr.addColorStop(1,pal[i]);
+      ctx.fillStyle=gr;
+    } else ctx.fillStyle=pal[i];
+    ctx.fill();
+    ctx.strokeStyle = id==="casino" ? "#f5c542" : (id==="neon" ? "#22d3ee" : "#06060b");
+    ctx.lineWidth = id==="neon" ? 2.5 : 3;
+    ctx.stroke();
+    ctx.save();
+    ctx.rotate(i*step+step/2);
+    ctx.textAlign="center"; ctx.fillStyle="#fff";
+    ctx.font="900 26px Tajawal";
+    ctx.shadowColor="rgba(0,0,0,.7)"; ctx.shadowBlur=6;
+    ctx.fillText(SEGS[i], R*.62, 9);
+    ctx.restore();
+  }
+  // hub
+  ctx.beginPath(); ctx.arc(0,0,46,0,7);
+  ctx.fillStyle = id==="casino" ? "#f5c542" : "#0891b2";
+  ctx.fill();
+  ctx.beginPath(); ctx.arc(0,0,34,0,7); ctx.fillStyle="#06060b"; ctx.fill();
+  ctx.fillStyle="#fff"; ctx.font="900 28px Tajawal"; ctx.textAlign="center";
+  ctx.fillText("🎡",0,10);
+  ctx.restore();
+  // outer ring
+  ctx.beginPath(); ctx.arc(C,C,R+9,0,7);
+  ctx.lineWidth=14;
+  ctx.strokeStyle = id==="casino" ? "#f5c542" : (id==="neon" ? "#22d3ee" : "#14142a");
+  if(id==="neon"){ctx.shadowColor="#22d3ee";ctx.shadowBlur=25;}
+  ctx.stroke(); ctx.shadowBlur=0;
+}
+
+function easeOut(t){return 1-Math.pow(1-t,4)}
+
+function spin(id){
+  const btn=document.querySelector("#panel-"+id+" .spin-btn");
+  btn.disabled=true;
+  document.getElementById("res-"+id).textContent="";
+  const stage=document.getElementById("stage-"+id);
+  stage.classList.add("spinning");
+  const start=angles[id];
+  const extra=(6+Math.random()*4)*2*Math.PI + Math.random()*2*Math.PI;
+  const dur=4500+Math.random()*1200, t0=performance.now();
+  const step=2*Math.PI/SEGS.length;
+  let lastIdx=Math.floor(start/step);
+  if(id==="casino") chaseLeds(true);
+
+  function frame(now){
+    const t=Math.min((now-t0)/dur,1);
+    const a=start+extra*easeOut(t);
+    angles[id]=a;
+    drawWheel(id,a);
+    const idx=Math.floor(a/step);
+    if(idx!==lastIdx){ tick(); lastIdx=idx;
+      const p=document.getElementById("ptr-"+id);
+      p.style.transition="none"; p.style.transform="translateX(-50%) rotate(14deg)";
+      requestAnimationFrame(()=>{p.style.transition="transform .12s"; p.style.transform="translateX(-50%) rotate(0deg)";});
+    }
+    if(t<1) requestAnimationFrame(frame);
+    else finish(id,a);
+  }
+  requestAnimationFrame(frame);
+}
+
+function finish(id,a){
+  const step=2*Math.PI/SEGS.length;
+  // pointer at top = -90deg relative to canvas 0
+  const norm=((-Math.PI/2 - a)%(2*Math.PI)+2*Math.PI)%(2*Math.PI);
+  const idx=Math.floor(norm/step);
+  document.getElementById("res-"+id).textContent="🎉 "+SEGS[idx];
+  document.getElementById("stage-"+id).classList.remove("spinning");
+  document.querySelector("#panel-"+id+" .spin-btn").disabled=false;
+  winSound(); confetti();
+  if(id==="casino"){ chaseLeds(false); flashLeds(); }
+}
+
+function confetti(){
+  const box=document.getElementById("confetti");
+  const colors=["#22d3ee","#f5c542","#0891b2","#ef4444","#22c55e","#a855f7"];
+  for(let i=0;i<60;i++){
+    const d=document.createElement("div");
+    d.className="cf";
+    d.style.left=Math.random()*100+"vw";
+    d.style.top="-20px";
+    d.style.background=colors[Math.floor(Math.random()*colors.length)];
+    d.style.animationDuration=(2+Math.random()*2)+"s";
+    d.style.transform="rotate("+Math.random()*360+"deg)";
+    box.appendChild(d);
+    setTimeout(()=>d.remove(),4200);
+  }
+}
+
+/* LEDs كازينو */
+const ledCount=24, ledEls=[];
+(function makeLeds(){
+  const box=document.getElementById("leds");
+  for(let i=0;i<ledCount;i++){
+    const a=i/ledCount*2*Math.PI;
+    const d=document.createElement("div");
+    d.className="led";
+    d.style.left="calc(50% + "+(Math.cos(a)*49.5)+"% - 4.5px)";
+    d.style.top="calc(50% + "+(Math.sin(a)*49.5)+"% - 4.5px)";
+    box.appendChild(d); ledEls.push(d);
+  }
+})();
+let ledTimer=null, ledPos=0;
+function chaseLeds(on){
+  clearInterval(ledTimer);
+  if(!on){ledEls.forEach(l=>l.classList.remove("on"));return;}
+  ledTimer=setInterval(()=>{
+    ledEls.forEach((l,i)=>l.classList.toggle("on",(i-ledPos+ledCount)%ledCount<4));
+    ledPos=(ledPos+1)%ledCount;
+  },70);
+}
+function flashLeds(){
+  let c=0;
+  const f=setInterval(()=>{
+    ledEls.forEach(l=>l.classList.toggle("on"));
+    if(++c>9){clearInterval(f);ledEls.forEach(l=>l.classList.remove("on"));}
+  },140);
+}
+
+/* tabs */
+document.querySelectorAll(".tab").forEach(t=>t.onclick=()=>{
+  document.querySelectorAll(".tab").forEach(x=>x.classList.remove("active"));
+  document.querySelectorAll(".panel").forEach(x=>x.classList.remove("active"));
+  t.classList.add("active");
+  document.getElementById("panel-"+t.dataset.p).classList.add("active");
+});
+
+["neon","casino","3d"].forEach(id=>drawWheel(id,0));
+</script>
+<a href="/" style="position:fixed;top:14px;right:14px;background:#0c0c16;color:#22d3ee;border:1px solid #0891b2;border-radius:30px;padding:8px 16px;font-family:Tajawal,sans-serif;font-weight:900;font-size:.8rem;text-decoration:none;z-index:200;box-shadow:0 4px 14px rgba(0,0,0,.4)">← رجوع للقائمة</a></body>
+</html>

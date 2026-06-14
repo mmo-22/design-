@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>فعالية الخروج — نماذج التصميم</title>
+<link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;700;900&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#06060b;--card:#0c0c16;--accent:#0891b2;--accent2:#22d3ee;--gold:#f5c542;--text:#e8eaf2;--muted:#8a8fa3;--red:#ef4444;--green:#22c55e}
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:var(--bg);color:var(--text);font-family:'Tajawal',sans-serif;min-height:100vh;padding:18px 12px 60px}
+header{text-align:center;margin-bottom:18px}
+header h1{font-size:1.4rem;font-weight:900;background:linear-gradient(90deg,#f87171,var(--gold));-webkit-background-clip:text;background-clip:text;color:transparent}
+header p{color:var(--muted);font-size:.82rem;margin-top:4px}
+.tabs{display:flex;gap:7px;justify-content:center;margin-bottom:18px;flex-wrap:wrap}
+.tab{background:var(--card);border:1px solid #1c1c2e;color:var(--muted);padding:9px 15px;border-radius:30px;font-family:inherit;font-size:.85rem;font-weight:900;cursor:pointer;transition:.25s}
+.tab.active{color:#fff;border-color:var(--red);box-shadow:0 0 14px rgba(239,68,68,.4)}
+.panel{display:none;flex-direction:column;align-items:center}
+.panel.active{display:flex}
+.scene{position:relative;width:min(94vw,560px);aspect-ratio:16/10;border-radius:18px;overflow:hidden;border:1px solid #1c1c2e;margin-bottom:14px}
+.play{font-family:inherit;font-weight:900;font-size:1rem;color:#fff;background:linear-gradient(135deg,#dc2626,#f59e0b);border:none;border-radius:40px;padding:12px 40px;cursor:pointer;box-shadow:0 4px 22px rgba(220,38,38,.4)}
+.play:active{transform:scale(.95)}
+.note{margin-top:12px;font-size:.78rem;color:var(--muted);max-width:480px;text-align:center;line-height:1.8}
+.note b{color:#fca5a5}
+
+/* ===== 1) حلبة الإقصاء ===== */
+#sc-arena{background:radial-gradient(ellipse at 50% -10%,#2a1215 0%,#0d0610 55%,#06060b 100%)}
+.q-card{position:absolute;top:8px;left:50%;transform:translateX(-50%);background:#0c0c16ee;border:1px solid var(--gold);border-radius:14px;padding:7px 20px;font-weight:900;font-size:.85rem;color:var(--gold);z-index:5;white-space:nowrap}
+.timer{position:absolute;top:44px;left:15%;right:15%;height:7px;background:#1a1a2c;border-radius:6px;overflow:hidden;z-index:5}
+.timer i{display:block;height:100%;width:100%;background:linear-gradient(90deg,#22c55e,#f59e0b,#ef4444);transition:width linear}
+.arena-grid{position:absolute;top:62px;bottom:8px;left:0;right:0;display:flex;flex-wrap:wrap;align-items:center;justify-content:center;gap:10px;padding:8px 20px}
+.pl{position:relative;display:flex;flex-direction:column;align-items:center;gap:3px;transition:.4s}
+.pl .pav{width:52px;height:52px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:900;font-size:1.1rem;border:2.5px solid var(--accent2);box-shadow:0 0 12px rgba(34,211,238,.3)}
+.pl .pnm{font-size:.6rem;font-weight:900;color:var(--muted)}
+.pl.out{animation:elim 1s forwards}
+.pl.out .pav{border-color:var(--red);filter:grayscale(1) brightness(.55);box-shadow:0 0 16px rgba(239,68,68,.5)}
+@keyframes elim{0%{transform:translateY(0) rotate(0)}25%{transform:translateX(-4px)}35%{transform:translateX(4px)}100%{transform:translateY(130px) rotate(25deg);opacity:0}}
+.xmark{position:absolute;top:8px;left:50%;transform:translate(-50%,0) scale(0);font-size:1.6rem;z-index:3;animation:xpop .4s forwards}
+@keyframes xpop{to{transform:translate(-50%,0) scale(1)}}
+.alive-badge{position:absolute;bottom:8px;left:10px;background:#0c0c16dd;border:1px solid var(--green);color:#86efac;border-radius:12px;padding:4px 12px;font-weight:900;font-size:.72rem;z-index:5}
+.champ{animation:champA 1.2s forwards}
+@keyframes champA{to{transform:scale(1.35)}}
+.champ .pav{border-color:var(--gold)!important;box-shadow:0 0 30px rgba(245,197,66,.8)!important}
+.crown{position:absolute;top:-26px;left:50%;transform:translateX(-50%);font-size:1.3rem;animation:crownDrop .6s}
+@keyframes crownDrop{from{transform:translate(-50%,-20px);opacity:0}}
+
+/* ===== 2) شجرة البطولة ===== */
+#sc-bracket{background:linear-gradient(160deg,#0a0f24 0%,#120a1e 100%)}
+.br-wrap{position:absolute;inset:0;display:flex;align-items:center;justify-content:space-around;padding:16px 8px}
+.br-col{display:flex;flex-direction:column;justify-content:space-around;height:100%;gap:6px}
+.br-match{display:flex;flex-direction:column;gap:4px;position:relative}
+.br-p{background:#0c0c16;border:1.5px solid #1c1c2e;border-radius:10px;padding:4px 10px;font-size:.68rem;font-weight:900;min-width:84px;text-align:center;transition:.5s;color:var(--muted)}
+.br-p.win{border-color:var(--green);color:#86efac;box-shadow:0 0 10px rgba(34,197,94,.35)}
+.br-p.lose{border-color:#7f1d1d;color:#666;text-decoration:line-through;opacity:.45}
+.br-p.tbd{border-style:dashed}
+.br-final .br-p{min-width:100px;font-size:.78rem;padding:7px 12px}
+.br-trophy{text-align:center;font-size:1.8rem;margin-bottom:4px;filter:drop-shadow(0 0 14px rgba(245,197,66,.6))}
+.round-tag{position:absolute;top:8px;left:50%;transform:translateX(-50%);background:#0c0c16dd;border:1px solid var(--accent);color:var(--accent2);border-radius:12px;padding:4px 16px;font-weight:900;font-size:.75rem;z-index:5}
+
+/* ===== 3) الموت المفاجئ ===== */
+#sc-sudden{background:#030308}
+.spotlight{position:absolute;top:-10%;width:46%;height:120%;background:radial-gradient(ellipse at 50% 0%,rgba(245,197,66,.16) 0%,transparent 65%);pointer-events:none}
+.sp-r{right:2%}.sp-l{left:2%}
+.sd-vs{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);font-size:2.4rem;font-weight:900;color:var(--red);text-shadow:0 0 30px rgba(239,68,68,.8);z-index:4;animation:pulse 1s infinite}
+@keyframes pulse{50%{transform:translate(-50%,-50%) scale(1.15)}}
+.sd-p{position:absolute;top:50%;transform:translateY(-50%);display:flex;flex-direction:column;align-items:center;gap:8px;transition:.5s}
+.sd-pr{right:12%}.sd-pl{left:12%}
+.sd-av{width:84px;height:84px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:2rem;font-weight:900;border:3px solid var(--gold);box-shadow:0 0 26px rgba(245,197,66,.4)}
+.sd-nm{font-weight:900;font-size:.9rem}
+.sd-hearts{font-size:.85rem;letter-spacing:2px}
+.sd-q{position:absolute;top:12px;left:50%;transform:translateX(-50%);background:#0c0c16ee;border:1px solid var(--red);border-radius:14px;padding:7px 22px;font-weight:900;font-size:.85rem;color:#fca5a5;z-index:5;white-space:nowrap}
+.sd-dead{filter:grayscale(1) brightness(.4);transform:translateY(-50%) scale(.85)!important}
+.sd-win .sd-av{border-color:var(--green);box-shadow:0 0 40px rgba(34,197,94,.7)}
+.flash{position:absolute;inset:0;background:rgba(239,68,68,.25);opacity:0;pointer-events:none;z-index:8}
+.flash.on{animation:fl .4s}
+@keyframes fl{0%{opacity:1}100%{opacity:0}}
+.confetti{position:fixed;inset:0;pointer-events:none;z-index:99}
+.cf{position:absolute;width:9px;height:14px;animation:fall linear forwards}
+@keyframes fall{to{transform:translateY(110vh) rotate(720deg);opacity:.5}}
+@media (prefers-reduced-motion: reduce){.cf{display:none}}
+</style>
+</head>
+<body>
+<header>
+  <h1>💀 فعالية الخروج — نماذج التصميم</h1>
+  <p>3 أنماط عرض للبطولة — اضغط تشغيل في كل تبويب</p>
+</header>
+
+<div class="tabs">
+  <button class="tab active" data-p="arena">🔥 حلبة الإقصاء</button>
+  <button class="tab" data-p="bracket">🏆 شجرة البطولة</button>
+  <button class="tab" data-p="sudden">⚡ الموت المفاجئ</button>
+</div>
+
+<!-- حلبة الإقصاء -->
+<div class="panel active" id="panel-arena">
+  <div class="scene" id="sc-arena">
+    <div class="q-card">❓ ما عاصمة اليابان؟</div>
+    <div class="timer"><i id="tmr"></i></div>
+    <div class="alive-badge">الباقين: <span id="alive">8</span> 🟢</div>
+    <div class="arena-grid" id="arena"></div>
+  </div>
+  <button class="play" onclick="playArena()">تشغيل العرض</button>
+  <p class="note">كل المتسابقين بحلبة وحدة: السؤال فوق مع <b>شريط وقت يتدرج من أخضر لأحمر</b>. اللي يغلط يهتز، تطلع ❌ فوقه، <b>ويسقط خارج الشاشة</b> بتدوير درامي. آخر الباقين يكبر بالنص مع تاج 👑</p>
+</div>
+
+<!-- شجرة البطولة -->
+<div class="panel" id="panel-bracket">
+  <div class="scene" id="sc-bracket">
+    <div class="round-tag" id="rtag">ربع النهائي</div>
+    <div class="br-wrap" id="brwrap"></div>
+  </div>
+  <button class="play" onclick="playBracket()">تشغيل العرض</button>
+  <p class="note">شجرة بطولة حية تتعبى أول بأول: الفائز <b>يضوي أخضر وينتقل للجولة الجاية</b>، والخاسر ينشطب ويبهت. الكأس بالنص يتوهج لما يتحدد البطل — مثالية لعرض تقدم البطولة بين الأسئلة</p>
+</div>
+
+<!-- الموت المفاجئ -->
+<div class="panel" id="panel-sudden">
+  <div class="scene" id="sc-sudden">
+    <div class="flash" id="flash"></div>
+    <div class="spotlight sp-r"></div>
+    <div class="spotlight sp-l"></div>
+    <div class="sd-q">⚡ سؤال الحسم: أسرع إجابة تفوز!</div>
+    <div class="sd-vs">VS</div>
+    <div class="sd-p sd-pr" id="sdr">
+      <div class="sd-av" style="background:linear-gradient(135deg,#7f1d1d,#dc2626)">س</div>
+      <div class="sd-nm">سلطان</div>
+      <div class="sd-hearts" id="hr-r">❤️❤️❤️</div>
+    </div>
+    <div class="sd-p sd-pl" id="sdl">
+      <div class="sd-av" style="background:linear-gradient(135deg,#1e3a8a,#3b82f6)">ن</div>
+      <div class="sd-nm">نورة</div>
+      <div class="sd-hearts" id="hr-l">❤️❤️❤️</div>
+    </div>
+  </div>
+  <button class="play" onclick="playSudden()">تشغيل العرض</button>
+  <p class="note">النهائي بين آخر اثنين: <b>أضواء مسرح (spotlight)</b> على كل متسابق، 3 قلوب لكل واحد، كل غلطة تكسر قلب مع <b>ومضة حمراء</b> على الشاشة. اللي تخلص قلوبه يطفى، والفائز يضوي أخضر مع confetti</p>
+</div>
+
+<div class="confetti" id="cfbox"></div>
+
+<script>
+let audioCtx;
+function snd(f,d=.08,v=.15,type="square"){
+  audioCtx=audioCtx||new (window.AudioContext||window.webkitAudioContext)();
+  const o=audioCtx.createOscillator(),g=audioCtx.createGain();
+  o.frequency.value=f;o.type=type;
+  g.gain.setValueAtTime(v,audioCtx.currentTime);
+  g.gain.exponentialRampToValueAtTime(.001,audioCtx.currentTime+d);
+  o.connect(g);g.connect(audioCtx.destination);o.start();o.stop(audioCtx.currentTime+d);
+}
+function winTune(){[523,659,784,1047].forEach((f,i)=>setTimeout(()=>snd(f,.2,.2,"sine"),i*110));}
+function confetti(){
+  const box=document.getElementById("cfbox"),colors=["#22d3ee","#f5c542","#ef4444","#22c55e","#a855f7"];
+  for(let i=0;i<55;i++){
+    const d=document.createElement("div");d.className="cf";
+    d.style.left=Math.random()*100+"vw";d.style.top="-20px";
+    d.style.background=colors[i%colors.length];
+    d.style.animationDuration=(2+Math.random()*2)+"s";
+    box.appendChild(d);setTimeout(()=>d.remove(),4200);
+  }
+}
+document.querySelectorAll(".tab").forEach(t=>t.onclick=()=>{
+  document.querySelectorAll(".tab,.panel").forEach(x=>x.classList.remove("active"));
+  t.classList.add("active");
+  document.getElementById("panel-"+t.dataset.p).classList.add("active");
+});
+
+/* ===== 1) حلبة الإقصاء ===== */
+const ANAMES=["نورة","سلطان","ريم","خالد","العنود","مشعل","سارة","فيصل"];
+const ACOLS=["#0891b2","#7c3aed","#db2777","#059669","#d97706","#dc2626","#2563eb","#9333ea"];
+function buildArena(){
+  const g=document.getElementById("arena");g.innerHTML="";
+  ANAMES.forEach((n,i)=>{
+    const d=document.createElement("div");d.className="pl";
+    d.innerHTML="<div class='pav' style='background:linear-gradient(135deg,"+ACOLS[i]+",#06060b)'>"+n[0]+"</div><div class='pnm'>"+n+"</div>";
+    g.appendChild(d);
+  });
+  document.getElementById("alive").textContent=8;
+}
+buildArena();
+function playArena(){
+  buildArena();
+  const t=document.getElementById("tmr");
+  t.style.transition="none";t.style.width="100%";
+  requestAnimationFrame(()=>{t.style.transition="width 7s linear";t.style.width="0%";});
+  const pls=[...document.querySelectorAll(".pl")];
+  let alive=8,k=0;
+  const order=[2,5,0,7,4,1,6];
+  const iv=setInterval(()=>{
+    if(k>=order.length){
+      clearInterval(iv);
+      const champ=pls[3];
+      champ.classList.add("champ");
+      const c=document.createElement("div");c.className="crown";c.textContent="👑";
+      champ.appendChild(c);
+      winTune();confetti();
+      return;
+    }
+    const p=pls[order[k]];
+    const x=document.createElement("div");x.className="xmark";x.textContent="❌";
+    p.appendChild(x);
+    p.classList.add("out");
+    snd(220,.2,.2,"sawtooth");
+    alive--;document.getElementById("alive").textContent=alive;
+    k++;
+  },900);
+}
+
+/* ===== 2) شجرة البطولة ===== */
+const BR=[["نورة","سلطان"],["ريم","خالد"],["العنود","مشعل"],["سارة","فيصل"]];
+function buildBracket(){
+  const w=document.getElementById("brwrap");w.innerHTML="";
+  /* جولة 1 */
+  const c1=document.createElement("div");c1.className="br-col";
+  BR.forEach((m,i)=>{
+    c1.innerHTML+="<div class='br-match'><div class='br-p' id='r1-"+i+"-0'>"+m[0]+"</div><div class='br-p' id='r1-"+i+"-1'>"+m[1]+"</div></div>";
+  });
+  /* نصف النهائي */
+  const c2=document.createElement("div");c2.className="br-col";
+  c2.innerHTML="<div class='br-match'><div class='br-p tbd' id='r2-0-0'>—</div><div class='br-p tbd' id='r2-0-1'>—</div></div><div class='br-match'><div class='br-p tbd' id='r2-1-0'>—</div><div class='br-p tbd' id='r2-1-1'>—</div></div>";
+  /* النهائي */
+  const c3=document.createElement("div");c3.className="br-col br-final";
+  c3.innerHTML="<div class='br-match'><div class='br-trophy' id='trophy'>🏆</div><div class='br-p tbd' id='r3-0'>—</div><div class='br-p tbd' id='r3-1'>—</div></div>";
+  w.append(c1,c2,c3);
+}
+buildBracket();
+function playBracket(){
+  buildBracket();
+  document.getElementById("rtag").textContent="ربع النهائي";
+  const w1=[0,1,0,1]; /* الفائز من كل مباراة */
+  let step=0;
+  const iv=setInterval(()=>{
+    if(step<4){
+      const i=step,win=w1[i];
+      document.getElementById("r1-"+i+"-"+win).classList.add("win");
+      document.getElementById("r1-"+i+"-"+(1-win)).classList.add("lose");
+      const name=BR[i][win];
+      const slot=document.getElementById("r2-"+Math.floor(i/2)+"-"+(i%2));
+      slot.textContent=name;slot.classList.remove("tbd");
+      snd(900,.1,.15);
+    } else if(step===4){
+      document.getElementById("rtag").textContent="نصف النهائي";
+      document.getElementById("r2-0-0").classList.add("win");
+      document.getElementById("r2-0-1").classList.add("lose");
+      const s=document.getElementById("r3-0");
+      s.textContent=document.getElementById("r2-0-0").textContent;s.classList.remove("tbd");
+      snd(900,.1,.15);
+    } else if(step===5){
+      document.getElementById("r2-1-1").classList.add("win");
+      document.getElementById("r2-1-0").classList.add("lose");
+      const s=document.getElementById("r3-1");
+      s.textContent=document.getElementById("r2-1-1").textContent;s.classList.remove("tbd");
+      snd(900,.1,.15);
+    } else if(step===6){
+      document.getElementById("rtag").textContent="🏆 النهائي";
+      document.getElementById("r3-0").classList.add("win");
+      document.getElementById("r3-1").classList.add("lose");
+      document.getElementById("trophy").style.fontSize="2.4rem";
+      winTune();confetti();
+      clearInterval(iv);
+    }
+    step++;
+  },1000);
+}
+
+/* ===== 3) الموت المفاجئ ===== */
+function playSudden(){
+  const hr=document.getElementById("hr-r"),hl=document.getElementById("hr-l");
+  hr.textContent="❤️❤️❤️";hl.textContent="❤️❤️❤️";
+  document.getElementById("sdr").classList.remove("sd-dead","sd-win");
+  document.getElementById("sdl").classList.remove("sd-dead","sd-win");
+  let r=3,l=3,turn=0;
+  const seq=["r","l","r","r"]; /* من يغلط بالترتيب */
+  const iv=setInterval(()=>{
+    if(turn>=seq.length)return;
+    const side=seq[turn];
+    if(side==="r")r--;else l--;
+    (side==="r"?hr:hl).textContent="❤️".repeat(side==="r"?r:l)+"🖤".repeat(3-(side==="r"?r:l));
+    const f=document.getElementById("flash");
+    f.classList.remove("on");void f.offsetWidth;f.classList.add("on");
+    snd(200,.22,.22,"sawtooth");
+    if(r===0||l===0){
+      clearInterval(iv);
+      document.getElementById(r===0?"sdr":"sdl").classList.add("sd-dead");
+      document.getElementById(r===0?"sdl":"sdr").classList.add("sd-win");
+      winTune();confetti();
+    }
+    turn++;
+  },1100);
+}
+</script>
+<a href="/" style="position:fixed;top:14px;right:14px;background:#0c0c16;color:#22d3ee;border:1px solid #0891b2;border-radius:30px;padding:8px 16px;font-family:Tajawal,sans-serif;font-weight:900;font-size:.8rem;text-decoration:none;z-index:200;box-shadow:0 4px 14px rgba(0,0,0,.4)">← رجوع للقائمة</a></body>
+</html>
