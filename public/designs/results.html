@@ -1,0 +1,454 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>شاشة الفوز والنتائج — نماذج التصميم</title>
+<link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;900&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#06060b;--card:#0c0c16;--card2:#10101e;--border:#1c1c2e;
+  --accent:#0891b2;--accent2:#22d3ee;--gold:#f5c542;
+  --text:#e8eaf2;--muted:#8a8fa3;
+  --green:#22c55e;--red:#ef4444;--purple:#a855f7;--orange:#f97316
+}
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:var(--bg);color:var(--text);font-family:'Tajawal',sans-serif;min-height:100vh;padding:18px 12px 60px}
+header{text-align:center;margin-bottom:18px}
+header h1{font-size:1.4rem;font-weight:900;background:linear-gradient(90deg,var(--gold),#f97316);-webkit-background-clip:text;background-clip:text;color:transparent}
+header p{color:var(--muted);font-size:.82rem;margin-top:4px}
+.tabs{display:flex;gap:7px;justify-content:center;margin-bottom:18px;flex-wrap:wrap}
+.tab{background:var(--card);border:1px solid var(--border);color:var(--muted);padding:9px 15px;border-radius:30px;font-family:inherit;font-size:.85rem;font-weight:900;cursor:pointer;transition:.25s}
+.tab.active{color:#fff;border-color:var(--gold);box-shadow:0 0 14px rgba(245,197,66,.35)}
+.panel{display:none;flex-direction:column;align-items:center}
+.panel.active{display:flex}
+.scene{position:relative;width:min(94vw,560px);aspect-ratio:16/10;border-radius:18px;overflow:hidden;border:1px solid var(--border);margin-bottom:14px}
+.play{font-family:inherit;font-weight:900;font-size:1rem;color:#fff;background:linear-gradient(135deg,var(--gold),#f97316);border:none;border-radius:40px;padding:12px 40px;cursor:pointer;box-shadow:0 4px 22px rgba(245,197,66,.35)}
+.play:active{transform:scale(.95)}
+.play:disabled{opacity:.5}
+.note{margin-top:12px;font-size:.78rem;color:var(--muted);max-width:480px;text-align:center;line-height:1.8}
+.note b{color:var(--gold)}
+
+/* ============================================================ */
+/* 1) Golden Champion (تتويج البطل)                            */
+/* ============================================================ */
+#sc-champ{background:radial-gradient(ellipse at 50% 30%,#3b2a08 0%,#1c1404 40%,#06060b 80%)}
+.rays{position:absolute;top:50%;left:50%;width:200%;height:200%;transform:translate(-50%,-50%);
+  background:conic-gradient(from 0deg,transparent 0deg,rgba(245,197,66,.15) 8deg,transparent 16deg,transparent 60deg,rgba(245,197,66,.15) 68deg,transparent 76deg,transparent 120deg,rgba(245,197,66,.15) 128deg,transparent 136deg,transparent 180deg,rgba(245,197,66,.15) 188deg,transparent 196deg,transparent 240deg,rgba(245,197,66,.15) 248deg,transparent 256deg,transparent 300deg,rgba(245,197,66,.15) 308deg,transparent 316deg,transparent 360deg);
+  animation:raysSpin 18s linear infinite;opacity:0;transition:opacity 1s
+}
+#sc-champ.show .rays{opacity:1}
+@keyframes raysSpin{to{transform:translate(-50%,-50%) rotate(360deg)}}
+
+.champ-trophy{
+  position:absolute;top:18%;left:50%;transform:translateX(-50%) scale(0);
+  font-size:4.5rem;filter:drop-shadow(0 0 30px var(--gold)) drop-shadow(0 0 60px rgba(245,197,66,.6));
+  transition:transform .7s cubic-bezier(.2,.8,.3,1.5);z-index:3
+}
+#sc-champ.show .champ-trophy{transform:translateX(-50%) scale(1) rotate(0deg);animation:trophyBob 2.5s ease-in-out infinite 1s}
+@keyframes trophyBob{50%{transform:translateX(-50%) scale(1.05) translateY(-6px)}}
+
+.champ-label{
+  position:absolute;top:6%;left:50%;transform:translateX(-50%);
+  font-size:.78rem;font-weight:900;color:var(--gold);letter-spacing:6px;
+  opacity:0;transition:.6s .3s;z-index:3
+}
+#sc-champ.show .champ-label{opacity:1}
+
+.champ-card{
+  position:absolute;bottom:8%;left:50%;transform:translateX(-50%) translateY(40px);
+  background:linear-gradient(145deg,rgba(245,197,66,.12),rgba(245,197,66,.02));
+  backdrop-filter:blur(18px);
+  border:2px solid var(--gold);border-radius:20px;padding:14px 24px;
+  display:flex;align-items:center;gap:14px;
+  box-shadow:0 0 50px rgba(245,197,66,.4),inset 0 1px 0 rgba(255,255,255,.1);
+  opacity:0;transition:.7s .8s cubic-bezier(.2,.8,.3,1.4);z-index:4
+}
+#sc-champ.show .champ-card{opacity:1;transform:translateX(-50%) translateY(0)}
+.champ-av{
+  width:70px;height:70px;border-radius:50%;
+  background:linear-gradient(135deg,#dc2626,#f59e0b);
+  display:flex;align-items:center;justify-content:center;
+  font-weight:900;font-size:1.8rem;color:#fff;
+  border:4px solid var(--gold);
+  box-shadow:0 0 30px rgba(245,197,66,.5);position:relative;flex-shrink:0
+}
+.champ-crown{position:absolute;top:-22px;left:50%;transform:translateX(-50%);font-size:1.5rem;filter:drop-shadow(0 0 12px var(--gold))}
+.champ-info h2{font-size:.7rem;color:var(--gold);font-weight:900;letter-spacing:3px;margin-bottom:2px}
+.champ-info .nm{font-size:1.5rem;font-weight:900;color:#fff;text-shadow:0 0 16px rgba(245,197,66,.6)}
+.champ-info .pr{font-size:.78rem;color:#fde68a;margin-top:4px;display:flex;align-items:center;gap:6px}
+
+/* ============================================================ */
+/* 2) Leaderboard (لوحة الترتيب)                              */
+/* ============================================================ */
+#sc-lb{background:linear-gradient(160deg,#0c2440 0%,#1e1145 100%);padding:14px}
+.lb-head{text-align:center;margin-bottom:12px}
+.lb-head h2{font-size:1.05rem;font-weight:900;color:var(--gold)}
+.lb-head .sub{font-size:.65rem;color:var(--muted);letter-spacing:2px;margin-top:2px}
+
+.lb-podium{display:grid;grid-template-columns:1fr 1.1fr 1fr;gap:8px;align-items:end;margin-bottom:10px;padding:0 4px}
+.podium-col{display:flex;flex-direction:column;align-items:center;gap:6px;opacity:0;transform:translateY(20px);transition:.6s}
+.podium-col.show{opacity:1;transform:translateY(0)}
+.pd-av{width:46px;height:46px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:900;font-size:1.05rem;color:#fff}
+.pd-av.gold{background:linear-gradient(135deg,#f5c542,#d97706);width:58px;height:58px;font-size:1.3rem;box-shadow:0 0 24px rgba(245,197,66,.5);border:3px solid var(--gold)}
+.pd-av.silver{background:linear-gradient(135deg,#cbd5e1,#64748b);box-shadow:0 0 14px rgba(203,213,225,.4);border:2.5px solid #94a3b8}
+.pd-av.bronze{background:linear-gradient(135deg,#fb923c,#9a3412);box-shadow:0 0 14px rgba(251,146,60,.4);border:2.5px solid #c2410c}
+.pd-nm{font-weight:900;font-size:.75rem;color:#fff}
+.pd-sc{font-size:.7rem;color:var(--gold);font-weight:900}
+.pd-bar{
+  width:100%;border-radius:8px 8px 0 0;display:flex;align-items:flex-start;justify-content:center;
+  font-size:1.4rem;font-weight:900;color:#fff;padding-top:6px;
+  text-shadow:0 2px 4px rgba(0,0,0,.3);position:relative
+}
+.pd-bar.gold{background:linear-gradient(180deg,#f5c542,#d97706);height:80px}
+.pd-bar.silver{background:linear-gradient(180deg,#cbd5e1,#64748b);height:58px}
+.pd-bar.bronze{background:linear-gradient(180deg,#fb923c,#9a3412);height:46px}
+.pd-bar::after{content:attr(data-rank);font-family:Impact,sans-serif;font-size:1.8rem;line-height:1}
+
+.lb-rest{display:flex;flex-direction:column;gap:5px;padding:0 4px}
+.lb-row{
+  display:flex;align-items:center;gap:8px;
+  background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.06);
+  border-radius:9px;padding:5px 10px 5px 5px;font-size:.74rem;
+  opacity:0;transform:translateX(20px);transition:.4s
+}
+.lb-row.show{opacity:1;transform:translateX(0)}
+.lb-rank{background:#0c0c16;color:var(--muted);width:22px;height:22px;border-radius:6px;display:flex;align-items:center;justify-content:center;font-weight:900;font-size:.68rem;flex-shrink:0}
+.lb-av{width:24px;height:24px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:900;font-size:.7rem;color:#fff;flex-shrink:0}
+.lb-nm{flex:1;font-weight:900}
+.lb-sc{color:var(--gold);font-weight:900;font-size:.72rem}
+
+/* ============================================================ */
+/* 3) Cinematic Reveal (إعلان سينمائي)                         */
+/* ============================================================ */
+#sc-cin{background:#000;overflow:hidden}
+.cin-bars{position:absolute;left:0;right:0;background:#000;z-index:9;transition:transform 1s cubic-bezier(.7,0,.3,1)}
+.cin-bar-top{top:0;height:50%;transform:translateY(-100%)}
+.cin-bar-bot{bottom:0;height:50%;transform:translateY(100%)}
+#sc-cin.intro .cin-bar-top{transform:translateY(0)}
+#sc-cin.intro .cin-bar-bot{transform:translateY(0)}
+#sc-cin.reveal .cin-bar-top{transform:translateY(-65%)}
+#sc-cin.reveal .cin-bar-bot{transform:translateY(65%)}
+.cin-bg{position:absolute;inset:0;background:radial-gradient(ellipse at 50% 50%,#3b2a08 0%,#0a0612 60%,#000 100%);opacity:0;transition:1.2s}
+#sc-cin.reveal .cin-bg{opacity:1}
+
+.cin-text{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);text-align:center;z-index:5;opacity:0;transition:1s .3s}
+#sc-cin.reveal .cin-text{opacity:1}
+.cin-eyebrow{font-size:.75rem;font-weight:900;color:var(--gold);letter-spacing:6px;margin-bottom:14px}
+.cin-name{font-size:2.6rem;font-weight:900;color:#fff;text-shadow:0 0 30px rgba(245,197,66,.6);line-height:1;margin-bottom:8px;letter-spacing:-1px}
+.cin-prize{font-size:.95rem;color:var(--gold);font-weight:900}
+.cin-stats{display:flex;justify-content:center;gap:24px;margin-top:18px}
+.cs-i{text-align:center}
+.cs-i b{display:block;font-size:1.4rem;font-weight:900;color:#fff;font-family:Impact,sans-serif;letter-spacing:1px}
+.cs-i span{font-size:.6rem;color:var(--muted);letter-spacing:2px}
+
+.lens-flare{position:absolute;top:30%;left:50%;width:300px;height:300px;background:radial-gradient(circle,rgba(245,197,66,.5),transparent 60%);transform:translate(-50%,-50%);opacity:0;transition:1s .5s;pointer-events:none;z-index:2;filter:blur(20px)}
+#sc-cin.reveal .lens-flare{opacity:.8}
+
+/* ============================================================ */
+/* 4) Multi-Stats Dashboard (نتائج تفصيلية)                   */
+/* ============================================================ */
+#sc-dash{background:radial-gradient(ellipse at 0% 0%,rgba(34,211,238,.08),transparent 50%),radial-gradient(ellipse at 100% 100%,rgba(168,85,247,.08),transparent 50%),#0a0a14;padding:14px;display:flex;flex-direction:column;gap:10px}
+.ds-head{display:flex;align-items:center;justify-content:space-between}
+.ds-head h2{font-size:.95rem;font-weight:900}
+.ds-head h2 b{color:var(--gold)}
+.ds-tag{background:rgba(34,197,94,.13);border:1px solid rgba(34,197,94,.4);color:#86efac;padding:3px 11px;border-radius:30px;font-weight:900;font-size:.68rem;display:flex;align-items:center;gap:5px}
+.ds-tag .dot{width:5px;height:5px;border-radius:50%;background:var(--green)}
+
+.ds-winner{
+  background:linear-gradient(135deg,rgba(245,197,66,.13),rgba(245,197,66,.02));
+  border:1.5px solid rgba(245,197,66,.45);border-radius:14px;padding:11px 14px;
+  display:flex;align-items:center;gap:12px
+}
+.ds-w-av{width:48px;height:48px;border-radius:50%;background:linear-gradient(135deg,#dc2626,#f59e0b);display:flex;align-items:center;justify-content:center;font-weight:900;font-size:1.2rem;color:#fff;border:3px solid var(--gold);flex-shrink:0}
+.ds-w-info{flex:1;min-width:0}
+.ds-w-label{font-size:.62rem;color:var(--gold);font-weight:900;letter-spacing:1.5px}
+.ds-w-name{font-size:1.05rem;font-weight:900;color:#fff}
+.ds-w-prize{font-size:.78rem;color:var(--gold);font-weight:900;text-align:left;font-family:Impact,sans-serif}
+
+.ds-kpis{display:grid;grid-template-columns:repeat(4,1fr);gap:6px}
+.ds-kpi{background:rgba(255,255,255,.025);border:1px solid var(--border);border-radius:10px;padding:8px;text-align:center;opacity:0;transform:translateY(8px);transition:.4s}
+.ds-kpi.show{opacity:1;transform:translateY(0)}
+.ds-kpi b{display:block;font-size:1.05rem;font-weight:900;line-height:1.1}
+.ds-kpi span{font-size:.6rem;color:var(--muted)}
+
+.ds-bottom{display:grid;grid-template-columns:1fr 1fr;gap:8px;flex:1;min-height:0}
+.ds-list,.ds-chart{background:rgba(255,255,255,.025);border:1px solid var(--border);border-radius:11px;padding:9px 11px;overflow:hidden;display:flex;flex-direction:column}
+.ds-list h4,.ds-chart h4{font-size:.68rem;color:var(--muted);font-weight:900;margin-bottom:7px;letter-spacing:1px;text-transform:uppercase}
+.ds-pl{display:flex;flex-direction:column;gap:4px;overflow:hidden}
+.ds-row{display:flex;align-items:center;gap:6px;font-size:.7rem;padding:3px 6px;border-radius:6px;background:rgba(255,255,255,.02)}
+.ds-row .rk{color:var(--muted);font-weight:900;width:18px;font-size:.62rem}
+.ds-row .nm{flex:1;font-weight:900;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.ds-row .sc{color:var(--gold);font-weight:900;font-size:.68rem}
+
+.ds-bars{display:flex;flex-direction:column;gap:6px;flex:1;justify-content:center}
+.ds-b{display:flex;align-items:center;gap:6px;font-size:.62rem}
+.ds-b .lbl{width:50px;color:var(--muted);font-weight:900}
+.ds-b .bar{flex:1;height:7px;background:#1a1a2c;border-radius:4px;overflow:hidden}
+.ds-b .bar i{display:block;height:100%;border-radius:4px;width:0;transition:width 1.2s cubic-bezier(.2,.8,.3,1)}
+.ds-b .val{color:#fff;font-weight:900;min-width:24px;text-align:left}
+
+.confetti{position:fixed;inset:0;pointer-events:none;z-index:99}
+.cf{position:absolute;width:9px;height:14px;animation:fall linear forwards}
+@keyframes fall{to{transform:translateY(110vh) rotate(720deg);opacity:.5}}
+@media (prefers-reduced-motion: reduce){.cf{display:none}}
+</style>
+</head>
+<body>
+<header>
+  <h1>🏆 شاشة الفوز والنتائج</h1>
+  <p>4 أنماط لعرض نتيجة الفعالية بعد انتهائها</p>
+</header>
+
+<div class="tabs">
+  <button class="tab active" data-p="champ">👑 تتويج البطل</button>
+  <button class="tab" data-p="lb">🏅 لوحة الترتيب</button>
+  <button class="tab" data-p="cin">🎬 إعلان سينمائي</button>
+  <button class="tab" data-p="dash">📊 نتائج تفصيلية</button>
+</div>
+
+<!-- 1) Champion -->
+<div class="panel active" id="panel-champ">
+  <div class="scene" id="sc-champ">
+    <div class="rays"></div>
+    <div class="champ-label">— THE CHAMPION —</div>
+    <div class="champ-trophy">🏆</div>
+    <div class="champ-card">
+      <div class="champ-av">
+        <div class="champ-crown">👑</div>
+        ن
+      </div>
+      <div class="champ-info">
+        <h2>WINNER</h2>
+        <div class="nm">نورة الصقري</div>
+        <div class="pr">💰 الجائزة: <b style="color:var(--gold)">500 نقطة</b></div>
+      </div>
+    </div>
+  </div>
+  <button class="play" onclick="playChamp(this)">تشغيل العرض</button>
+  <p class="note"><b>تتويج درامي</b> بأشعة ذهبية دوّارة + كأس يتحرك + بطاقة الفائز ببروفايل وتاج. مثالي لـ <b>اللحظة الذهبية</b> آخر الفعالية، يخلق إثارة وlikes</p>
+</div>
+
+<!-- 2) Leaderboard -->
+<div class="panel" id="panel-lb">
+  <div class="scene" id="sc-lb">
+    <div class="lb-head">
+      <h2>🏅 ترتيب الفائزين</h2>
+      <div class="sub">— FINAL STANDINGS —</div>
+    </div>
+    <!-- Podium -->
+    <div class="lb-podium">
+      <!-- 2nd place -->
+      <div class="podium-col" data-rank="2">
+        <div class="pd-av silver">س</div>
+        <div class="pd-nm">سلطان</div>
+        <div class="pd-sc">320 ⭐</div>
+        <div class="pd-bar silver" data-rank="2"></div>
+      </div>
+      <!-- 1st place -->
+      <div class="podium-col" data-rank="1">
+        <div class="pd-av gold">ن</div>
+        <div class="pd-nm" style="color:var(--gold)">نورة</div>
+        <div class="pd-sc" style="font-size:.8rem">500 ⭐</div>
+        <div class="pd-bar gold" data-rank="1"></div>
+      </div>
+      <!-- 3rd place -->
+      <div class="podium-col" data-rank="3">
+        <div class="pd-av bronze">ر</div>
+        <div class="pd-nm">ريم</div>
+        <div class="pd-sc">240 ⭐</div>
+        <div class="pd-bar bronze" data-rank="3"></div>
+      </div>
+    </div>
+    <!-- Rest -->
+    <div class="lb-rest" id="lb-rest"></div>
+  </div>
+  <button class="play" onclick="playLB(this)">تشغيل العرض</button>
+  <p class="note">منصة تتويج <b>الثلاثة الأوائل</b> بألوان ذهب/فضة/برونز + أعمدة بأطوال مختلفة + قائمة لباقي المراكز (4-10) تظهر بالتتابع. الأفضل للبطولات الكبيرة</p>
+</div>
+
+<!-- 3) Cinematic -->
+<div class="panel" id="panel-cin">
+  <div class="scene" id="sc-cin">
+    <div class="cin-bg"></div>
+    <div class="lens-flare"></div>
+    <div class="cin-bars cin-bar-top"></div>
+    <div class="cin-bars cin-bar-bot"></div>
+    <div class="cin-text">
+      <div class="cin-eyebrow">AND THE WINNER IS</div>
+      <div class="cin-name">نورة الصقري</div>
+      <div class="cin-prize">💰 500 نقطة + لقب البطل</div>
+      <div class="cin-stats">
+        <div class="cs-i"><b>8</b><span>WINS</span></div>
+        <div class="cs-i"><b>42</b><span>ANSWERS</span></div>
+        <div class="cs-i"><b>96%</b><span>ACCURACY</span></div>
+      </div>
+    </div>
+  </div>
+  <button class="play" onclick="playCin(this)">تشغيل العرض</button>
+  <p class="note"><b>انتقال سينمائي</b> بأشرطة سوداء فوق وتحت تنفتح ببطء (cinematic bars) + lens flare ذهبي + خط كبير بنمط أفلام هوليوود + إحصائيات قصيرة بالنص. <b>دراماتيكي جداً</b> للنهائيات والإعلانات الكبرى</p>
+</div>
+
+<!-- 4) Dashboard -->
+<div class="panel" id="panel-dash">
+  <div class="scene" id="sc-dash">
+    <div class="ds-head">
+      <h2>📊 نتائج <b>حرب الكلمات</b></h2>
+      <div class="ds-tag"><span class="dot"></span> انتهت</div>
+    </div>
+
+    <div class="ds-winner">
+      <div class="ds-w-av">ن</div>
+      <div class="ds-w-info">
+        <div class="ds-w-label">🏆 الفائز · أفضل لاعب</div>
+        <div class="ds-w-name">نورة الصقري</div>
+      </div>
+      <div class="ds-w-prize">+500</div>
+    </div>
+
+    <div class="ds-kpis">
+      <div class="ds-kpi"><b id="dk1" style="color:#22d3ee">142</b><span>كلمة</span></div>
+      <div class="ds-kpi"><b id="dk2" style="color:#f5c542">38</b><span>مشارك</span></div>
+      <div class="ds-kpi"><b id="dk3" style="color:#a855f7">12:34</b><span>المدة</span></div>
+      <div class="ds-kpi"><b id="dk4" style="color:#22c55e">96%</b><span>التفاعل</span></div>
+    </div>
+
+    <div class="ds-bottom">
+      <div class="ds-list">
+        <h4>🥇 المراكز الأولى</h4>
+        <div class="ds-pl">
+          <div class="ds-row"><span class="rk">1</span><span class="nm">🥇 نورة</span><span class="sc">500</span></div>
+          <div class="ds-row"><span class="rk">2</span><span class="nm">🥈 سلطان</span><span class="sc">320</span></div>
+          <div class="ds-row"><span class="rk">3</span><span class="nm">🥉 ريم</span><span class="sc">240</span></div>
+          <div class="ds-row"><span class="rk">4</span><span class="nm">خالد</span><span class="sc">180</span></div>
+          <div class="ds-row"><span class="rk">5</span><span class="nm">العنود</span><span class="sc">145</span></div>
+        </div>
+      </div>
+      <div class="ds-chart">
+        <h4>📈 الفرق المتنافسة</h4>
+        <div class="ds-bars">
+          <div class="ds-b"><span class="lbl">🔵 النمور</span><div class="bar"><i style="background:linear-gradient(90deg,#3b82f6,#22d3ee)" data-w="72%"></i></div><span class="val">72%</span></div>
+          <div class="ds-b"><span class="lbl">🔴 الصقور</span><div class="bar"><i style="background:linear-gradient(90deg,#ef4444,#f97316)" data-w="58%"></i></div><span class="val">58%</span></div>
+          <div class="ds-b"><span class="lbl">🟢 الذئاب</span><div class="bar"><i style="background:linear-gradient(90deg,#16a34a,#22c55e)" data-w="45%"></i></div><span class="val">45%</span></div>
+          <div class="ds-b"><span class="lbl">🟡 العقبان</span><div class="bar"><i style="background:linear-gradient(90deg,#d97706,#f5c542)" data-w="38%"></i></div><span class="val">38%</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <button class="play" onclick="playDash(this)">تشغيل العرض</button>
+  <p class="note">لوحة <b>نتائج تفصيلية</b> فيها: الفائز الرئيسي + 4 KPIs بأرقام كبيرة + قائمة المراكز الأولى + رسم بياني للفرق. <b>الأفضل للوحة التحكم</b> بعد انتهاء الفعالية والمشاركة على وسائل التواصل</p>
+</div>
+
+<div class="confetti" id="cfbox"></div>
+
+<a href="/" style="position:fixed;top:14px;right:14px;background:rgba(12,12,22,.85);backdrop-filter:blur(10px);color:#22d3ee;border:1px solid #0891b2;border-radius:30px;padding:8px 16px;font-family:Tajawal,sans-serif;font-weight:900;font-size:.78rem;text-decoration:none;z-index:200">← المعرض</a>
+
+<script>
+let audioCtx;
+function snd(f,d=.08,v=.12,type="sine"){
+  audioCtx=audioCtx||new (window.AudioContext||window.webkitAudioContext)();
+  const o=audioCtx.createOscillator(),g=audioCtx.createGain();
+  o.frequency.value=f;o.type=type;
+  g.gain.setValueAtTime(v,audioCtx.currentTime);
+  g.gain.exponentialRampToValueAtTime(.001,audioCtx.currentTime+d);
+  o.connect(g);g.connect(audioCtx.destination);o.start();o.stop(audioCtx.currentTime+d);
+}
+function winTune(){[523,659,784,1047,1318].forEach((f,i)=>setTimeout(()=>snd(f,.25,.16),i*100));}
+function confetti(){
+  const box=document.getElementById("cfbox"),colors=["#22d3ee","#f5c542","#a855f7","#22c55e","#ef4444","#fb923c"];
+  for(let i=0;i<70;i++){
+    const d=document.createElement("div");d.className="cf";
+    d.style.left=Math.random()*100+"vw";d.style.top="-20px";
+    d.style.background=colors[i%colors.length];
+    d.style.animationDuration=(2.2+Math.random()*2)+"s";
+    box.appendChild(d);setTimeout(()=>d.remove(),4500);
+  }
+}
+
+document.querySelectorAll(".tab").forEach(t=>t.onclick=()=>{
+  document.querySelectorAll(".tab,.panel").forEach(x=>x.classList.remove("active"));
+  t.classList.add("active");
+  document.getElementById("panel-"+t.dataset.p).classList.add("active");
+});
+
+/* ============ Champion ============ */
+function playChamp(btn){
+  btn.disabled=true;
+  const sc=document.getElementById("sc-champ");
+  sc.classList.remove("show");
+  setTimeout(()=>{
+    sc.classList.add("show");
+    snd(800,.3,.15);
+    setTimeout(()=>{winTune();confetti();},800);
+    setTimeout(()=>{btn.disabled=false;},2500);
+  },100);
+}
+
+/* ============ Leaderboard ============ */
+const REST=[
+  ["4","خ","#059669","خالد","180"],
+  ["5","ع","#d97706","العنود","145"],
+  ["6","م","#dc2626","مشعل","120"],
+  ["7","س","#2563eb","سارة","98"],
+  ["8","ف","#9333ea","فيصل","85"]
+];
+function buildLBRest(){
+  const c=document.getElementById("lb-rest");c.innerHTML="";
+  REST.forEach(([rk,letter,color,name,score])=>{
+    const r=document.createElement("div");
+    r.className="lb-row";
+    r.innerHTML=`<span class="lb-rank">${rk}</span><div class="lb-av" style="background:${color}">${letter}</div><span class="lb-nm">${name}</span><span class="lb-sc">${score} ⭐</span>`;
+    c.appendChild(r);
+  });
+}
+buildLBRest();
+function playLB(btn){
+  btn.disabled=true;
+  document.querySelectorAll(".podium-col,.lb-row").forEach(x=>x.classList.remove("show"));
+  /* Reveal podium: 3rd, 2nd, 1st */
+  setTimeout(()=>{document.querySelector('.podium-col[data-rank="3"]').classList.add("show");snd(440,.2,.12);},300);
+  setTimeout(()=>{document.querySelector('.podium-col[data-rank="2"]').classList.add("show");snd(523,.2,.13);},900);
+  setTimeout(()=>{document.querySelector('.podium-col[data-rank="1"]').classList.add("show");snd(659,.3,.16);winTune();confetti();},1500);
+  /* Rest */
+  document.querySelectorAll(".lb-row").forEach((r,i)=>{
+    setTimeout(()=>{r.classList.add("show");snd(900,.06,.07);},2200+i*220);
+  });
+  setTimeout(()=>{btn.disabled=false;},4500);
+}
+
+/* ============ Cinematic ============ */
+function playCin(btn){
+  btn.disabled=true;
+  const sc=document.getElementById("sc-cin");
+  sc.classList.remove("intro","reveal");
+  setTimeout(()=>{sc.classList.add("intro");snd(120,.5,.15,"sine");},100);
+  setTimeout(()=>{
+    sc.classList.add("reveal");
+    snd(80,.6,.16,"sine");
+    setTimeout(()=>{winTune();confetti();},800);
+  },1200);
+  setTimeout(()=>{btn.disabled=false;},3500);
+}
+
+/* ============ Dashboard ============ */
+function playDash(btn){
+  btn.disabled=true;
+  document.querySelectorAll(".ds-kpi").forEach(x=>x.classList.remove("show"));
+  document.querySelectorAll(".ds-b .bar i").forEach(b=>{b.style.width="0";});
+  /* Count up KPIs */
+  const kpis=[[142,"dk1"],[38,"dk2"],[null,"dk3",""],[96,"dk4","%"]];
+  const els=document.querySelectorAll(".ds-kpi");
+  els.forEach((e,i)=>setTimeout(()=>{e.classList.add("show");snd(800+i*120,.08,.1);},i*180));
+  /* Animate bars */
+  setTimeout(()=>{
+    document.querySelectorAll(".ds-b .bar i").forEach(b=>b.style.width=b.dataset.w);
+    snd(1047,.3,.14);
+  },1200);
+  setTimeout(()=>{confetti();btn.disabled=false;},1800);
+}
+
+/* تشغيل أول مرة */
+window.addEventListener("load",()=>setTimeout(()=>document.getElementById("sc-champ").classList.add("show"),500));
+</script>
+</body>
+</html>

@@ -192,6 +192,20 @@ body{
 .prev-obs .mock .sb i.h{background:linear-gradient(135deg,#ec4899,#be185d);box-shadow:0 0 8px rgba(236,72,153,.6)}
 .prev-obs .mock .ct{flex:1;display:flex;align-items:center;justify-content:center;font-size:.65rem;color:#22c55e;font-weight:900;background:#0a0a14}
 
+/* شاشة الفوز */
+.prev-results{background:radial-gradient(ellipse at 50% 30%,#3b2a08 0%,#06060b 70%);position:relative}
+.prev-results::after{content:"🏆";position:absolute;font-size:3.2rem;filter:drop-shadow(0 0 22px #f5c542)}
+.prev-results .crown{position:absolute;top:14px;left:50%;transform:translateX(-50%);font-size:.65rem;color:#f5c542;font-weight:900;letter-spacing:3px}
+.prev-results .nm{position:absolute;bottom:14px;left:50%;transform:translateX(-50%);background:rgba(245,197,66,.15);border:1px solid rgba(245,197,66,.4);color:#fde68a;padding:3px 14px;border-radius:20px;font-weight:900;font-size:.7rem;backdrop-filter:blur(8px)}
+
+/* إعلان الإيقاف */
+.prev-breaks{background:radial-gradient(ellipse at 50% 50%,#1e1145 0%,#06060b 70%);position:relative;display:flex;align-items:center;justify-content:center}
+.prev-breaks::after{display:none}
+.prev-breaks .card{background:rgba(168,85,247,.1);backdrop-filter:blur(10px);border:1.5px solid rgba(168,85,247,.4);border-radius:10px;padding:8px 16px;text-align:center;box-shadow:0 0 30px rgba(168,85,247,.2)}
+.prev-breaks .card .lbl{font-size:.55rem;color:#22d3ee;font-weight:900;letter-spacing:3px}
+.prev-breaks .card .n{font-size:2rem;font-weight:900;background:linear-gradient(135deg,#22d3ee,#a855f7);-webkit-background-clip:text;background-clip:text;color:transparent;font-family:Impact,sans-serif;line-height:1;margin:2px 0}
+.prev-breaks .card .t{font-size:.6rem;color:#d8b4fe;font-weight:900}
+
 /* تذييل */
 .footer{
   text-align:center;margin-top:60px;padding:20px;
@@ -219,8 +233,8 @@ body{
   <div class="disclaimer">⚠️ هذي البيئة منفصلة تماماً عن tiktok-live-reader و BthLab</div>
 
   <div class="stats">
-    <div class="stat"><b>12</b><span>أقسام</span></div>
-    <div class="stat"><b>33</b><span>تصميم</span></div>
+    <div class="stat"><b>14</b><span>أقسام</span></div>
+    <div class="stat"><b>41</b><span>تصميم</span></div>
     <div class="stat"><b>100%</b><span>تفاعلي</span></div>
   </div>
 </div>
@@ -461,6 +475,53 @@ body{
       <div class="card-title">🖥️ شرح إضافة الأوفرلي في Live Studio / OBS</div>
       <div class="card-desc">شرائح متنقلة بمحاكاة واجهة + خطوات عمودية بأكواد + شرح بجنب الصورة مع checklist + مرجع سريع بـ 6 بطاقات. كل الأنماط فيها لقطات محاكاة للتطبيق</div>
       <div class="card-tags"><span class="tag">carousel</span><span class="tag">timeline</span><span class="tag">side-by-side</span><span class="tag">cheatsheet</span></div>
+      <div class="card-arrow">←</div>
+    </a>
+  </div>
+</div>
+
+<!-- شاشة الفوز -->
+<div class="section">
+  <div class="section-h">
+    <span class="ico">🏆</span>
+    <h2>شاشة الفوز والنتائج</h2>
+    <div class="line"></div>
+    <span class="count">4 أنماط</span>
+  </div>
+  <div class="grid g1">
+    <a href="/designs/results.html" class="card" style="--card-border:#f5c542;--card-glow:rgba(245,197,66,.08);--card-arrow:#d97706">
+      <div class="card-preview prev-results">
+        <div class="crown">— CHAMPION —</div>
+        <div class="nm">👑 نورة الصقري</div>
+      </div>
+      <div class="card-title">🏆 شاشة الفوز والنتائج بأربعة أنماط</div>
+      <div class="card-desc">تتويج البطل بأشعة ذهبية + لوحة ترتيب بمنصة الثلاثة الأوائل + إعلان سينمائي بأشرطة سوداء وlens flare + نتائج تفصيلية بـ KPIs ورسوم بيانية</div>
+      <div class="card-tags"><span class="tag">champion</span><span class="tag">leaderboard</span><span class="tag">cinematic</span><span class="tag">dashboard</span></div>
+      <div class="card-arrow">←</div>
+    </a>
+  </div>
+</div>
+
+<!-- إعلانات الإيقاف -->
+<div class="section">
+  <div class="section-h">
+    <span class="ico">⏸️</span>
+    <h2>إعلانات الإيقاف بين الجولات</h2>
+    <div class="line"></div>
+    <span class="count">4 أنماط</span>
+  </div>
+  <div class="grid g1">
+    <a href="/designs/breaks.html" class="card" style="--card-border:#a855f7;--card-glow:rgba(168,85,247,.08);--card-arrow:#7c3aed">
+      <div class="card-preview prev-breaks">
+        <div class="card">
+          <div class="lbl">ROUND</div>
+          <div class="n">3</div>
+          <div class="t">⏱️ 00:15</div>
+        </div>
+      </div>
+      <div class="card-title">⏸️ إعلانات الإيقاف بين الجولات بأربعة أنماط</div>
+      <div class="card-desc">بطاقة الجولة الزجاجية + استراحة الملعب الرياضية بلوحة نتائج + نشرة عاجلة TV-style بشريط أخبار متحرك + إيقاف minimal أنيق بعداد رقمي</div>
+      <div class="card-tags"><span class="tag">round card</span><span class="tag">stadium</span><span class="tag">breaking news</span><span class="tag">minimal</span></div>
       <div class="card-arrow">←</div>
     </a>
   </div>

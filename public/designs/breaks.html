@@ -1,0 +1,438 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>إعلانات الإيقاف بين الجولات — نماذج التصميم</title>
+<link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;900&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#06060b;--card:#0c0c16;--card2:#10101e;--border:#1c1c2e;
+  --accent:#0891b2;--accent2:#22d3ee;--gold:#f5c542;
+  --text:#e8eaf2;--muted:#8a8fa3;
+  --green:#22c55e;--red:#ef4444;--purple:#a855f7;--orange:#f97316
+}
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:var(--bg);color:var(--text);font-family:'Tajawal',sans-serif;min-height:100vh;padding:18px 12px 60px}
+header{text-align:center;margin-bottom:18px}
+header h1{font-size:1.4rem;font-weight:900;background:linear-gradient(90deg,#22d3ee,#a855f7);-webkit-background-clip:text;background-clip:text;color:transparent}
+header p{color:var(--muted);font-size:.82rem;margin-top:4px}
+.tabs{display:flex;gap:7px;justify-content:center;margin-bottom:18px;flex-wrap:wrap}
+.tab{background:var(--card);border:1px solid var(--border);color:var(--muted);padding:9px 15px;border-radius:30px;font-family:inherit;font-size:.85rem;font-weight:900;cursor:pointer;transition:.25s}
+.tab.active{color:#fff;border-color:var(--purple);box-shadow:0 0 14px rgba(168,85,247,.35)}
+.panel{display:none;flex-direction:column;align-items:center}
+.panel.active{display:flex}
+.scene{position:relative;width:min(94vw,560px);aspect-ratio:16/10;border-radius:18px;overflow:hidden;border:1px solid var(--border);margin-bottom:14px}
+.play{font-family:inherit;font-weight:900;font-size:1rem;color:#fff;background:linear-gradient(135deg,#22d3ee,#a855f7);border:none;border-radius:40px;padding:12px 40px;cursor:pointer;box-shadow:0 4px 22px rgba(168,85,247,.35)}
+.play:active{transform:scale(.95)}
+.play:disabled{opacity:.5}
+.note{margin-top:12px;font-size:.78rem;color:var(--muted);max-width:480px;text-align:center;line-height:1.8}
+.note b{color:#d8b4fe}
+
+/* ============================================================ */
+/* 1) Round Card (بطاقة الجولة)                                 */
+/* ============================================================ */
+#sc-card{background:radial-gradient(ellipse at 50% 50%,#1e1145 0%,#0a0612 60%,#06060b 100%);display:flex;align-items:center;justify-content:center}
+.rc-stars{position:absolute;inset:0;overflow:hidden}
+.rc-star{position:absolute;width:2px;height:2px;background:#fff;border-radius:50%;opacity:.6;animation:tw 2.4s infinite}
+@keyframes tw{50%{opacity:.1}}
+.rc-card{
+  position:relative;width:82%;max-width:380px;
+  background:linear-gradient(145deg,rgba(168,85,247,.15),rgba(34,211,238,.08));
+  backdrop-filter:blur(20px) saturate(140%);
+  border:2px solid rgba(168,85,247,.45);border-radius:22px;
+  padding:22px 24px;text-align:center;
+  box-shadow:0 0 60px rgba(168,85,247,.3),inset 0 1px 0 rgba(255,255,255,.1);
+  transform:scale(.85) rotate(-3deg);opacity:0;
+  transition:transform .8s cubic-bezier(.2,.8,.3,1.4),opacity .5s
+}
+#sc-card.show .rc-card{transform:scale(1) rotate(0);opacity:1}
+.rc-eyebrow{font-size:.7rem;font-weight:900;color:var(--accent2);letter-spacing:5px;margin-bottom:8px}
+.rc-num{
+  font-size:5rem;font-weight:900;line-height:1;
+  background:linear-gradient(135deg,#22d3ee,#a855f7);
+  -webkit-background-clip:text;background-clip:text;color:transparent;
+  font-family:Impact,sans-serif;letter-spacing:-3px;margin-bottom:6px;
+  text-shadow:0 0 50px rgba(168,85,247,.4)
+}
+.rc-label{font-size:.95rem;font-weight:900;color:#fff;margin-bottom:14px}
+.rc-divider{height:1px;background:linear-gradient(90deg,transparent,rgba(168,85,247,.4),transparent);margin:14px 0}
+.rc-up{font-size:.7rem;color:var(--muted);font-weight:900;letter-spacing:2px;margin-bottom:6px}
+.rc-topic{font-size:1.1rem;font-weight:900;color:#fff}
+.rc-cd{margin-top:14px;display:flex;align-items:center;justify-content:center;gap:8px;color:var(--accent2);font-weight:900;font-size:.85rem}
+.rc-cd-num{
+  background:rgba(34,211,238,.12);border:1px solid rgba(34,211,238,.4);
+  color:var(--accent2);padding:5px 14px;border-radius:30px;
+  font-family:monospace;font-size:1rem;letter-spacing:1px
+}
+
+/* ============================================================ */
+/* 2) Stadium Score Break (استراحة كرة قدم)                    */
+/* ============================================================ */
+#sc-stadium{background:linear-gradient(180deg,#0a1228 0%,#0a1228 30%,#173017 32%,#1d3a1b 100%);overflow:hidden}
+.st-light{position:absolute;top:-10%;left:50%;transform:translateX(-50%);width:200%;height:140px;background:radial-gradient(ellipse at top,rgba(245,197,66,.18),transparent 60%);pointer-events:none}
+.st-board{
+  position:absolute;top:14px;left:50%;transform:translateX(-50%);
+  background:#0a0a14;border:3px solid #2a2a40;border-radius:14px;
+  padding:10px 18px;display:flex;align-items:center;gap:18px;
+  box-shadow:0 0 30px rgba(245,197,66,.18),inset 0 0 20px rgba(0,0,0,.5);
+  font-family:monospace
+}
+.st-team{display:flex;flex-direction:column;align-items:center;gap:3px}
+.st-team .nm{font-size:.72rem;font-weight:900;color:#fff;font-family:Tajawal,sans-serif;letter-spacing:1px}
+.st-team .sc{font-size:2rem;font-weight:900;color:var(--gold);text-shadow:0 0 14px rgba(245,197,66,.6);font-family:Impact,sans-serif;line-height:1}
+.st-vs{font-size:.95rem;color:var(--muted);font-weight:900;font-family:Tajawal,sans-serif}
+
+.st-break{
+  position:absolute;top:50%;left:50%;transform:translate(-50%,-50%) scale(0);
+  text-align:center;z-index:5;transition:transform .7s cubic-bezier(.2,.8,.3,1.4)
+}
+#sc-stadium.show .st-break{transform:translate(-50%,-50%) scale(1)}
+.st-eyebrow{font-size:.78rem;color:#fde68a;font-weight:900;letter-spacing:5px;margin-bottom:8px}
+.st-title{font-size:2.8rem;font-weight:900;color:#fff;letter-spacing:-1px;line-height:1;text-shadow:0 4px 20px rgba(0,0,0,.6),0 0 30px rgba(245,197,66,.3)}
+.st-sub{font-size:.85rem;color:#fde68a;margin-top:8px;font-weight:900}
+.st-timer{margin-top:14px;display:inline-flex;align-items:center;gap:7px;background:rgba(0,0,0,.5);backdrop-filter:blur(8px);border:1px solid rgba(245,197,66,.4);color:var(--gold);padding:7px 18px;border-radius:30px;font-weight:900;font-size:.9rem;font-family:monospace}
+
+.field-lines{position:absolute;bottom:0;left:0;right:0;height:50%;background:repeating-linear-gradient(90deg,transparent 0 30px,rgba(255,255,255,.04) 30px 31px);pointer-events:none}
+
+/* ============================================================ */
+/* 3) Newsroom Breaking (نشرة عاجلة)                            */
+/* ============================================================ */
+#sc-news{background:linear-gradient(135deg,#7f1d1d,#1a0a0a 70%);position:relative;overflow:hidden}
+.news-noise{position:absolute;inset:0;background-image:repeating-linear-gradient(0deg,rgba(255,255,255,.02) 0px,rgba(255,255,255,.02) 1px,transparent 1px,transparent 3px);pointer-events:none;opacity:.5}
+.news-bg-text{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-size:9rem;font-weight:900;color:rgba(255,255,255,.04);font-family:Impact,sans-serif;letter-spacing:-4px;overflow:hidden;pointer-events:none;white-space:nowrap}
+.news-tag{
+  position:absolute;top:14px;right:14px;
+  background:#fff;color:#dc2626;padding:5px 14px;border-radius:6px;
+  font-weight:900;font-size:.78rem;letter-spacing:2px;
+  animation:flash 1.2s infinite
+}
+@keyframes flash{50%{opacity:.65}}
+.news-live{
+  position:absolute;top:14px;left:14px;display:flex;align-items:center;gap:7px;
+  background:rgba(0,0,0,.5);backdrop-filter:blur(8px);
+  border:1px solid rgba(255,255,255,.15);color:#fff;
+  padding:5px 14px;border-radius:6px;font-weight:900;font-size:.72rem;letter-spacing:1.5px
+}
+.news-live .dot{width:7px;height:7px;border-radius:50%;background:#ef4444;animation:pulse 1.4s infinite}
+@keyframes pulse{50%{opacity:.4}}
+
+.news-content{position:absolute;left:0;right:0;bottom:0;padding:24px 18px}
+.news-eyebrow{font-size:.78rem;font-weight:900;color:#fbbf24;letter-spacing:4px;margin-bottom:8px;opacity:0;transform:translateY(8px);transition:.5s}
+#sc-news.show .news-eyebrow{opacity:1;transform:translateY(0)}
+.news-title{font-size:2.2rem;font-weight:900;color:#fff;line-height:1.1;letter-spacing:-1px;margin-bottom:14px;text-shadow:0 4px 14px rgba(0,0,0,.6);opacity:0;transform:translateY(12px);transition:.6s .2s}
+#sc-news.show .news-title{opacity:1;transform:translateY(0)}
+
+.news-ticker{
+  position:absolute;left:0;right:0;bottom:0;
+  background:#000;border-top:2px solid #dc2626;
+  display:flex;align-items:center;overflow:hidden;height:32px
+}
+.news-ticker .label{
+  background:#dc2626;color:#fff;font-weight:900;font-size:.74rem;
+  padding:0 14px;height:100%;display:flex;align-items:center;letter-spacing:1px;flex-shrink:0
+}
+.ticker-track{display:flex;animation:tickerScroll 18s linear infinite;white-space:nowrap;color:#fff;font-size:.78rem;font-weight:700;padding-left:20px}
+.ticker-track span{margin-left:24px}
+.ticker-track span::before{content:"●";color:#fbbf24;margin-left:8px}
+@keyframes tickerScroll{from{transform:translateX(0)}to{transform:translateX(100%)}}
+
+/* ============================================================ */
+/* 4) Minimal Pause (إيقاف أنيق)                                */
+/* ============================================================ */
+#sc-min{background:radial-gradient(ellipse at 50% 50%,#0a1a28 0%,#06060b 70%);display:flex;align-items:center;justify-content:center;flex-direction:column;padding:20px;gap:18px}
+.min-ico{
+  width:80px;height:80px;border-radius:50%;
+  background:linear-gradient(135deg,rgba(34,211,238,.1),rgba(34,211,238,.02));
+  border:2px solid rgba(34,211,238,.3);
+  display:flex;align-items:center;justify-content:center;
+  font-size:2rem;
+  opacity:0;transform:scale(.5);transition:.6s cubic-bezier(.2,.8,.3,1.4)
+}
+#sc-min.show .min-ico{opacity:1;transform:scale(1)}
+.min-ico::before,.min-ico::after{
+  content:"";position:absolute;inset:-3px;border-radius:50%;
+  border:1px solid var(--accent2);opacity:.4;animation:ringPulse 2.5s infinite
+}
+.min-ico::after{animation-delay:1.25s}
+@keyframes ringPulse{0%{transform:scale(1);opacity:.4}100%{transform:scale(1.5);opacity:0}}
+.min-title{font-size:1.5rem;font-weight:900;color:#fff;opacity:0;transform:translateY(10px);transition:.6s .2s}
+#sc-min.show .min-title{opacity:1;transform:translateY(0)}
+.min-sub{font-size:.85rem;color:var(--muted);text-align:center;opacity:0;transform:translateY(10px);transition:.6s .35s;max-width:400px;line-height:1.7}
+#sc-min.show .min-sub{opacity:1;transform:translateY(0)}
+
+.min-cd{
+  display:flex;align-items:center;gap:8px;
+  opacity:0;transform:translateY(10px);transition:.6s .5s
+}
+#sc-min.show .min-cd{opacity:1;transform:translateY(0)}
+.min-cd-digit{
+  width:44px;height:54px;background:rgba(255,255,255,.04);
+  border:1px solid var(--border);border-radius:10px;
+  display:flex;align-items:center;justify-content:center;
+  font-size:1.7rem;font-weight:900;font-family:monospace;color:var(--accent2);
+  text-shadow:0 0 12px rgba(34,211,238,.4)
+}
+.min-cd-colon{color:var(--muted);font-size:1.5rem;font-weight:900}
+
+.min-next{
+  display:flex;align-items:center;gap:10px;
+  background:rgba(34,211,238,.06);border:1px solid rgba(34,211,238,.25);
+  border-radius:30px;padding:6px 16px;
+  opacity:0;transform:translateY(10px);transition:.6s .65s
+}
+#sc-min.show .min-next{opacity:1;transform:translateY(0)}
+.min-next-label{font-size:.66rem;color:var(--muted);font-weight:900;letter-spacing:1.5px}
+.min-next-text{font-size:.82rem;font-weight:900;color:var(--accent2)}
+
+.particle-bg{position:absolute;inset:0;overflow:hidden;pointer-events:none}
+.p-dot{position:absolute;width:3px;height:3px;border-radius:50%;background:var(--accent2);opacity:.4;animation:floatP linear infinite}
+@keyframes floatP{from{transform:translate(0,0);opacity:0}10%{opacity:.5}90%{opacity:.5}to{transform:translate(var(--dx),-100vh);opacity:0}}
+</style>
+</head>
+<body>
+<header>
+  <h1>⏸️ إعلانات الإيقاف بين الجولات</h1>
+  <p>4 أنماط لإعلانات الفواصل والاستراحات بين جولات الفعالية</p>
+</header>
+
+<div class="tabs">
+  <button class="tab active" data-p="card">🎴 بطاقة الجولة</button>
+  <button class="tab" data-p="stadium">⚽ استراحة الملعب</button>
+  <button class="tab" data-p="news">📺 نشرة عاجلة</button>
+  <button class="tab" data-p="min">✨ إيقاف أنيق</button>
+</div>
+
+<!-- 1) Round Card -->
+<div class="panel active" id="panel-card">
+  <div class="scene" id="sc-card">
+    <div class="rc-stars" id="rc-stars"></div>
+    <div class="rc-card">
+      <div class="rc-eyebrow">— ROUND —</div>
+      <div class="rc-num">3</div>
+      <div class="rc-label">الجولة الثالثة</div>
+      <div class="rc-divider"></div>
+      <div class="rc-up">القادم</div>
+      <div class="rc-topic">⚔️ تحدي الكلمات الصعبة</div>
+      <div class="rc-cd">⏱️ تبدأ خلال <span class="rc-cd-num" id="rc-cd">00:15</span></div>
+    </div>
+  </div>
+  <button class="play" onclick="playCard(this)">تشغيل العرض</button>
+  <p class="note"><b>بطاقة زجاجية</b> بنجوم متلألئة في الخلفية، رقم الجولة كبير بتدرج لوني، وعنوان الجولة القادمة + عداد تنازلي. مرنة وتناسب كل الفعاليات</p>
+</div>
+
+<!-- 2) Stadium Score Break -->
+<div class="panel" id="panel-stadium">
+  <div class="scene" id="sc-stadium">
+    <div class="st-light"></div>
+    <div class="field-lines"></div>
+    <div class="st-board">
+      <div class="st-team">
+        <div class="nm">النمور</div>
+        <div class="sc">42</div>
+      </div>
+      <div class="st-vs">VS</div>
+      <div class="st-team">
+        <div class="nm">الصقور</div>
+        <div class="sc">38</div>
+      </div>
+    </div>
+    <div class="st-break">
+      <div class="st-eyebrow">— HALF TIME —</div>
+      <div class="st-title">استراحة بين<br>الشوطين</div>
+      <div class="st-sub">🍿 خذوا راحة قصيرة</div>
+      <div class="st-timer">⏱️ <span id="st-cd">02:00</span></div>
+    </div>
+  </div>
+  <button class="play" onclick="playStadium(this)">تشغيل العرض</button>
+  <p class="note"><b>شاشة استراحة بنمط رياضي</b> فيها <b>لوحة نتائج علوية</b> بالأرقام الحالية + خط أخضر بنمط ملعب + النص الرئيسي والعداد. مثالية لـ <b>حرب الكلمات</b> وفعاليات الفرق</p>
+</div>
+
+<!-- 3) Newsroom Breaking -->
+<div class="panel" id="panel-news">
+  <div class="scene" id="sc-news">
+    <div class="news-bg-text">BREAK · جولة · BREAK</div>
+    <div class="news-noise"></div>
+    <span class="news-tag">⚡ عاجل</span>
+    <div class="news-live"><span class="dot"></span> LIVE · 23:14</div>
+    <div class="news-content">
+      <div class="news-eyebrow">— الجولة الثالثة قادمة —</div>
+      <div class="news-title">استعدوا!<br>كلمات أصعب 🔥</div>
+    </div>
+    <div class="news-ticker">
+      <div class="label">📰 آخر الأحداث</div>
+      <div class="ticker-track">
+        <span>نورة في الصدارة بـ 320 نقطة</span>
+        <span>22 لاعب تأهلوا للجولة الثالثة</span>
+        <span>جوائز إضافية للفائزين</span>
+        <span>أسرع إجابة من سلطان بـ 1.2 ثانية</span>
+      </div>
+    </div>
+  </div>
+  <button class="play" onclick="playNews(this)">تشغيل العرض</button>
+  <p class="note"><b>نمط نشرة عاجلة</b> بشريط أحمر فوق + أيقونة BREAKING تومض + شريط أخبار متحرك تحت بآخر التحديثات + خط noise للنسيج التلفزيوني. <b>دراماتيكي وعصري</b> ويثير الفضول</p>
+</div>
+
+<!-- 4) Minimal Pause -->
+<div class="panel" id="panel-min">
+  <div class="scene" id="sc-min">
+    <div class="particle-bg" id="p-bg"></div>
+    <div class="min-ico" style="position:relative">⏸️</div>
+    <div class="min-title">استراحة قصيرة</div>
+    <div class="min-sub">نأخذ نفس عميق ونعود بعد لحظات بجولة جديدة وتحديات أمتع</div>
+    <div class="min-cd">
+      <div class="min-cd-digit" id="md1">0</div>
+      <div class="min-cd-digit" id="md2">0</div>
+      <div class="min-cd-colon">:</div>
+      <div class="min-cd-digit" id="md3">3</div>
+      <div class="min-cd-digit" id="md4">0</div>
+    </div>
+    <div class="min-next">
+      <span class="min-next-label">القادم</span>
+      <span class="min-next-text">⚔️ تحدي الكلمات الصعبة</span>
+    </div>
+  </div>
+  <button class="play" onclick="playMin(this)">تشغيل العرض</button>
+  <p class="note"><b>تصميم نظيف وأنيق</b> بأيقونة توهج + عنوان واضح + عداد رقمي حديث (4 خانات منفصلة) + بطاقة "القادم". مع جزيئات صغيرة تطفو في الخلفية. <b>الأفضل للفعاليات الجادة</b> والاستراحات الطويلة</p>
+</div>
+
+<a href="/" style="position:fixed;top:14px;right:14px;background:rgba(12,12,22,.85);backdrop-filter:blur(10px);color:#22d3ee;border:1px solid #0891b2;border-radius:30px;padding:8px 16px;font-family:Tajawal,sans-serif;font-weight:900;font-size:.78rem;text-decoration:none;z-index:200">← المعرض</a>
+
+<script>
+let audioCtx;
+function snd(f,d=.08,v=.1,type="sine"){
+  audioCtx=audioCtx||new (window.AudioContext||window.webkitAudioContext)();
+  const o=audioCtx.createOscillator(),g=audioCtx.createGain();
+  o.frequency.value=f;o.type=type;
+  g.gain.setValueAtTime(v,audioCtx.currentTime);
+  g.gain.exponentialRampToValueAtTime(.001,audioCtx.currentTime+d);
+  o.connect(g);g.connect(audioCtx.destination);o.start();o.stop(audioCtx.currentTime+d);
+}
+
+document.querySelectorAll(".tab").forEach(t=>t.onclick=()=>{
+  document.querySelectorAll(".tab,.panel").forEach(x=>x.classList.remove("active"));
+  t.classList.add("active");
+  document.getElementById("panel-"+t.dataset.p).classList.add("active");
+});
+
+/* بناء النجوم لبطاقة الجولة */
+(function buildStars(){
+  const s=document.getElementById("rc-stars");
+  for(let i=0;i<40;i++){
+    const d=document.createElement("div");d.className="rc-star";
+    d.style.left=Math.random()*100+"%";d.style.top=Math.random()*100+"%";
+    d.style.animationDelay=(Math.random()*2.4)+"s";
+    s.appendChild(d);
+  }
+})();
+
+/* بناء جزيئات لـ Minimal */
+(function buildParticles(){
+  const p=document.getElementById("p-bg");
+  for(let i=0;i<12;i++){
+    const d=document.createElement("div");d.className="p-dot";
+    d.style.left=Math.random()*100+"%";d.style.bottom="-10px";
+    d.style.setProperty("--dx",(Math.random()*100-50)+"px");
+    d.style.animationDuration=(8+Math.random()*8)+"s";
+    d.style.animationDelay=(Math.random()*8)+"s";
+    p.appendChild(d);
+  }
+})();
+
+/* ============ Round Card ============ */
+let rcTimer;
+function playCard(btn){
+  btn.disabled=true;
+  clearInterval(rcTimer);
+  const sc=document.getElementById("sc-card");
+  sc.classList.remove("show");
+  setTimeout(()=>{
+    sc.classList.add("show");
+    snd(800,.3,.13);
+    setTimeout(()=>snd(1200,.4,.12),300);
+    /* عد تنازلي */
+    let t=15;
+    rcTimer=setInterval(()=>{
+      t--;
+      document.getElementById("rc-cd").textContent="00:"+String(Math.max(t,0)).padStart(2,"0");
+      if(t<=0){clearInterval(rcTimer);snd(440,.4,.15);}
+    },1000);
+    btn.disabled=false;
+  },200);
+}
+
+/* ============ Stadium ============ */
+let stTimer;
+function playStadium(btn){
+  btn.disabled=true;
+  clearInterval(stTimer);
+  const sc=document.getElementById("sc-stadium");
+  sc.classList.remove("show");
+  setTimeout(()=>{
+    sc.classList.add("show");
+    /* صفارة استراحة */
+    snd(1800,.15,.12,"sine");
+    setTimeout(()=>snd(1800,.15,.12,"sine"),200);
+    setTimeout(()=>snd(1400,.3,.12,"sine"),420);
+    /* عد تنازلي */
+    let t=120;
+    stTimer=setInterval(()=>{
+      t--;
+      const m=Math.floor(t/60),s=t%60;
+      document.getElementById("st-cd").textContent=String(m).padStart(2,"0")+":"+String(s).padStart(2,"0");
+      if(t<=0)clearInterval(stTimer);
+    },1000);
+    btn.disabled=false;
+  },200);
+}
+
+/* ============ News ============ */
+function playNews(btn){
+  btn.disabled=true;
+  const sc=document.getElementById("sc-news");
+  sc.classList.remove("show");
+  setTimeout(()=>{
+    sc.classList.add("show");
+    /* صوت نشرة */
+    [440,587,659].forEach((f,i)=>setTimeout(()=>snd(f,.18,.13,"sawtooth"),i*120));
+    btn.disabled=false;
+  },200);
+}
+
+/* ============ Minimal ============ */
+let mnTimer;
+function playMin(btn){
+  btn.disabled=true;
+  clearInterval(mnTimer);
+  const sc=document.getElementById("sc-min");
+  sc.classList.remove("show");
+  setTimeout(()=>{
+    sc.classList.add("show");
+    snd(880,.2,.1);
+    setTimeout(()=>snd(1320,.3,.1),250);
+    /* عد تنازلي 30 ثانية */
+    let t=30;
+    const upd=()=>{
+      const m=Math.floor(t/60),s=t%60;
+      const ms=String(m).padStart(2,"0"),ss=String(s).padStart(2,"0");
+      document.getElementById("md1").textContent=ms[0];
+      document.getElementById("md2").textContent=ms[1];
+      document.getElementById("md3").textContent=ss[0];
+      document.getElementById("md4").textContent=ss[1];
+    };
+    upd();
+    mnTimer=setInterval(()=>{
+      t--;upd();
+      if(t<=0){clearInterval(mnTimer);snd(660,.4,.13);}
+    },1000);
+    btn.disabled=false;
+  },200);
+}
+
+/* عرض أول مرة */
+window.addEventListener("load",()=>{
+  setTimeout(()=>document.getElementById("sc-card").classList.add("show"),500);
+});
+</script>
+</body>
+</html>

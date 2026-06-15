@@ -44,3 +44,7 @@ npm start
 ### الشروط والتعليمات
 - 📋 **شروط اللعب**: comic / timeline / minimal / glass
 - 🖥️ **شرح الأوفرلي**: carousel / vertical / side-by-side / cheatsheet
+
+### الفوز والاستراحات
+- 🏆 **شاشة الفوز**: champion / leaderboard / cinematic / dashboard
+- ⏸️ **إعلانات الإيقاف**: round card / stadium / breaking news / minimal
