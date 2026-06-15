@@ -40,3 +40,7 @@ npm start
 - 🧭 **Vertical Wizard**: تدفق خطوات للفعاليات المعقدة
 - 🎮 **Command Center**: لوحة شاملة بثلاث أعمدة
 - 🎈 **Floating Hub**: مدمج بصري للفعاليات السريعة
+
+### الشروط والتعليمات
+- 📋 **شروط اللعب**: comic / timeline / minimal / glass
+- 🖥️ **شرح الأوفرلي**: carousel / vertical / side-by-side / cheatsheet
