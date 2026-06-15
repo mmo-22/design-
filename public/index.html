@@ -206,6 +206,38 @@ body{
 .prev-breaks .card .n{font-size:2rem;font-weight:900;background:linear-gradient(135deg,#22d3ee,#a855f7);-webkit-background-clip:text;background-clip:text;color:transparent;font-family:Impact,sans-serif;line-height:1;margin:2px 0}
 .prev-breaks .card .t{font-size:.6rem;color:#d8b4fe;font-weight:900}
 
+/* لا يوجد بث */
+.prev-offline{background:radial-gradient(ellipse at 50% 50%,#0a1228,#06060b 70%);position:relative;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:6px}
+.prev-offline::after{display:none}
+.prev-offline .av{font-size:2.4rem;filter:saturate(.6) brightness(.7)}
+.prev-offline .t{font-size:.62rem;color:#94a3b8;font-weight:900}
+.prev-offline .z{position:absolute;color:rgba(255,255,255,.3);font-weight:900;animation:zzzFloat 4s ease-in-out infinite}
+.prev-offline .z:nth-child(3){top:18%;left:42%;font-size:.7rem}
+.prev-offline .z:nth-child(4){top:8%;left:50%;animation-delay:1.5s;font-size:.95rem}
+
+/* ترحيب */
+.prev-welcome{background:radial-gradient(ellipse at center,#1e1145,#06060b 70%);position:relative;display:flex;align-items:flex-start;justify-content:center;padding-top:18px}
+.prev-welcome::after{display:none}
+.prev-welcome .ban{background:linear-gradient(135deg,#ec4899,#be185d);border:2px solid #f9a8d4;border-radius:30px;padding:5px 14px 5px 5px;display:flex;align-items:center;gap:7px;box-shadow:0 6px 20px rgba(236,72,153,.4)}
+.prev-welcome .av{width:24px;height:24px;border-radius:50%;background:linear-gradient(135deg,#0891b2,#7c3aed);display:flex;align-items:center;justify-content:center;font-weight:900;color:#fff;font-size:.65rem;border:1.5px solid #fff}
+.prev-welcome .txt{color:#fff;font-size:.62rem;font-weight:900}
+.prev-welcome .em{font-size:.85rem}
+
+/* هدايا */
+.prev-gifts{background:radial-gradient(ellipse at center,#3b2a08,#06060b 70%);position:relative;display:flex;align-items:center;justify-content:center}
+.prev-gifts::after{content:"🦁";font-size:2.5rem;filter:drop-shadow(0 0 18px #f5c542);animation:bangBob 1.5s ease-in-out infinite}
+.prev-gifts .ray{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:120%;height:120%;background:conic-gradient(from 0deg,transparent 0deg,rgba(245,197,66,.18) 8deg,transparent 16deg,transparent 60deg,rgba(245,197,66,.18) 68deg,transparent 76deg,transparent 120deg,rgba(245,197,66,.18) 128deg,transparent 136deg,transparent 180deg,rgba(245,197,66,.18) 188deg,transparent 196deg,transparent 240deg,rgba(245,197,66,.18) 248deg,transparent 256deg);animation:raysSpin 14s linear infinite}
+@keyframes raysSpin{to{transform:translate(-50%,-50%) rotate(360deg)}}
+@keyframes bangBob{50%{transform:translateY(-4px) scale(1.06)}}
+
+/* البداية */
+.prev-intro{background:#000;position:relative;display:flex;align-items:center;justify-content:center;overflow:hidden}
+.prev-intro::after{display:none}
+.prev-intro .n{font-size:4rem;font-weight:900;font-family:Impact,sans-serif;background:linear-gradient(135deg,#22d3ee,#3b82f6);-webkit-background-clip:text;background-clip:text;color:transparent;text-shadow:0 0 30px rgba(34,211,238,.4)}
+.prev-intro .ring{position:absolute;width:60px;height:60px;border:2px solid rgba(34,211,238,.5);border-radius:50%;animation:ringExpand 2s ease-out infinite}
+@keyframes ringExpand{0%{width:30px;height:30px;opacity:1}100%{width:140px;height:140px;opacity:0}}
+@keyframes zzzFloat{0%{opacity:0;transform:translateY(20px) scale(.5)}40%{opacity:1;transform:translateY(0) scale(1)}100%{opacity:0;transform:translateY(-30px) scale(1.2)}}
+
 /* تذييل */
 .footer{
   text-align:center;margin-top:60px;padding:20px;
@@ -233,8 +265,8 @@ body{
   <div class="disclaimer">⚠️ هذي البيئة منفصلة تماماً عن tiktok-live-reader و BthLab</div>
 
   <div class="stats">
-    <div class="stat"><b>14</b><span>أقسام</span></div>
-    <div class="stat"><b>41</b><span>تصميم</span></div>
+    <div class="stat"><b>18</b><span>أقسام</span></div>
+    <div class="stat"><b>57</b><span>تصميم</span></div>
     <div class="stat"><b>100%</b><span>تفاعلي</span></div>
   </div>
 </div>
@@ -522,6 +554,97 @@ body{
       <div class="card-title">⏸️ إعلانات الإيقاف بين الجولات بأربعة أنماط</div>
       <div class="card-desc">بطاقة الجولة الزجاجية + استراحة الملعب الرياضية بلوحة نتائج + نشرة عاجلة TV-style بشريط أخبار متحرك + إيقاف minimal أنيق بعداد رقمي</div>
       <div class="card-tags"><span class="tag">round card</span><span class="tag">stadium</span><span class="tag">breaking news</span><span class="tag">minimal</span></div>
+      <div class="card-arrow">←</div>
+    </a>
+  </div>
+</div>
+
+<!-- البداية / Intro -->
+<div class="section">
+  <div class="section-h">
+    <span class="ico">🎬</span>
+    <h2>شاشة البداية / Intro</h2>
+    <div class="line"></div>
+    <span class="count">4 أنماط</span>
+  </div>
+  <div class="grid g1">
+    <a href="/designs/intro.html" class="card" style="--card-border:#3b82f6;--card-glow:rgba(59,130,246,.08);--card-arrow:#2563eb">
+      <div class="card-preview prev-intro">
+        <div class="ring"></div>
+        <div class="n">3</div>
+      </div>
+      <div class="card-title">🎬 شاشة البداية بأربعة أنماط</div>
+      <div class="card-desc">عداد 3·2·1·انطلق + شعار سينمائي بجزيئات تتجمع + ألوان متحركة بـ 5 أعمدة ملونة + نمط شبكة TV retro بـ glitch effects</div>
+      <div class="card-tags"><span class="tag">countdown</span><span class="tag">cinematic</span><span class="tag">channel</span><span class="tag">TV retro</span></div>
+      <div class="card-arrow">←</div>
+    </a>
+  </div>
+</div>
+
+<!-- ترحيب المشاهدين -->
+<div class="section">
+  <div class="section-h">
+    <span class="ico">👋</span>
+    <h2>ترحيب المشاهدين الجدد</h2>
+    <div class="line"></div>
+    <span class="count">4 أنماط</span>
+  </div>
+  <div class="grid g1">
+    <a href="/designs/welcome.html" class="card" style="--card-border:#ec4899;--card-glow:rgba(236,72,153,.08);--card-arrow:#be185d">
+      <div class="card-preview prev-welcome">
+        <div class="ban">
+          <div class="av">ن</div>
+          <div class="txt">نورة انضمّت!</div>
+          <div class="em">👋</div>
+        </div>
+      </div>
+      <div class="card-title">👋 ترحيب المشاهدين الجدد بأربعة أنماط</div>
+      <div class="card-desc">شارة منبثقة وردية + سجادة حمراء VIP بأضواء + فقاعة قلب تطفو + إنجاز مفتوح بنمط ألعاب الفيديو. كل نمط مناسب لجمهور مختلف</div>
+      <div class="card-tags"><span class="tag">pop banner</span><span class="tag">VIP</span><span class="tag">heart</span><span class="tag">achievement</span></div>
+      <div class="card-arrow">←</div>
+    </a>
+  </div>
+</div>
+
+<!-- شعارات الهدايا -->
+<div class="section">
+  <div class="section-h">
+    <span class="ico">🎁</span>
+    <h2>شعارات الهدايا والتفاعل</h2>
+    <div class="line"></div>
+    <span class="count">4 أنماط</span>
+  </div>
+  <div class="grid g1">
+    <a href="/designs/gift-alerts.html" class="card" style="--card-border:#f5c542;--card-glow:rgba(245,197,66,.08);--card-arrow:#d97706">
+      <div class="card-preview prev-gifts">
+        <div class="ray"></div>
+      </div>
+      <div class="card-title">🎁 شعارات الهدايا بأربعة أنماط</div>
+      <div class="card-desc">انفجار درامي للهدايا الفاخرة + شارة جانبية للهدايا المتوسطة + بطاقة كأس لأفضل متفاعل + مطر إيموجي للدفعات الكبيرة. مع أصوات مخصصة</div>
+      <div class="card-tags"><span class="tag">big bang</span><span class="tag">side banner</span><span class="tag">trophy</span><span class="tag">rain</span></div>
+      <div class="card-arrow">←</div>
+    </a>
+  </div>
+</div>
+
+<!-- لا يوجد بث -->
+<div class="section">
+  <div class="section-h">
+    <span class="ico">📴</span>
+    <h2>لا يوجد بث حالياً</h2>
+    <div class="line"></div>
+    <span class="count">4 أنماط</span>
+  </div>
+  <div class="grid g1">
+    <a href="/designs/offline.html" class="card" style="--card-border:#64748b;--card-glow:rgba(100,116,139,.08);--card-arrow:#475569">
+      <div class="card-preview prev-offline">
+        <span class="z">z</span><span class="z">z</span>
+        <div class="av">😴</div>
+        <div class="t">في استراحة...</div>
+      </div>
+      <div class="card-title">📴 لا يوجد بث حالياً بأربعة أنماط</div>
+      <div class="card-desc">وضع نوم بأفاتار وzzz متحركة + عداد البث القادم (ساعة:دقيقة:ثانية) + ملخص آخر بث بالإحصائيات + "قريباً" فاخر بشبكة tron. للزوار قبل البث</div>
+      <div class="card-tags"><span class="tag">sleep</span><span class="tag">countdown</span><span class="tag">recap</span><span class="tag">coming soon</span></div>
       <div class="card-arrow">←</div>
     </a>
   </div>

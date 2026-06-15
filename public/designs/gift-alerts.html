@@ -1,0 +1,318 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>شعارات الهدايا والتفاعل — نماذج التصميم</title>
+<link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;900&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#06060b;--card:#0c0c16;--card2:#10101e;--border:#1c1c2e;--accent:#0891b2;--accent2:#22d3ee;--gold:#f5c542;--text:#e8eaf2;--muted:#8a8fa3;--green:#22c55e;--red:#ef4444;--purple:#a855f7;--pink:#ec4899}
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:var(--bg);color:var(--text);font-family:'Tajawal',sans-serif;min-height:100vh;padding:18px 12px 60px}
+header{text-align:center;margin-bottom:18px}
+header h1{font-size:1.4rem;font-weight:900;background:linear-gradient(90deg,#f5c542,#ef4444);-webkit-background-clip:text;background-clip:text;color:transparent}
+header p{color:var(--muted);font-size:.82rem;margin-top:4px}
+.tabs{display:flex;gap:7px;justify-content:center;margin-bottom:18px;flex-wrap:wrap}
+.tab{background:var(--card);border:1px solid var(--border);color:var(--muted);padding:9px 15px;border-radius:30px;font-family:inherit;font-size:.85rem;font-weight:900;cursor:pointer;transition:.25s}
+.tab.active{color:#fff;border-color:var(--gold);box-shadow:0 0 14px rgba(245,197,66,.35)}
+.panel{display:none;flex-direction:column;align-items:center}
+.panel.active{display:flex}
+.scene{position:relative;width:min(94vw,560px);aspect-ratio:16/10;border-radius:18px;overflow:hidden;border:1px solid var(--border);margin-bottom:14px;background:linear-gradient(135deg,#0a0612,#06060b)}
+.play{font-family:inherit;font-weight:900;font-size:1rem;color:#fff;background:linear-gradient(135deg,#f5c542,#ef4444);border:none;border-radius:40px;padding:12px 40px;cursor:pointer;box-shadow:0 4px 22px rgba(245,197,66,.35)}
+.play:active{transform:scale(.95)}
+.play:disabled{opacity:.5}
+.note{margin-top:12px;font-size:.78rem;color:var(--muted);max-width:480px;text-align:center;line-height:1.8}
+.note b{color:var(--gold)}
+
+.bg-content{position:absolute;inset:0;background:radial-gradient(ellipse at center,#1e1145 0%,#06060b 70%);display:flex;align-items:center;justify-content:center;color:rgba(255,255,255,.15);font-size:.7rem;letter-spacing:3px;font-weight:900}
+
+/* 1) Big Bang Explosion */
+#sc-bang{position:relative}
+.bang-flash{position:absolute;inset:0;background:radial-gradient(circle at center,rgba(245,197,66,.6),transparent 50%);opacity:0;pointer-events:none}
+#sc-bang.show .bang-flash{animation:bangFlash .6s ease-out}
+@keyframes bangFlash{0%{opacity:0;transform:scale(.5)}30%{opacity:1;transform:scale(1.5)}100%{opacity:0;transform:scale(2.5)}}
+.bang-rays{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:0;height:0;background:conic-gradient(from 0deg,transparent 0deg,rgba(245,197,66,.4) 4deg,transparent 8deg,transparent 36deg,rgba(245,197,66,.4) 40deg,transparent 44deg,transparent 72deg,rgba(245,197,66,.4) 76deg,transparent 80deg,transparent 108deg,rgba(245,197,66,.4) 112deg,transparent 116deg,transparent 144deg,rgba(245,197,66,.4) 148deg,transparent 152deg,transparent 180deg,rgba(245,197,66,.4) 184deg,transparent 188deg,transparent 216deg,rgba(245,197,66,.4) 220deg,transparent 224deg,transparent 252deg,rgba(245,197,66,.4) 256deg,transparent 260deg,transparent 288deg,rgba(245,197,66,.4) 292deg,transparent 296deg,transparent 324deg,rgba(245,197,66,.4) 328deg,transparent 332deg);transition:width 1s,height 1s}
+#sc-bang.show .bang-rays{width:200%;height:200%;animation:raysSpin 12s linear infinite}
+@keyframes raysSpin{to{transform:translate(-50%,-50%) rotate(360deg)}}
+
+.bang-card{
+  position:absolute;top:50%;left:50%;transform:translate(-50%,-50%) scale(0) rotate(-20deg);
+  background:linear-gradient(145deg,rgba(245,197,66,.25),rgba(217,119,6,.15));
+  backdrop-filter:blur(14px);
+  border:3px solid var(--gold);border-radius:24px;padding:18px 28px;
+  text-align:center;min-width:240px;
+  box-shadow:0 0 60px rgba(245,197,66,.6),inset 0 1px 0 rgba(255,255,255,.15);
+  transition:transform .7s cubic-bezier(.2,.8,.3,1.4)
+}
+#sc-bang.show .bang-card{transform:translate(-50%,-50%) scale(1) rotate(0deg)}
+.bang-ico{font-size:3rem;filter:drop-shadow(0 0 18px var(--gold));margin-bottom:6px;animation:bangBob 1.5s ease-in-out infinite}
+@keyframes bangBob{50%{transform:translateY(-5px) scale(1.05)}}
+.bang-title{font-size:.7rem;color:var(--gold);font-weight:900;letter-spacing:4px;margin-bottom:4px}
+.bang-name{font-size:1.4rem;font-weight:900;color:#fff;line-height:1.1;text-shadow:0 0 16px rgba(245,197,66,.6)}
+.bang-gift{font-size:.95rem;color:#fde68a;margin-top:6px;font-weight:900}
+.bang-value{display:inline-block;background:#000;color:var(--gold);padding:3px 12px;border-radius:30px;font-family:Impact,sans-serif;font-size:.95rem;margin-top:7px;border:1.5px solid var(--gold)}
+
+/* 2) Side Slide Banner */
+.side-banner{
+  position:absolute;left:14px;top:50%;transform:translate(-120%,-50%);
+  background:linear-gradient(135deg,#7c3aed,#3b0764);
+  border:2px solid #a855f7;border-radius:0 50px 50px 0;
+  padding:8px 22px 8px 8px;display:flex;align-items:center;gap:10px;
+  box-shadow:0 10px 30px rgba(124,58,237,.4),inset 0 1px 0 rgba(255,255,255,.15);
+  transition:transform .6s cubic-bezier(.2,.8,.3,1.4)
+}
+#sc-side.show .side-banner{transform:translate(0,-50%)}
+.side-av{width:44px;height:44px;border-radius:50%;background:linear-gradient(135deg,#dc2626,#f59e0b);display:flex;align-items:center;justify-content:center;font-weight:900;font-size:1.1rem;color:#fff;border:2px solid #fff;flex-shrink:0}
+.side-body{color:#fff}
+.side-act{font-size:.65rem;color:#e9d5ff;font-weight:900;letter-spacing:1.5px}
+.side-name{font-size:.92rem;font-weight:900;line-height:1.2}
+.side-gift{font-size:.74rem;color:#fde68a;font-weight:900;margin-top:1px}
+
+.side-emojis{position:absolute;left:0;width:200px;height:100%;pointer-events:none;top:0}
+.se-tiny{position:absolute;font-size:1rem;animation:floatRight 4s ease-out forwards;opacity:0}
+@keyframes floatRight{0%{opacity:0;transform:translateX(0) scale(.5)}20%{opacity:1;transform:translateX(40px) scale(1)}100%{opacity:0;transform:translateX(200px) scale(1.3) rotate(20deg)}}
+
+/* 3) Trophy Card */
+.trophy-card{
+  position:absolute;top:14px;right:14px;transform:translateX(120%);
+  background:#000;backdrop-filter:blur(20px);
+  border-left:4px solid var(--gold);border-radius:10px;
+  padding:12px 16px 12px 18px;display:flex;align-items:center;gap:12px;min-width:260px;
+  box-shadow:0 20px 40px rgba(0,0,0,.6),0 0 30px rgba(245,197,66,.25);
+  transition:transform .55s cubic-bezier(.2,.8,.3,1.3)
+}
+#sc-trophy.show .trophy-card{transform:translateX(0)}
+.trophy-ico{
+  width:54px;height:54px;border-radius:11px;
+  background:linear-gradient(135deg,#f5c542,#d97706);
+  display:flex;align-items:center;justify-content:center;
+  font-size:1.6rem;flex-shrink:0;
+  box-shadow:0 4px 14px rgba(245,197,66,.5)
+}
+.trophy-body{flex:1;text-align:right}
+.trophy-rank{font-size:.62rem;color:var(--gold);font-weight:900;letter-spacing:3px;margin-bottom:2px}
+.trophy-name{font-size:.95rem;font-weight:900;color:#fff;line-height:1.2}
+.trophy-detail{font-size:.7rem;color:#fde68a;margin-top:3px;font-weight:900}
+.trophy-shine{position:absolute;top:0;left:-100%;width:60%;height:100%;background:linear-gradient(110deg,transparent,rgba(255,255,255,.18),transparent);transform:skewX(-20deg)}
+#sc-trophy.show .trophy-shine{animation:shine 1.5s .4s ease-out}
+@keyframes shine{to{left:120%}}
+
+/* مكدس الشعارات */
+.trophy-mini-stack{position:absolute;top:80px;right:20px;display:flex;flex-direction:column;gap:6px}
+.trophy-mini{
+  background:rgba(0,0,0,.7);backdrop-filter:blur(10px);
+  border:1px solid rgba(245,197,66,.3);border-radius:8px;
+  padding:5px 12px 5px 10px;display:flex;align-items:center;gap:7px;
+  font-size:.7rem;font-weight:900;color:#fff;
+  transform:translateX(120%);opacity:0;transition:.4s
+}
+.trophy-mini.show{transform:translateX(0);opacity:.95}
+.trophy-mini .ico{font-size:.85rem}
+
+/* 4) Rain Effect */
+.rain-eyebrow{
+  position:absolute;top:14px;left:50%;transform:translateX(-50%) scale(0);
+  background:rgba(0,0,0,.7);backdrop-filter:blur(12px);
+  border:1.5px solid var(--gold);color:var(--gold);
+  padding:6px 18px;border-radius:30px;font-weight:900;font-size:.82rem;letter-spacing:2px;
+  z-index:5;transition:transform .5s cubic-bezier(.2,.8,.3,1.4)
+}
+#sc-rain.show .rain-eyebrow{transform:translateX(-50%) scale(1)}
+.rain-emoji{
+  position:absolute;font-size:1.8rem;top:-50px;
+  animation:rainFall linear forwards;pointer-events:none
+}
+@keyframes rainFall{
+  0%{top:-50px;opacity:0;transform:rotate(0)}
+  10%{opacity:1}
+  90%{opacity:1}
+  100%{top:110%;opacity:0;transform:rotate(var(--rot,30deg))}
+}
+.rain-card{
+  position:absolute;bottom:18px;left:50%;transform:translateX(-50%) translateY(80px);opacity:0;
+  background:linear-gradient(135deg,rgba(245,197,66,.18),rgba(217,119,6,.08));
+  backdrop-filter:blur(14px);
+  border:1.5px solid var(--gold);border-radius:14px;padding:8px 20px;
+  display:flex;align-items:center;gap:10px;color:#fff;
+  transition:.5s
+}
+#sc-rain.show .rain-card{transform:translateX(-50%) translateY(0);opacity:1}
+.rain-av{width:32px;height:32px;border-radius:50%;background:linear-gradient(135deg,#dc2626,#f59e0b);display:flex;align-items:center;justify-content:center;font-weight:900;font-size:.78rem;border:2px solid var(--gold)}
+.rain-name{font-weight:900;font-size:.85rem}
+.rain-count{background:var(--gold);color:#000;font-weight:900;font-size:.78rem;padding:2px 10px;border-radius:20px;font-family:Impact,sans-serif;margin-right:4px}
+</style>
+</head>
+<body>
+<header><h1>🎁 شعارات الهدايا والتفاعل</h1><p>4 أنماط لتنبيهات الهدايا الكبيرة والمتفاعلين المميزين</p></header>
+
+<div class="tabs">
+  <button class="tab active" data-p="bang">💥 انفجار كبير</button>
+  <button class="tab" data-p="side">📌 شارة جانبية</button>
+  <button class="tab" data-p="trophy">🏆 بطاقة كأس</button>
+  <button class="tab" data-p="rain">🌧️ مطر الإيموجي</button>
+</div>
+
+<div class="panel active" id="panel-bang">
+  <div class="scene" id="sc-bang">
+    <div class="bg-content">— LIVE STREAM CONTENT —</div>
+    <div class="bang-rays"></div>
+    <div class="bang-flash"></div>
+    <div class="bang-card">
+      <div class="bang-ico">🦁</div>
+      <div class="bang-title">— MEGA GIFT —</div>
+      <div class="bang-name">سلطان العنزي</div>
+      <div class="bang-gift">أرسل أسد فاخر!</div>
+      <div class="bang-value">💰 29,999 ¢</div>
+    </div>
+  </div>
+  <button class="play" onclick="playBang(this)">تشغيل العرض</button>
+  <p class="note">انفجار <b>درامي</b> بأشعة ذهبية دوّارة + ومضة ساطعة + بطاقة كبيرة في الوسط بسعر الهدية. الأفضل للهدايا الفاخرة (أسد، تاج، طائرة) لإثارة المشاهدين</p>
+</div>
+
+<div class="panel" id="panel-side">
+  <div class="scene" id="sc-side">
+    <div class="bg-content">— LIVE STREAM CONTENT —</div>
+    <div class="side-emojis" id="se-emojis"></div>
+    <div class="side-banner">
+      <div class="side-av">ن</div>
+      <div class="side-body">
+        <div class="side-act">🎁 هدية</div>
+        <div class="side-name">نورة الصقري</div>
+        <div class="side-gift">🌹 وردة × 12</div>
+      </div>
+    </div>
+  </div>
+  <button class="play" onclick="playSide(this)">تشغيل العرض</button>
+  <p class="note">شارة <b>تنزلق من اليسار</b> بنفسجية مع إيموجيز تطفو للداخل. مدمجة ولا تشغل وسط الشاشة. مثالية للهدايا <b>المتوسطة</b> اللي تطلع بكثرة (3-10 ثوان)</p>
+</div>
+
+<div class="panel" id="panel-trophy">
+  <div class="scene" id="sc-trophy">
+    <div class="bg-content">— LIVE STREAM CONTENT —</div>
+    <div class="trophy-card">
+      <div class="trophy-ico">🏆</div>
+      <div class="trophy-body">
+        <div class="trophy-rank">— TOP GIFTER #1 —</div>
+        <div class="trophy-name">سلطان العنزي</div>
+        <div class="trophy-detail">💎 1,247 نقطة هذا البث</div>
+      </div>
+      <div class="trophy-shine"></div>
+    </div>
+    <div class="trophy-mini-stack">
+      <div class="trophy-mini"><span class="ico">🥈</span> #2 نورة · 892</div>
+      <div class="trophy-mini"><span class="ico">🥉</span> #3 ريم · 654</div>
+    </div>
+  </div>
+  <button class="play" onclick="playTrophy(this)">تشغيل العرض</button>
+  <p class="note">بطاقة <b>أفضل متفاعل/مرسل هدايا</b> في زاوية أعلى الشاشة، تحتها بطاقات صغيرة للمراكز 2 و 3. تطلع <b>كل فترة</b> لتذكير الجمهور بقائمة الترتيب</p>
+</div>
+
+<div class="panel" id="panel-rain">
+  <div class="scene" id="sc-rain">
+    <div class="bg-content">— LIVE STREAM CONTENT —</div>
+    <div class="rain-eyebrow">🌧️ مطر الهدايا</div>
+    <div id="rain-area"></div>
+    <div class="rain-card">
+      <div class="rain-av">خ</div>
+      <div>
+        <div class="rain-name">خالد المطيري</div>
+        <div style="font-size:.66rem;color:var(--muted)">أرسل دفعة كبيرة!</div>
+      </div>
+      <span class="rain-count">🎁 × 50</span>
+    </div>
+  </div>
+  <button class="play" onclick="playRain(this)">تشغيل العرض</button>
+  <p class="note">إيموجيز الهدية <b>تتساقط كالمطر</b> من أعلى الشاشة + بطاقة المرسل تحت بعدد القطع. مذهلة بصرياً للهدايا اللي ترسل بكميات كبيرة (دفعة × 10 أو أكثر)</p>
+</div>
+
+<a href="/" style="position:fixed;top:14px;right:14px;background:rgba(12,12,22,.85);backdrop-filter:blur(10px);color:#22d3ee;border:1px solid #0891b2;border-radius:30px;padding:8px 16px;font-family:Tajawal,sans-serif;font-weight:900;font-size:.78rem;text-decoration:none;z-index:200">← المعرض</a>
+
+<script>
+let audioCtx;
+function snd(f,d=.08,v=.1,type="sine"){
+  audioCtx=audioCtx||new (window.AudioContext||window.webkitAudioContext)();
+  const o=audioCtx.createOscillator(),g=audioCtx.createGain();
+  o.frequency.value=f;o.type=type;
+  g.gain.setValueAtTime(v,audioCtx.currentTime);
+  g.gain.exponentialRampToValueAtTime(.001,audioCtx.currentTime+d);
+  o.connect(g);g.connect(audioCtx.destination);o.start();o.stop(audioCtx.currentTime+d);
+}
+document.querySelectorAll(".tab").forEach(t=>t.onclick=()=>{
+  document.querySelectorAll(".tab,.panel").forEach(x=>x.classList.remove("active"));
+  t.classList.add("active");
+  document.getElementById("panel-"+t.dataset.p).classList.add("active");
+});
+
+function playBang(btn){
+  btn.disabled=true;
+  const sc=document.getElementById("sc-bang");
+  sc.classList.remove("show");
+  setTimeout(()=>{
+    sc.classList.add("show");
+    /* boom */
+    snd(80,.5,.18,"sawtooth");
+    setTimeout(()=>[523,659,784,1047].forEach((f,i)=>setTimeout(()=>snd(f,.2,.13,"sine"),i*90)),300);
+  },100);
+  setTimeout(()=>{btn.disabled=false;},2500);
+}
+
+function playSide(btn){
+  btn.disabled=true;
+  const sc=document.getElementById("sc-side");
+  sc.classList.remove("show");
+  const ec=document.getElementById("se-emojis");ec.innerHTML="";
+  for(let i=0;i<6;i++){
+    const e=document.createElement("div");e.className="se-tiny";
+    e.textContent=["🌹","💕","🎁","🌸"][i%4];
+    e.style.top=(20+Math.random()*60)+"%";
+    e.style.animationDelay=(.3+i*.2)+"s";
+    ec.appendChild(e);
+  }
+  setTimeout(()=>{sc.classList.add("show");snd(1320,.2,.1);setTimeout(()=>snd(1568,.2,.1),120);},100);
+  setTimeout(()=>{sc.classList.remove("show");btn.disabled=false;},4500);
+}
+
+function playTrophy(btn){
+  btn.disabled=true;
+  const sc=document.getElementById("sc-trophy");
+  sc.classList.remove("show");
+  sc.querySelectorAll(".trophy-mini").forEach(m=>m.classList.remove("show"));
+  setTimeout(()=>{
+    sc.classList.add("show");
+    snd(880,.15,.1);setTimeout(()=>snd(1320,.3,.12),200);
+    /* stack */
+    setTimeout(()=>{sc.querySelector(".trophy-mini:nth-child(1)").classList.add("show");snd(660,.1,.08);},1200);
+    setTimeout(()=>{sc.querySelector(".trophy-mini:nth-child(2)").classList.add("show");snd(587,.1,.08);},1400);
+  },100);
+  setTimeout(()=>{btn.disabled=false;},2500);
+}
+
+function playRain(btn){
+  btn.disabled=true;
+  const sc=document.getElementById("sc-rain");
+  sc.classList.remove("show");
+  const area=document.getElementById("rain-area");area.innerHTML="";
+  const emojis=["🎁","💎","🌹","💰","🏆","⭐"];
+  for(let i=0;i<30;i++){
+    const e=document.createElement("div");e.className="rain-emoji";
+    e.textContent=emojis[Math.floor(Math.random()*emojis.length)];
+    e.style.left=Math.random()*95+"%";
+    e.style.fontSize=(1.2+Math.random()*1)+"rem";
+    e.style.animationDuration=(2+Math.random()*1.5)+"s";
+    e.style.animationDelay=(Math.random()*2)+"s";
+    e.style.setProperty("--rot",(Math.random()*60-30)+"deg");
+    area.appendChild(e);
+  }
+  setTimeout(()=>{
+    sc.classList.add("show");
+    snd(1200,.15,.1);setTimeout(()=>snd(1600,.15,.1),150);
+    /* tinkling */
+    for(let i=0;i<6;i++)setTimeout(()=>snd(1500+Math.random()*800,.08,.06),i*300);
+  },100);
+  setTimeout(()=>{btn.disabled=false;},4500);
+}
+
+window.addEventListener("load",()=>setTimeout(()=>playBang({disabled:false}),500));
+</script>
+</body>
+</html>

@@ -48,3 +48,9 @@ npm start
 ### الفوز والاستراحات
 - 🏆 **شاشة الفوز**: champion / leaderboard / cinematic / dashboard
 - ⏸️ **إعلانات الإيقاف**: round card / stadium / breaking news / minimal
+
+### عناصر البث المساعدة
+- 🎬 **شاشة البداية**: countdown / cinematic / channel / TV retro
+- 👋 **ترحيب المشاهدين**: pop banner / VIP / heart / achievement
+- 🎁 **شعارات الهدايا**: big bang / side banner / trophy / rain
+- 📴 **لا يوجد بث**: sleep / countdown / recap / coming soon

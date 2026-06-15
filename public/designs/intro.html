@@ -1,0 +1,306 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>شاشة البداية / Intro — نماذج التصميم</title>
+<link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;900&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#06060b;--card:#0c0c16;--card2:#10101e;--border:#1c1c2e;--accent:#0891b2;--accent2:#22d3ee;--gold:#f5c542;--text:#e8eaf2;--muted:#8a8fa3;--green:#22c55e;--red:#ef4444;--purple:#a855f7;--pink:#ec4899}
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:var(--bg);color:var(--text);font-family:'Tajawal',sans-serif;min-height:100vh;padding:18px 12px 60px}
+header{text-align:center;margin-bottom:18px}
+header h1{font-size:1.4rem;font-weight:900;background:linear-gradient(90deg,#3b82f6,#a855f7);-webkit-background-clip:text;background-clip:text;color:transparent}
+header p{color:var(--muted);font-size:.82rem;margin-top:4px}
+.tabs{display:flex;gap:7px;justify-content:center;margin-bottom:18px;flex-wrap:wrap}
+.tab{background:var(--card);border:1px solid var(--border);color:var(--muted);padding:9px 15px;border-radius:30px;font-family:inherit;font-size:.85rem;font-weight:900;cursor:pointer;transition:.25s}
+.tab.active{color:#fff;border-color:#3b82f6;box-shadow:0 0 14px rgba(59,130,246,.35)}
+.panel{display:none;flex-direction:column;align-items:center}
+.panel.active{display:flex}
+.scene{position:relative;width:min(94vw,560px);aspect-ratio:16/10;border-radius:18px;overflow:hidden;border:1px solid var(--border);margin-bottom:14px}
+.play{font-family:inherit;font-weight:900;font-size:1rem;color:#fff;background:linear-gradient(135deg,#3b82f6,#a855f7);border:none;border-radius:40px;padding:12px 40px;cursor:pointer;box-shadow:0 4px 22px rgba(59,130,246,.35)}
+.play:active{transform:scale(.95)}
+.play:disabled{opacity:.5}
+.note{margin-top:12px;font-size:.78rem;color:var(--muted);max-width:480px;text-align:center;line-height:1.8}
+.note b{color:#93c5fd}
+
+/* 1) 3..2..1..GO! Countdown */
+#sc-cd{background:radial-gradient(ellipse at center,#0a1228 0%,#000 70%);display:flex;align-items:center;justify-content:center;overflow:hidden}
+.cd-rings{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);pointer-events:none}
+.cd-ring{position:absolute;border:2px solid rgba(34,211,238,.3);border-radius:50%;top:50%;left:50%;transform:translate(-50%,-50%);animation:ringExpand 1s ease-out;opacity:0}
+@keyframes ringExpand{0%{width:60px;height:60px;opacity:1}100%{width:400px;height:400px;opacity:0}}
+.cd-number{
+  position:absolute;font-size:9rem;font-weight:900;line-height:1;
+  font-family:Impact,sans-serif;letter-spacing:-4px;
+  background:linear-gradient(135deg,#22d3ee,#3b82f6);
+  -webkit-background-clip:text;background-clip:text;color:transparent;
+  text-shadow:0 0 60px rgba(34,211,238,.4);
+  animation:cdScale 1s ease-out forwards
+}
+@keyframes cdScale{0%{transform:scale(.3);opacity:0}30%{transform:scale(1.3);opacity:1}80%{transform:scale(1);opacity:1}100%{transform:scale(.7);opacity:0}}
+.cd-go{
+  font-size:4.5rem;font-weight:900;
+  background:linear-gradient(135deg,#f5c542,#ef4444);
+  -webkit-background-clip:text;background-clip:text;color:transparent;
+  text-shadow:0 0 50px rgba(245,197,66,.6);
+  letter-spacing:-1px;animation:goAnim 1.5s ease-out forwards
+}
+@keyframes goAnim{0%{transform:scale(.4);opacity:0;letter-spacing:30px}40%{transform:scale(1.3);opacity:1;letter-spacing:-1px}60%{transform:scale(1);opacity:1}100%{transform:scale(1);opacity:0}}
+
+/* 2) Cinematic Logo Reveal */
+#sc-cin{background:#000;overflow:hidden}
+.cin-particle{position:absolute;width:2px;height:2px;background:#22d3ee;border-radius:50%;opacity:0;pointer-events:none}
+.cin-particle.go{animation:particleConverge 1.5s ease-in forwards}
+@keyframes particleConverge{0%{opacity:0;transform:translate(0,0)}30%{opacity:1}100%{opacity:0;transform:translate(var(--dx),var(--dy))}}
+.cin-logo{
+  position:absolute;top:50%;left:50%;transform:translate(-50%,-50%) scale(0);opacity:0;
+  width:120px;height:120px;border-radius:30px;
+  background:linear-gradient(135deg,#0891b2,#22d3ee);
+  display:flex;align-items:center;justify-content:center;
+  font-weight:900;font-size:4rem;color:#fff;
+  box-shadow:0 0 80px rgba(34,211,238,.7),inset 0 4px 0 rgba(255,255,255,.2);
+  transition:transform 1s cubic-bezier(.2,.8,.3,1.4),opacity .5s
+}
+#sc-cin.show .cin-logo{transform:translate(-50%,-50%) scale(1) rotate(360deg);opacity:1}
+.cin-name{
+  position:absolute;top:calc(50% + 80px);left:50%;transform:translateX(-50%) translateY(20px);
+  font-size:2.4rem;font-weight:900;color:#fff;
+  letter-spacing:6px;opacity:0;
+  text-shadow:0 0 20px rgba(34,211,238,.5);
+  transition:.8s 1s
+}
+#sc-cin.show .cin-name{opacity:1;transform:translateX(-50%) translateY(0)}
+.cin-tagline{
+  position:absolute;top:calc(50% + 130px);left:50%;transform:translateX(-50%);
+  font-size:.78rem;color:#94a3b8;letter-spacing:3px;font-weight:700;opacity:0;
+  transition:.8s 1.4s
+}
+#sc-cin.show .cin-tagline{opacity:1}
+.cin-flash{position:absolute;inset:0;background:#fff;opacity:0;pointer-events:none}
+#sc-cin.flash .cin-flash{animation:flashIn .3s ease-out}
+@keyframes flashIn{0%{opacity:0}50%{opacity:.8}100%{opacity:0}}
+
+/* 3) Channel Intro (Animated Bars) */
+#sc-ch{background:#0a0a18;overflow:hidden;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:18px}
+.ch-bars{position:absolute;inset:0;display:flex}
+.ch-bar{flex:1;transform:scaleY(0);transform-origin:bottom;transition:transform .6s cubic-bezier(.7,0,.3,1)}
+.ch-bar:nth-child(1){background:linear-gradient(180deg,#3b82f6,#1e3a8a)}
+.ch-bar:nth-child(2){background:linear-gradient(180deg,#a855f7,#5b21b6)}
+.ch-bar:nth-child(3){background:linear-gradient(180deg,#ec4899,#831843)}
+.ch-bar:nth-child(4){background:linear-gradient(180deg,#f59e0b,#92400e)}
+.ch-bar:nth-child(5){background:linear-gradient(180deg,#22c55e,#14532d)}
+#sc-ch.step1 .ch-bar{transform:scaleY(1)}
+#sc-ch.step2 .ch-bar:nth-child(1){transform:scaleY(.2);transform-origin:top}
+#sc-ch.step2 .ch-bar:nth-child(2){transform:scaleY(.5);transform-origin:top}
+#sc-ch.step2 .ch-bar:nth-child(3){transform:scaleY(.7);transform-origin:top}
+#sc-ch.step2 .ch-bar:nth-child(4){transform:scaleY(.4);transform-origin:top}
+#sc-ch.step2 .ch-bar:nth-child(5){transform:scaleY(.15);transform-origin:top}
+#sc-ch.step3 .ch-bar{transform:scaleY(0);transform-origin:top}
+
+.ch-content{position:relative;text-align:center;z-index:5;opacity:0;transform:scale(.85);transition:.7s .5s}
+#sc-ch.step2 .ch-content{opacity:1;transform:scale(1)}
+#sc-ch.step3 .ch-content{opacity:0}
+.ch-eyebrow{display:inline-block;background:rgba(255,255,255,.08);backdrop-filter:blur(10px);border:1px solid rgba(255,255,255,.15);padding:5px 14px;border-radius:30px;font-weight:900;font-size:.78rem;letter-spacing:2px;color:#fff;margin-bottom:10px}
+.ch-title{font-size:2.4rem;font-weight:900;line-height:1.1;color:#fff;letter-spacing:-1px;margin-bottom:6px;text-shadow:0 4px 14px rgba(0,0,0,.5)}
+.ch-host{font-size:.95rem;color:#94a3b8;font-weight:900}
+.ch-host b{color:#22d3ee}
+
+/* 4) TV Network Style */
+#sc-tv{background:#000;overflow:hidden}
+.tv-static{position:absolute;inset:0;opacity:.04;background-image:repeating-radial-gradient(circle at 0% 0%,rgba(255,255,255,1) 0px,rgba(255,255,255,1) 1px,transparent 1px,transparent 3px),repeating-radial-gradient(circle at 100% 100%,rgba(255,255,255,1) 0px,rgba(255,255,255,1) 1px,transparent 1px,transparent 3px);pointer-events:none}
+.tv-scan{position:absolute;inset:0;background:repeating-linear-gradient(0deg,rgba(0,0,0,.15) 0px,rgba(0,0,0,.15) 2px,transparent 2px,transparent 4px);pointer-events:none}
+.tv-corners{position:absolute;inset:14px;border:2px solid rgba(34,211,238,.3);border-radius:8px;pointer-events:none;clip-path:polygon(0 0,40px 0,40px 4px,4px 4px,4px 40px,0 40px,0 0,100% 0,100% 40px,calc(100% - 4px) 40px,calc(100% - 4px) 4px,calc(100% - 40px) 4px,calc(100% - 40px) 0,100% 0,100% 100%,calc(100% - 40px) 100%,calc(100% - 40px) calc(100% - 4px),calc(100% - 4px) calc(100% - 4px),calc(100% - 4px) calc(100% - 40px),100% calc(100% - 40px),100% 100%,0 100%,0 calc(100% - 40px),4px calc(100% - 40px),4px calc(100% - 4px),40px calc(100% - 4px),40px 100%)}
+.tv-time{position:absolute;top:18px;right:18px;font-family:monospace;font-size:.85rem;color:#22d3ee;font-weight:900;letter-spacing:2px;background:rgba(0,0,0,.6);padding:4px 10px;border:1px solid #22d3ee;border-radius:4px;z-index:5}
+.tv-channel{position:absolute;top:18px;left:18px;font-size:.78rem;color:#f5c542;font-weight:900;letter-spacing:3px;background:rgba(0,0,0,.6);padding:4px 12px;border:1px solid #f5c542;border-radius:4px;z-index:5}
+.tv-center{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);text-align:center;width:80%;z-index:4;opacity:0;transition:opacity .7s}
+#sc-tv.show .tv-center{opacity:1}
+.tv-eyebrow{font-size:.78rem;color:#94a3b8;font-weight:900;letter-spacing:4px;margin-bottom:8px}
+.tv-logo{
+  font-size:5rem;font-weight:900;line-height:1;letter-spacing:-3px;color:#fff;font-family:Impact,sans-serif;
+  text-shadow:3px 0 0 #ec4899,-3px 0 0 #22d3ee;
+  animation:glitchShift 4s infinite;margin-bottom:6px
+}
+@keyframes glitchShift{0%,90%,100%{text-shadow:3px 0 0 #ec4899,-3px 0 0 #22d3ee}45%{text-shadow:-3px 0 0 #ec4899,3px 0 0 #22d3ee}50%{text-shadow:0 0 0 #ec4899,0 0 0 #22d3ee}}
+.tv-show{font-size:1.1rem;color:#f5c542;font-weight:900;margin-bottom:6px}
+.tv-info{font-size:.78rem;color:#94a3b8;font-weight:700}
+.tv-bottom{position:absolute;bottom:18px;left:18px;right:18px;display:flex;align-items:center;justify-content:space-between;font-size:.65rem;font-family:monospace;color:#94a3b8;font-weight:900;letter-spacing:1px;z-index:5}
+.tv-live{display:flex;align-items:center;gap:5px;color:#ef4444}
+.tv-live .dot{width:7px;height:7px;border-radius:50%;background:#ef4444;animation:pulse 1.4s infinite}
+@keyframes pulse{50%{opacity:.3}}
+</style>
+</head>
+<body>
+<header><h1>🎬 شاشة البداية / Intro</h1><p>4 أنماط للمقدمة اللي تطلع عند بداية البث أو الفعالية</p></header>
+
+<div class="tabs">
+  <button class="tab active" data-p="cd">⏱️ عداد 3 · 2 · 1</button>
+  <button class="tab" data-p="cin">🎬 شعار سينمائي</button>
+  <button class="tab" data-p="ch">🎨 ألوان متحركة</button>
+  <button class="tab" data-p="tv">📺 نمط شبكة TV</button>
+</div>
+
+<div class="panel active" id="panel-cd">
+  <div class="scene" id="sc-cd">
+    <div class="cd-rings"><div class="cd-ring"></div></div>
+    <div id="cd-content"></div>
+  </div>
+  <button class="play" onclick="playCD(this)">تشغيل العرض</button>
+  <p class="note"><b>عداد دراماتيكي</b> 3→2→1→GO! بأرقام ضخمة بتدرج لوني + حلقات تتمدد + أصوات بيب صاعدة. <b>الكلاسيكي الأبدي</b> لبدء أي فعالية أو لعبة</p>
+</div>
+
+<div class="panel" id="panel-cin">
+  <div class="scene" id="sc-cin">
+    <div class="cin-flash"></div>
+    <div id="cin-particles"></div>
+    <div class="cin-logo">B</div>
+    <div class="cin-name">BthLab</div>
+    <div class="cin-tagline">— LIVE INTERACTIVE STREAMING —</div>
+  </div>
+  <button class="play" onclick="playCin(this)">تشغيل العرض</button>
+  <p class="note"><b>شعار سينمائي</b>: جزيئات تتجمع نحو المنتصف ← شعار يظهر بدوران 3D ← الاسم يطلع تحت ← شعار يطلع بومضة بيضاء. مثالي <b>كافتتاحية احترافية</b> لكل بث</p>
+</div>
+
+<div class="panel" id="panel-ch">
+  <div class="scene" id="sc-ch">
+    <div class="ch-bars">
+      <div class="ch-bar"></div>
+      <div class="ch-bar"></div>
+      <div class="ch-bar"></div>
+      <div class="ch-bar"></div>
+      <div class="ch-bar"></div>
+    </div>
+    <div class="ch-content">
+      <span class="ch-eyebrow">— LIVE NOW —</span>
+      <div class="ch-title">حرب الكلمات<br>الأسطورية</div>
+      <div class="ch-host">مع <b>أبو فهد للألعاب</b></div>
+    </div>
+  </div>
+  <button class="play" onclick="playCh(this)">تشغيل العرض</button>
+  <p class="note">5 أعمدة ملونة تكبر للأعلى ثم تنقص لتكشف المحتوى → اسم البرنامج والمضيف يظهرون → الأعمدة تختفي للأعلى. <b>عصرية ومرحة</b> مناسبة لمحتوى الترفيه والألعاب</p>
+</div>
+
+<div class="panel" id="panel-tv">
+  <div class="scene" id="sc-tv">
+    <div class="tv-static"></div>
+    <div class="tv-scan"></div>
+    <div class="tv-corners"></div>
+    <div class="tv-channel">CH 01 · BthLab</div>
+    <div class="tv-time" id="tv-clock">21:14</div>
+    <div class="tv-center">
+      <div class="tv-eyebrow">— PRESENTS —</div>
+      <div class="tv-logo">BthLab</div>
+      <div class="tv-show">⚔️ حرب الكلمات الأسطورية</div>
+      <div class="tv-info">حلقة 142 · الموسم الثاني</div>
+    </div>
+    <div class="tv-bottom">
+      <div class="tv-live"><span class="dot"></span> LIVE · HD 1080p</div>
+      <div>BthLab.live</div>
+    </div>
+  </div>
+  <button class="play" onclick="playTv(this)">تشغيل العرض</button>
+  <p class="note">نمط <b>قناة تلفزيونية احترافية</b>: خطوط scan + ضوضاء خفيفة + glitch effect على الشعار + رمز القناة والوقت + LIVE HD. <b>كلاسيكي retro</b> ومميز جداً</p>
+</div>
+
+<a href="/" style="position:fixed;top:14px;right:14px;background:rgba(12,12,22,.85);backdrop-filter:blur(10px);color:#22d3ee;border:1px solid #0891b2;border-radius:30px;padding:8px 16px;font-family:Tajawal,sans-serif;font-weight:900;font-size:.78rem;text-decoration:none;z-index:200">← المعرض</a>
+
+<script>
+let audioCtx;
+function snd(f,d=.08,v=.1,type="sine"){
+  audioCtx=audioCtx||new (window.AudioContext||window.webkitAudioContext)();
+  const o=audioCtx.createOscillator(),g=audioCtx.createGain();
+  o.frequency.value=f;o.type=type;
+  g.gain.setValueAtTime(v,audioCtx.currentTime);
+  g.gain.exponentialRampToValueAtTime(.001,audioCtx.currentTime+d);
+  o.connect(g);g.connect(audioCtx.destination);o.start();o.stop(audioCtx.currentTime+d);
+}
+document.querySelectorAll(".tab").forEach(t=>t.onclick=()=>{
+  document.querySelectorAll(".tab,.panel").forEach(x=>x.classList.remove("active"));
+  t.classList.add("active");
+  document.getElementById("panel-"+t.dataset.p).classList.add("active");
+});
+
+/* ===== Countdown ===== */
+function playCD(btn){
+  btn.disabled=true;
+  const c=document.getElementById("cd-content"),rs=document.querySelector(".cd-rings");
+  c.innerHTML="";rs.innerHTML="";
+  const seq=["3","2","1"];
+  seq.forEach((n,i)=>{
+    setTimeout(()=>{
+      c.innerHTML=`<div class="cd-number">${n}</div>`;
+      const r=document.createElement("div");r.className="cd-ring";rs.appendChild(r);
+      setTimeout(()=>r.remove(),1000);
+      snd(440+i*220,.2,.13,"square");
+    },i*1000);
+  });
+  setTimeout(()=>{
+    c.innerHTML=`<div class="cd-go">انطلق! 🚀</div>`;
+    [880,1108,1318,1568].forEach((f,i)=>setTimeout(()=>snd(f,.2,.15,"sine"),i*80));
+    btn.disabled=false;
+  },3000);
+}
+
+/* ===== Cinematic ===== */
+function playCin(btn){
+  btn.disabled=true;
+  const sc=document.getElementById("sc-cin");
+  sc.classList.remove("show","flash");
+  const pc=document.getElementById("cin-particles");pc.innerHTML="";
+  /* particles converge */
+  for(let i=0;i<30;i++){
+    const p=document.createElement("div");p.className="cin-particle go";
+    const a=Math.random()*Math.PI*2,d=200+Math.random()*200;
+    p.style.left="50%";p.style.top="50%";
+    p.style.setProperty("--dx",(Math.cos(a)*-d)+"px");
+    p.style.setProperty("--dy",(Math.sin(a)*-d)+"px");
+    p.style.animationDelay=(Math.random()*.5)+"s";
+    pc.appendChild(p);
+  }
+  setTimeout(()=>{
+    sc.classList.add("flash","show");
+    snd(80,.6,.18,"sine");setTimeout(()=>snd(120,.5,.16,"sine"),200);
+    setTimeout(()=>{[523,659,784,1047].forEach((f,i)=>setTimeout(()=>snd(f,.3,.13),i*100));},600);
+  },1100);
+  setTimeout(()=>{btn.disabled=false;},3000);
+}
+
+/* ===== Channel ===== */
+function playCh(btn){
+  btn.disabled=true;
+  const sc=document.getElementById("sc-ch");
+  sc.classList.remove("step1","step2","step3");
+  setTimeout(()=>{sc.classList.add("step1");snd(440,.2,.1);},100);
+  setTimeout(()=>{sc.classList.add("step2");[523,659,784].forEach((f,i)=>setTimeout(()=>snd(f,.2,.12),i*80));},700);
+  setTimeout(()=>{sc.classList.remove("step1");sc.classList.add("step3");snd(1047,.4,.13);},2500);
+  setTimeout(()=>{btn.disabled=false;},3300);
+}
+
+/* ===== TV ===== */
+function playTv(btn){
+  btn.disabled=true;
+  const sc=document.getElementById("sc-tv");
+  sc.classList.remove("show");
+  /* static noise sound */
+  if(!audioCtx)audioCtx=new (window.AudioContext||window.webkitAudioContext)();
+  const noise=audioCtx.createBufferSource();
+  const buf=audioCtx.createBuffer(1,audioCtx.sampleRate*.4,audioCtx.sampleRate);
+  const ch=buf.getChannelData(0);
+  for(let i=0;i<ch.length;i++)ch[i]=(Math.random()*2-1)*.08;
+  noise.buffer=buf;
+  const ng=audioCtx.createGain();ng.gain.value=.06;
+  noise.connect(ng);ng.connect(audioCtx.destination);noise.start();
+  setTimeout(()=>{sc.classList.add("show");snd(440,.4,.15,"sawtooth");setTimeout(()=>snd(880,.6,.13,"sine"),200);},450);
+  setTimeout(()=>{btn.disabled=false;},2500);
+}
+
+/* live clock */
+function updClock(){
+  const d=new Date(),h=String(d.getHours()).padStart(2,"0"),m=String(d.getMinutes()).padStart(2,"0");
+  document.getElementById("tv-clock").textContent=h+":"+m;
+}
+updClock();setInterval(updClock,30000);
+
+window.addEventListener("load",()=>setTimeout(()=>playCD({disabled:false}),500));
+</script>
+</body>
+</html>

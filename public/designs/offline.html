@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>لا يوجد بث حالياً — نماذج التصميم</title>
+<link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;900&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#06060b;--card:#0c0c16;--card2:#10101e;--border:#1c1c2e;--accent:#0891b2;--accent2:#22d3ee;--gold:#f5c542;--text:#e8eaf2;--muted:#8a8fa3;--green:#22c55e;--red:#ef4444;--purple:#a855f7}
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:var(--bg);color:var(--text);font-family:'Tajawal',sans-serif;min-height:100vh;padding:18px 12px 60px}
+header{text-align:center;margin-bottom:18px}
+header h1{font-size:1.4rem;font-weight:900;background:linear-gradient(90deg,#64748b,var(--accent2));-webkit-background-clip:text;background-clip:text;color:transparent}
+header p{color:var(--muted);font-size:.82rem;margin-top:4px}
+.tabs{display:flex;gap:7px;justify-content:center;margin-bottom:18px;flex-wrap:wrap}
+.tab{background:var(--card);border:1px solid var(--border);color:var(--muted);padding:9px 15px;border-radius:30px;font-family:inherit;font-size:.85rem;font-weight:900;cursor:pointer;transition:.25s}
+.tab.active{color:#fff;border-color:#64748b;box-shadow:0 0 14px rgba(100,116,139,.4)}
+.panel{display:none;flex-direction:column;align-items:center}
+.panel.active{display:flex}
+.scene{position:relative;width:min(94vw,560px);aspect-ratio:16/10;border-radius:18px;overflow:hidden;border:1px solid var(--border);margin-bottom:14px}
+.note{margin-top:8px;font-size:.78rem;color:var(--muted);max-width:480px;text-align:center;line-height:1.8}
+.note b{color:var(--accent2)}
+
+/* 1) Sleep Mode */
+#sc-sleep{background:radial-gradient(ellipse at 50% 50%,#0a1228 0%,#06060b 70%);display:flex;align-items:center;justify-content:center;flex-direction:column;gap:14px}
+.zzz{position:absolute;font-size:1.2rem;color:rgba(255,255,255,.3);animation:zzzFloat 4s ease-in-out infinite;font-weight:900}
+.zzz:nth-child(1){top:30%;left:35%;animation-delay:0s;font-size:.95rem}
+.zzz:nth-child(2){top:22%;left:42%;animation-delay:1.3s;font-size:1.2rem}
+.zzz:nth-child(3){top:14%;left:48%;animation-delay:2.6s;font-size:1.5rem}
+@keyframes zzzFloat{0%{opacity:0;transform:translateY(20px) scale(.5)}40%{opacity:1;transform:translateY(0) scale(1)}100%{opacity:0;transform:translateY(-40px) scale(1.2)}}
+.sleep-av{width:100px;height:100px;border-radius:50%;background:linear-gradient(135deg,#dc2626,#f59e0b);display:flex;align-items:center;justify-content:center;font-size:3rem;border:4px solid #2a2a44;box-shadow:0 10px 40px rgba(0,0,0,.5);position:relative;filter:saturate(.6) brightness(.7)}
+.sleep-title{font-size:1.4rem;font-weight:900;color:#94a3b8}
+.sleep-sub{font-size:.85rem;color:var(--muted);text-align:center;max-width:340px;line-height:1.7}
+.sleep-foot{display:flex;align-items:center;gap:7px;background:rgba(255,255,255,.04);border:1px solid var(--border);padding:6px 16px;border-radius:30px;color:var(--accent2);font-weight:900;font-size:.78rem}
+.sleep-foot .dot{width:7px;height:7px;border-radius:50%;background:var(--accent2);animation:pulse 1.4s infinite}
+@keyframes pulse{50%{opacity:.4}}
+
+/* 2) Countdown to Next Stream */
+#sc-cd{background:linear-gradient(160deg,#1e1145 0%,#0a0612 100%);padding:18px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:14px}
+.cd-eyebrow{display:inline-flex;align-items:center;gap:7px;background:rgba(168,85,247,.13);border:1px solid rgba(168,85,247,.4);color:#d8b4fe;padding:5px 14px;border-radius:30px;font-weight:900;font-size:.75rem}
+.cd-title{font-size:1.5rem;font-weight:900;text-align:center;line-height:1.3}
+.cd-title b{background:linear-gradient(135deg,#22d3ee,#a855f7);-webkit-background-clip:text;background-clip:text;color:transparent}
+.cd-grid{display:flex;align-items:center;gap:8px}
+.cd-box{background:linear-gradient(145deg,rgba(168,85,247,.15),rgba(168,85,247,.03));backdrop-filter:blur(10px);border:1px solid rgba(168,85,247,.4);border-radius:14px;padding:10px 16px;min-width:74px;text-align:center}
+.cd-box b{display:block;font-size:1.8rem;font-weight:900;font-family:monospace;color:#fff;line-height:1}
+.cd-box span{font-size:.6rem;color:#d8b4fe;letter-spacing:1.5px;margin-top:3px;display:block}
+.cd-colon{font-size:1.6rem;color:#a855f7;font-weight:900;font-family:monospace}
+.cd-foot{display:flex;align-items:center;gap:7px;color:var(--muted);font-size:.78rem}
+.cd-foot b{color:var(--gold)}
+
+/* 3) Last Stream Highlights */
+#sc-last{background:linear-gradient(160deg,#0c2440 0%,#06060b 100%);padding:14px;display:flex;flex-direction:column;gap:10px}
+.lh-head{display:flex;align-items:center;justify-content:space-between}
+.lh-head h2{font-size:.95rem;font-weight:900}
+.lh-head .off-tag{background:rgba(100,116,139,.15);border:1px solid rgba(100,116,139,.4);color:#94a3b8;padding:3px 11px;border-radius:30px;font-weight:900;font-size:.68rem}
+.lh-hero{background:linear-gradient(135deg,rgba(34,211,238,.1),rgba(8,145,178,.04));border:1px solid rgba(34,211,238,.3);border-radius:14px;padding:12px;display:flex;align-items:center;gap:12px}
+.lh-av{width:54px;height:54px;border-radius:50%;background:linear-gradient(135deg,#dc2626,#f59e0b);display:flex;align-items:center;justify-content:center;font-size:1.4rem;font-weight:900;border:2.5px solid var(--gold);flex-shrink:0}
+.lh-info{flex:1;min-width:0}
+.lh-info h3{font-size:1rem;font-weight:900}
+.lh-info p{font-size:.7rem;color:var(--muted);margin-top:1px}
+.lh-stats{display:grid;grid-template-columns:repeat(3,1fr);gap:7px}
+.lh-st{background:rgba(255,255,255,.03);border:1px solid var(--border);border-radius:10px;padding:7px;text-align:center}
+.lh-st b{display:block;font-size:1.05rem;font-weight:900;line-height:1.1}
+.lh-st span{font-size:.6rem;color:var(--muted)}
+.lh-winner{display:flex;align-items:center;gap:10px;background:rgba(245,197,66,.08);border:1px solid rgba(245,197,66,.3);border-radius:11px;padding:8px 11px}
+.lh-w-av{width:30px;height:30px;border-radius:50%;background:linear-gradient(135deg,#7c3aed,#a855f7);display:flex;align-items:center;justify-content:center;font-weight:900;font-size:.78rem;border:2px solid var(--gold)}
+.lh-w-body{flex:1}
+.lh-w-label{font-size:.62rem;color:var(--gold);font-weight:900;letter-spacing:1px}
+.lh-w-name{font-size:.85rem;font-weight:900}
+.lh-w-prize{color:var(--gold);font-weight:900;font-size:.85rem}
+.lh-foot{display:flex;justify-content:center;gap:10px;padding-top:6px}
+.lh-btn{background:rgba(34,211,238,.13);border:1px solid var(--accent);color:var(--accent2);padding:8px 18px;border-radius:30px;font-family:inherit;font-weight:900;font-size:.74rem;cursor:pointer;display:inline-flex;align-items:center;gap:6px}
+
+/* 4) Coming Soon */
+#sc-soon{background:#000;position:relative;overflow:hidden;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:14px}
+.soon-grid{position:absolute;inset:0;background-image:linear-gradient(rgba(34,211,238,.06) 1px,transparent 1px),linear-gradient(90deg,rgba(34,211,238,.06) 1px,transparent 1px);background-size:30px 30px;pointer-events:none}
+.soon-glow{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:300px;height:300px;border-radius:50%;background:radial-gradient(circle,rgba(34,211,238,.25),transparent 65%);filter:blur(20px);pointer-events:none;animation:glowPulse 3s ease-in-out infinite}
+@keyframes glowPulse{50%{transform:translate(-50%,-50%) scale(1.15);opacity:.6}}
+.soon-tag{display:inline-flex;align-items:center;gap:8px;background:rgba(255,255,255,.06);backdrop-filter:blur(10px);border:1px solid rgba(255,255,255,.15);color:#fff;padding:6px 16px;border-radius:30px;font-weight:900;font-size:.78rem;letter-spacing:2px;position:relative}
+.soon-title{font-size:2.6rem;font-weight:900;text-align:center;line-height:1.05;color:#fff;position:relative;letter-spacing:-1px;text-shadow:0 0 30px rgba(34,211,238,.5)}
+.soon-title b{background:linear-gradient(135deg,#22d3ee,#f5c542);-webkit-background-clip:text;background-clip:text;color:transparent}
+.soon-sub{font-size:.85rem;color:#94a3b8;text-align:center;position:relative;max-width:340px;line-height:1.7}
+.soon-social{display:flex;gap:8px;position:relative}
+.soon-soc{width:38px;height:38px;border-radius:11px;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.12);display:flex;align-items:center;justify-content:center;font-size:1.1rem;cursor:pointer;transition:.2s}
+.soon-soc:hover{background:rgba(34,211,238,.12);border-color:var(--accent2)}
+</style>
+</head>
+<body>
+<header><h1>📴 لا يوجد بث حالياً</h1><p>4 أنماط للشاشة اللي تطلع للجمهور قبل بداية البث أو بعد انتهائه</p></header>
+
+<div class="tabs">
+  <button class="tab active" data-p="sleep">😴 وضع النوم</button>
+  <button class="tab" data-p="cd">⏰ عداد البث القادم</button>
+  <button class="tab" data-p="last">📊 ملخص آخر بث</button>
+  <button class="tab" data-p="soon">✨ قريباً</button>
+</div>
+
+<div class="panel active" id="panel-sleep">
+  <div class="scene" id="sc-sleep">
+    <span class="zzz">z</span><span class="zzz">z</span><span class="zzz">z</span>
+    <div class="sleep-av">😴</div>
+    <div class="sleep-title">المضيف في استراحة</div>
+    <div class="sleep-sub">سنعود مرة أخرى بكل قوة وفعاليات جديدة! تابعونا لتنبيهات البث القادم</div>
+    <div class="sleep-foot"><span class="dot"></span> ستظهر شارة عند بدء البث</div>
+  </div>
+  <p class="note">شاشة <b>هادئة وودودة</b> بأفاتار نائم مع zZz متحركة تطفو لأعلى. تخفف من إحساس الفراغ وتعطي وعد بالعودة. الأفضل للاستراحات الطويلة</p>
+</div>
+
+<div class="panel" id="panel-cd">
+  <div class="scene" id="sc-cd">
+    <span class="cd-eyebrow">📅 البث القادم</span>
+    <div class="cd-title">سنبث <b>أبو فهد للألعاب</b><br>قريباً جداً!</div>
+    <div class="cd-grid">
+      <div class="cd-box"><b id="cd-h">02</b><span>ساعة</span></div>
+      <span class="cd-colon">:</span>
+      <div class="cd-box"><b id="cd-m">14</b><span>دقيقة</span></div>
+      <span class="cd-colon">:</span>
+      <div class="cd-box"><b id="cd-s">37</b><span>ثانية</span></div>
+    </div>
+    <div class="cd-foot">⏰ <b>7:00 مساءً</b> · جدول البث الأسبوعي</div>
+  </div>
+  <p class="note"><b>عداد تنازلي</b> بثلاث خانات (ساعة/دقيقة/ثانية) لموعد البث القادم. مع جدول البث الأسبوعي. الأفضل لمضيفي البث الدوري بمواعيد محددة</p>
+</div>
+
+<div class="panel" id="panel-last">
+  <div class="scene" id="sc-last">
+    <div class="lh-head">
+      <h2>📊 ملخص آخر بث</h2>
+      <span class="off-tag">📴 غير متصل</span>
+    </div>
+    <div class="lh-hero">
+      <div class="lh-av">🎮</div>
+      <div class="lh-info">
+        <h3>أبو فهد للألعاب</h3>
+        <p>⏱️ انتهى البث قبل 4 ساعات · المدة: 02:47</p>
+      </div>
+    </div>
+    <div class="lh-stats">
+      <div class="lh-st"><b style="color:#22d3ee">3,247</b><span>مشاهد</span></div>
+      <div class="lh-st"><b style="color:#f5c542">428</b><span>هدية</span></div>
+      <div class="lh-st"><b style="color:#22c55e">+184</b><span>متابع جديد</span></div>
+    </div>
+    <div class="lh-winner">
+      <div class="lh-w-av">ن</div>
+      <div class="lh-w-body">
+        <div class="lh-w-label">🏆 بطل الفعالية الأخيرة</div>
+        <div class="lh-w-name">نورة الصقري</div>
+      </div>
+      <div class="lh-w-prize">+500</div>
+    </div>
+    <div class="lh-foot">
+      <button class="lh-btn">🔔 تنبيه عند البث</button>
+    </div>
+  </div>
+  <p class="note">شاشة <b>ملخص لآخر بث</b>: عدد المشاهدين والهدايا والمتابعين الجدد + بطل آخر فعالية + زر تنبيه. تبقي الزوار مشغولين بمحتوى ذي قيمة بدل شاشة فارغة</p>
+</div>
+
+<div class="panel" id="panel-soon">
+  <div class="scene" id="sc-soon">
+    <div class="soon-grid"></div>
+    <div class="soon-glow"></div>
+    <span class="soon-tag">📡 STAND BY</span>
+    <div class="soon-title">قريباً<br><b>BthLab</b></div>
+    <div class="soon-sub">منصة الفعاليات التفاعلية الأولى لبث TikTok Live بالعربية</div>
+    <div class="soon-social">
+      <div class="soon-soc">📱</div>
+      <div class="soon-soc">💬</div>
+      <div class="soon-soc">🔔</div>
+      <div class="soon-soc">📺</div>
+    </div>
+  </div>
+  <p class="note">نمط <b>"قريباً" فاخر</b> بخلفية شبكية tron + توهج نابض في النص + أزرار وسائل التواصل. الأفضل لـ <b>إطلاق</b> منصة أو عند الافتتاح</p>
+</div>
+
+<a href="/" style="position:fixed;top:14px;right:14px;background:rgba(12,12,22,.85);backdrop-filter:blur(10px);color:#22d3ee;border:1px solid #0891b2;border-radius:30px;padding:8px 16px;font-family:Tajawal,sans-serif;font-weight:900;font-size:.78rem;text-decoration:none;z-index:200">← المعرض</a>
+
+<script>
+document.querySelectorAll(".tab").forEach(t=>t.onclick=()=>{
+  document.querySelectorAll(".tab,.panel").forEach(x=>x.classList.remove("active"));
+  t.classList.add("active");
+  document.getElementById("panel-"+t.dataset.p).classList.add("active");
+});
+/* Countdown */
+let s=37,m=14,h=2;
+setInterval(()=>{
+  s--;if(s<0){s=59;m--;if(m<0){m=59;h--;if(h<0)h=0;}}
+  document.getElementById("cd-h").textContent=String(h).padStart(2,"0");
+  document.getElementById("cd-m").textContent=String(m).padStart(2,"0");
+  document.getElementById("cd-s").textContent=String(s).padStart(2,"0");
+},1000);
+</script>
+</body>
+</html>
