@@ -1,0 +1,456 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>صفحة الدخول — نماذج التصميم</title>
+<link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;900&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#06060b;--card:#0c0c16;--card2:#10101e;--card3:#161628;--border:#1c1c2e;--accent:#0891b2;--accent2:#22d3ee;--gold:#f5c542;--text:#e8eaf2;--muted:#8a8fa3;--green:#22c55e;--red:#ef4444;--purple:#a855f7;--pink:#ec4899}
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:var(--bg);color:var(--text);font-family:'Tajawal',sans-serif;min-height:100vh;padding:18px 12px 60px}
+header.top{text-align:center;margin-bottom:18px}
+header.top h1{font-size:1.4rem;font-weight:900;background:linear-gradient(90deg,var(--accent2),var(--purple));-webkit-background-clip:text;background-clip:text;color:transparent}
+header.top p{color:var(--muted);font-size:.82rem;margin-top:4px}
+.tabs{display:flex;gap:7px;justify-content:center;margin-bottom:18px;flex-wrap:wrap}
+.tab{background:var(--card);border:1px solid var(--border);color:var(--muted);padding:9px 15px;border-radius:30px;font-family:inherit;font-size:.85rem;font-weight:900;cursor:pointer;transition:.25s}
+.tab.active{color:#fff;border-color:var(--accent2);box-shadow:0 0 14px rgba(34,211,238,.35)}
+.panel{display:none}
+.panel.active{display:block}
+.note{margin-top:14px;font-size:.78rem;color:var(--muted);max-width:600px;text-align:center;line-height:1.8;margin-left:auto;margin-right:auto}
+.note b{color:var(--accent2)}
+
+.page-wrap{max-width:1200px;margin:0 auto;border-radius:18px;overflow:hidden;border:1px solid var(--border);min-height:560px;position:relative}
+
+/* Form components */
+.input-group{margin-bottom:14px}
+.input-label{display:block;font-size:.75rem;color:var(--muted);font-weight:900;margin-bottom:6px}
+.input-wrap{position:relative}
+.input{
+  width:100%;background:var(--card2);border:1px solid var(--border);
+  color:var(--text);padding:11px 38px 11px 14px;border-radius:11px;
+  font-family:inherit;font-size:.88rem;outline:none;transition:.2s
+}
+.input:focus{border-color:var(--accent2);box-shadow:0 0 0 3px rgba(34,211,238,.12);background:var(--card3)}
+.input-ico{position:absolute;left:12px;top:50%;transform:translateY(-50%);color:var(--muted);font-size:.95rem;pointer-events:none}
+.btn-submit{
+  width:100%;background:linear-gradient(135deg,var(--accent),var(--accent2));
+  color:#fff;border:none;padding:12px;border-radius:11px;
+  font-family:inherit;font-weight:900;font-size:.95rem;cursor:pointer;
+  box-shadow:0 4px 18px rgba(8,145,178,.35);transition:.2s;
+  display:flex;align-items:center;justify-content:center;gap:7px
+}
+.btn-submit:hover{transform:translateY(-1px);box-shadow:0 6px 22px rgba(8,145,178,.5)}
+.btn-social{
+  width:100%;background:var(--card2);border:1px solid var(--border);
+  color:var(--text);padding:10px;border-radius:11px;
+  font-family:inherit;font-weight:900;font-size:.85rem;cursor:pointer;
+  display:flex;align-items:center;justify-content:center;gap:8px;transition:.2s
+}
+.btn-social:hover{border-color:var(--accent2)}
+.divider{display:flex;align-items:center;gap:10px;margin:14px 0;color:var(--muted);font-size:.72rem;font-weight:900}
+.divider::before,.divider::after{content:"";flex:1;height:1px;background:var(--border)}
+.checkbox-row{display:flex;align-items:center;justify-content:space-between;font-size:.78rem;margin-bottom:14px}
+.checkbox{display:flex;align-items:center;gap:7px;cursor:pointer;color:var(--muted)}
+.checkbox input{accent-color:var(--accent2);width:14px;height:14px}
+.link{color:var(--accent2);text-decoration:none;font-weight:900;font-size:.78rem;cursor:pointer}
+
+/* ===================================================== */
+/* 1) Centered Card                                       */
+/* ===================================================== */
+#p-center{background:radial-gradient(ellipse at 20% 0%,rgba(8,145,178,.1),transparent 50%),radial-gradient(ellipse at 80% 100%,rgba(168,85,247,.08),transparent 50%),var(--bg);display:flex;align-items:center;justify-content:center;padding:30px 20px}
+.center-card{
+  background:var(--card);border:1px solid var(--border);border-radius:22px;
+  padding:30px;width:100%;max-width:400px;
+  box-shadow:0 20px 50px rgba(0,0,0,.4)
+}
+.cc-brand{display:flex;align-items:center;justify-content:center;gap:10px;margin-bottom:20px}
+.cc-brand .logo{width:46px;height:46px;border-radius:13px;background:linear-gradient(135deg,var(--accent),var(--accent2));display:flex;align-items:center;justify-content:center;font-weight:900;font-size:1.4rem;box-shadow:0 8px 20px rgba(8,145,178,.4)}
+.cc-brand .name{font-weight:900;font-size:1.3rem}
+.cc-title{font-size:1.4rem;font-weight:900;text-align:center;margin-bottom:5px}
+.cc-sub{text-align:center;font-size:.85rem;color:var(--muted);margin-bottom:22px}
+.cc-foot{text-align:center;font-size:.8rem;color:var(--muted);margin-top:14px}
+
+/* ===================================================== */
+/* 2) Split Branding                                      */
+/* ===================================================== */
+#p-split{display:grid;grid-template-columns:1.1fr 1fr;min-height:560px}
+.sp-left{
+  position:relative;overflow:hidden;
+  background:linear-gradient(160deg,#0c2440 0%,#1e1145 60%,#0a0612 100%);
+  padding:36px;display:flex;flex-direction:column;justify-content:space-between
+}
+.sp-left::before{content:"";position:absolute;top:-100px;right:-100px;width:400px;height:400px;background:radial-gradient(circle,rgba(34,211,238,.18),transparent 65%);pointer-events:none}
+.sp-left::after{content:"";position:absolute;bottom:-100px;left:-100px;width:350px;height:350px;background:radial-gradient(circle,rgba(168,85,247,.18),transparent 65%);pointer-events:none}
+.sp-brand{display:flex;align-items:center;gap:10px;position:relative}
+.sp-brand .logo{width:40px;height:40px;border-radius:11px;background:linear-gradient(135deg,var(--accent),var(--accent2));display:flex;align-items:center;justify-content:center;font-weight:900;font-size:1.2rem}
+.sp-brand .name{font-weight:900;font-size:1.15rem}
+
+.sp-message{position:relative}
+.sp-message h2{font-size:2.2rem;font-weight:900;line-height:1.1;margin-bottom:14px;letter-spacing:-1px}
+.sp-message h2 b{background:linear-gradient(135deg,var(--accent2),var(--gold));-webkit-background-clip:text;background-clip:text;color:transparent}
+.sp-message p{font-size:.92rem;color:#cbd5e1;line-height:1.8;margin-bottom:22px}
+.sp-features{display:flex;flex-direction:column;gap:10px}
+.sp-f{display:flex;align-items:center;gap:11px}
+.sp-f-ico{width:34px;height:34px;border-radius:9px;background:rgba(34,211,238,.13);border:1px solid rgba(34,211,238,.3);display:flex;align-items:center;justify-content:center;font-size:1rem;flex-shrink:0}
+.sp-f-text{font-size:.82rem;font-weight:900}
+.sp-f-text span{display:block;font-size:.7rem;color:#94a3b8;font-weight:700;margin-top:1px}
+
+.sp-quote{position:relative;background:rgba(255,255,255,.04);backdrop-filter:blur(10px);border:1px solid rgba(255,255,255,.1);border-radius:14px;padding:14px}
+.sp-quote-text{font-size:.85rem;line-height:1.7;margin-bottom:8px;color:#e2e8f0}
+.sp-quote-author{display:flex;align-items:center;gap:8px}
+.sp-quote-av{width:30px;height:30px;border-radius:50%;background:linear-gradient(135deg,#dc2626,#f59e0b);display:flex;align-items:center;justify-content:center;font-weight:900;font-size:.78rem}
+.sp-quote-info b{display:block;font-size:.78rem;font-weight:900}
+.sp-quote-info span{font-size:.65rem;color:#94a3b8}
+
+.sp-right{padding:40px 30px;display:flex;align-items:center;justify-content:center}
+.sp-form-wrap{width:100%;max-width:340px}
+.sp-form-title{font-size:1.5rem;font-weight:900;margin-bottom:4px}
+.sp-form-sub{font-size:.85rem;color:var(--muted);margin-bottom:22px}
+
+/* ===================================================== */
+/* 3) Floating Glass                                      */
+/* ===================================================== */
+#p-glass{background:#000;position:relative;overflow:hidden;min-height:560px;display:flex;align-items:center;justify-content:center;padding:30px 20px}
+.gl-bg{position:absolute;inset:0;overflow:hidden}
+.gl-blob{position:absolute;border-radius:50%;filter:blur(80px);opacity:.55;animation:gFloat 18s ease-in-out infinite}
+.gl-b1{width:480px;height:480px;background:#0891b2;top:-150px;right:-100px}
+.gl-b2{width:420px;height:420px;background:#a855f7;bottom:-150px;left:-100px;animation-delay:-6s}
+.gl-b3{width:380px;height:380px;background:#ec4899;top:40%;left:40%;animation-delay:-12s;opacity:.3}
+@keyframes gFloat{0%,100%{transform:translate(0,0) scale(1)}33%{transform:translate(50px,-30px) scale(1.1)}66%{transform:translate(-30px,40px) scale(.9)}}
+.gl-grid{position:absolute;inset:0;background-image:linear-gradient(rgba(255,255,255,.04) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.04) 1px,transparent 1px);background-size:50px 50px;pointer-events:none}
+
+.gl-card{
+  position:relative;width:100%;max-width:400px;
+  background:rgba(255,255,255,.05);backdrop-filter:blur(24px) saturate(140%);
+  border:1px solid rgba(255,255,255,.15);border-radius:24px;
+  padding:32px 30px;
+  box-shadow:0 20px 60px rgba(0,0,0,.4),inset 0 1px 0 rgba(255,255,255,.1)
+}
+.gl-brand{display:flex;align-items:center;justify-content:center;gap:10px;margin-bottom:22px}
+.gl-logo{width:50px;height:50px;border-radius:14px;background:linear-gradient(135deg,#22d3ee,#a855f7);display:flex;align-items:center;justify-content:center;font-weight:900;font-size:1.5rem;box-shadow:0 8px 24px rgba(168,85,247,.4)}
+.gl-name{font-weight:900;font-size:1.4rem}
+.gl-title{text-align:center;font-size:1.4rem;font-weight:900;margin-bottom:5px}
+.gl-sub{text-align:center;font-size:.85rem;color:#cbd5e1;margin-bottom:22px}
+.gl-input{
+  width:100%;background:rgba(255,255,255,.06);backdrop-filter:blur(10px);
+  border:1px solid rgba(255,255,255,.15);
+  color:#fff;padding:12px 40px 12px 14px;border-radius:12px;
+  font-family:inherit;font-size:.88rem;outline:none;transition:.2s
+}
+.gl-input:focus{border-color:#22d3ee;box-shadow:0 0 0 3px rgba(34,211,238,.2);background:rgba(255,255,255,.1)}
+.gl-input::placeholder{color:rgba(255,255,255,.5)}
+.gl-btn{
+  width:100%;background:linear-gradient(135deg,#22d3ee,#a855f7);
+  color:#fff;border:none;padding:13px;border-radius:12px;
+  font-family:inherit;font-weight:900;font-size:.95rem;cursor:pointer;
+  box-shadow:0 8px 24px rgba(168,85,247,.4)
+}
+.gl-divider{display:flex;align-items:center;gap:10px;margin:16px 0;color:rgba(255,255,255,.5);font-size:.72rem;font-weight:900}
+.gl-divider::before,.gl-divider::after{content:"";flex:1;height:1px;background:rgba(255,255,255,.15)}
+.gl-social{
+  width:100%;background:rgba(255,255,255,.06);backdrop-filter:blur(10px);
+  border:1px solid rgba(255,255,255,.15);color:#fff;padding:10px;border-radius:12px;
+  font-family:inherit;font-weight:900;font-size:.85rem;cursor:pointer;
+  display:flex;align-items:center;justify-content:center;gap:8px
+}
+.gl-foot{text-align:center;font-size:.78rem;color:#94a3b8;margin-top:16px}
+
+/* ===================================================== */
+/* 4) Minimal Modern                                      */
+/* ===================================================== */
+#p-min{background:var(--bg);display:flex;min-height:560px}
+.mn-nav{position:absolute;top:18px;right:24px;display:flex;align-items:center;gap:10px;z-index:3}
+.mn-brand{display:flex;align-items:center;gap:9px}
+.mn-brand .logo{width:32px;height:32px;border-radius:9px;background:#fff;color:#000;display:flex;align-items:center;justify-content:center;font-weight:900;font-size:1.05rem}
+.mn-brand .name{font-weight:900;font-size:1rem;color:#fff}
+.mn-back{position:absolute;top:18px;left:24px;color:var(--muted);text-decoration:none;font-weight:900;font-size:.82rem;display:inline-flex;align-items:center;gap:5px;z-index:3}
+.mn-back:hover{color:#fff}
+.mn-content{flex:1;display:flex;align-items:center;justify-content:center;padding:40px}
+.mn-form{width:100%;max-width:340px}
+.mn-step{font-size:.7rem;color:var(--muted);font-weight:900;letter-spacing:2px;margin-bottom:8px}
+.mn-step b{color:var(--accent2)}
+.mn-title{font-size:2rem;font-weight:900;line-height:1.1;margin-bottom:5px;letter-spacing:-1px}
+.mn-sub{font-size:.85rem;color:var(--muted);margin-bottom:24px;line-height:1.6}
+.mn-input{
+  width:100%;background:transparent;border:none;border-bottom:1.5px solid var(--border);
+  color:var(--text);padding:11px 0;font-family:inherit;font-size:1rem;outline:none;transition:.25s
+}
+.mn-input:focus{border-bottom-color:var(--accent2)}
+.mn-input::placeholder{color:var(--muted)}
+.mn-input-wrap{margin-bottom:18px}
+.mn-input-label{display:block;font-size:.7rem;color:var(--muted);font-weight:900;margin-bottom:3px;letter-spacing:1px;text-transform:uppercase}
+.mn-btn{
+  width:100%;background:#fff;color:#000;border:none;padding:14px;border-radius:50px;
+  font-family:inherit;font-weight:900;font-size:.95rem;cursor:pointer;
+  display:flex;align-items:center;justify-content:center;gap:7px;transition:.2s
+}
+.mn-btn:hover{background:#22d3ee;color:#fff}
+.mn-link-row{text-align:center;font-size:.78rem;color:var(--muted);margin-top:18px}
+.mn-link-row a{color:#fff;font-weight:900;text-decoration:none}
+.mn-link-row a:hover{color:var(--accent2)}
+
+.mn-side{
+  flex:0 0 380px;
+  background:linear-gradient(160deg,#0c2440 0%,#1e1145 100%);
+  display:flex;align-items:center;justify-content:center;padding:40px;
+  position:relative;overflow:hidden
+}
+.mn-side::before{content:"";position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:200%;height:200%;background:conic-gradient(from 0deg,transparent 0deg,rgba(34,211,238,.06) 60deg,transparent 120deg,transparent 180deg,rgba(168,85,247,.06) 240deg,transparent 300deg);animation:slowSpin 30s linear infinite;pointer-events:none}
+@keyframes slowSpin{to{transform:translate(-50%,-50%) rotate(360deg)}}
+.mn-side-content{position:relative;text-align:center}
+.mn-side-num{font-size:7rem;font-weight:900;line-height:1;background:linear-gradient(135deg,#22d3ee,#a855f7);-webkit-background-clip:text;background-clip:text;color:transparent;font-family:Impact,sans-serif;letter-spacing:-3px;margin-bottom:6px}
+.mn-side-title{font-size:1.4rem;font-weight:900;color:#fff;margin-bottom:8px}
+.mn-side-text{font-size:.85rem;color:#cbd5e1;line-height:1.7;max-width:280px;margin:0 auto 20px}
+.mn-side-stats{display:flex;justify-content:center;gap:18px}
+.mn-side-st{text-align:center}
+.mn-side-st b{display:block;font-size:1.2rem;font-weight:900;color:#fff}
+.mn-side-st span{font-size:.62rem;color:#94a3b8;letter-spacing:1.5px}
+
+@media(max-width:760px){
+  #p-split{grid-template-columns:1fr}
+  .sp-left{padding:24px}
+  .sp-message h2{font-size:1.7rem}
+  #p-min{flex-direction:column-reverse}
+  .mn-side{flex:0 0 auto;padding:24px}
+  .mn-side-num{font-size:4.5rem}
+}
+</style>
+</head>
+<body>
+<header class="top">
+  <h1>🔐 صفحة الدخول</h1>
+  <p>4 أنماط لشاشة تسجيل دخول المضيفين</p>
+</header>
+
+<div class="tabs">
+  <button class="tab active" data-p="center">📍 بطاقة في الوسط</button>
+  <button class="tab" data-p="split">⚡ Split Branding</button>
+  <button class="tab" data-p="glass">✨ Glass Floating</button>
+  <button class="tab" data-p="min">🎯 Minimal Modern</button>
+</div>
+
+<!-- 1) Centered Card -->
+<div class="panel active" id="panel-center">
+  <div class="page-wrap" id="p-center">
+    <div class="center-card">
+      <div class="cc-brand">
+        <div class="logo">B</div>
+        <div class="name">BthLab</div>
+      </div>
+      <h2 class="cc-title">مرحباً بعودتك 👋</h2>
+      <p class="cc-sub">سجّل دخولك للوصول للوحة التحكم</p>
+
+      <div class="input-group">
+        <label class="input-label">البريد الإلكتروني</label>
+        <div class="input-wrap">
+          <input class="input" placeholder="you@example.com">
+          <span class="input-ico">✉️</span>
+        </div>
+      </div>
+
+      <div class="input-group">
+        <label class="input-label">كلمة المرور</label>
+        <div class="input-wrap">
+          <input class="input" type="password" placeholder="••••••••" value="password123">
+          <span class="input-ico">🔒</span>
+        </div>
+      </div>
+
+      <div class="checkbox-row">
+        <label class="checkbox"><input type="checkbox" checked> تذكرني</label>
+        <a class="link">نسيت كلمة المرور؟</a>
+      </div>
+
+      <button class="btn-submit">دخول →</button>
+
+      <div class="divider">أو</div>
+
+      <button class="btn-social">🌐 دخول بحساب Google</button>
+
+      <p class="cc-foot">ليس لديك حساب؟ <a class="link">سجّل الآن</a></p>
+    </div>
+  </div>
+  <p class="note">تصميم <b>كلاسيكي ومألوف</b>: بطاقة مركزية، خلفية بـ glow ناعم في الزوايا. <b>الأكثر استخداماً وأسرع تطوير</b>. مثالي للمنصات التي تركز على البساطة</p>
+</div>
+
+<!-- 2) Split Branding -->
+<div class="panel" id="panel-split">
+  <div class="page-wrap" id="p-split">
+
+    <div class="sp-left">
+      <div class="sp-brand">
+        <div class="logo">B</div>
+        <div class="name">BthLab</div>
+      </div>
+
+      <div class="sp-message">
+        <h2>بثك على<br>TikTok<br><b>على بُعد دقيقة 🚀</b></h2>
+        <p>انضم لأكثر من 5,000 مضيف يستخدمون BthLab لإثراء بثوثهم بفعاليات تفاعلية مذهلة</p>
+
+        <div class="sp-features">
+          <div class="sp-f">
+            <div class="sp-f-ico">🎮</div>
+            <div class="sp-f-text">20+ فعالية جاهزة<span>عجلة · حرب · سباق · بطولة</span></div>
+          </div>
+          <div class="sp-f">
+            <div class="sp-f-ico">⚡</div>
+            <div class="sp-f-text">إعداد بدقيقة<span>الصق الرابط في OBS وابدأ</span></div>
+          </div>
+          <div class="sp-f">
+            <div class="sp-f-ico">📊</div>
+            <div class="sp-f-text">إحصائيات حية<span>تابع التفاعل لحظة بلحظة</span></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="sp-quote">
+        <div class="sp-quote-text">"BthLab غيّر أسلوب بثي تماماً، الجمهور صار أكثر تفاعلاً والهدايا تضاعفت!"</div>
+        <div class="sp-quote-author">
+          <div class="sp-quote-av">ف</div>
+          <div class="sp-quote-info">
+            <b>أبو فهد للألعاب</b>
+            <span>@abufahad_gaming · 142K متابع</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="sp-right">
+      <div class="sp-form-wrap">
+        <h2 class="sp-form-title">تسجيل الدخول</h2>
+        <p class="sp-form-sub">أدخل بياناتك للوصول للوحة</p>
+
+        <div class="input-group">
+          <div class="input-wrap"><input class="input" placeholder="البريد الإلكتروني"><span class="input-ico">✉️</span></div>
+        </div>
+        <div class="input-group">
+          <div class="input-wrap"><input class="input" type="password" placeholder="كلمة المرور" value="password"><span class="input-ico">🔒</span></div>
+        </div>
+
+        <div class="checkbox-row">
+          <label class="checkbox"><input type="checkbox" checked> تذكرني</label>
+          <a class="link">نسيت كلمة المرور؟</a>
+        </div>
+
+        <button class="btn-submit">دخول إلى لوحة التحكم</button>
+
+        <div class="divider">أو</div>
+
+        <button class="btn-social">🌐 Google</button>
+
+        <p style="text-align:center;font-size:.8rem;color:var(--muted);margin-top:14px">جديد هنا؟ <a class="link">أنشئ حساب مجاناً</a></p>
+      </div>
+    </div>
+
+  </div>
+  <p class="note"><b>Split Branding</b>: نصف للماركة (شعارات، مميزات، شهادة عميل) + نصف للفورم. <b>أفضل تحويل للمستخدمين الجدد</b> لأنه يبني الثقة قبل ما يطلب البيانات</p>
+</div>
+
+<!-- 3) Floating Glass -->
+<div class="panel" id="panel-glass">
+  <div class="page-wrap" id="p-glass">
+    <div class="gl-bg">
+      <div class="gl-grid"></div>
+      <div class="gl-blob gl-b1"></div>
+      <div class="gl-blob gl-b2"></div>
+      <div class="gl-blob gl-b3"></div>
+    </div>
+
+    <div class="gl-card">
+      <div class="gl-brand">
+        <div class="gl-logo">B</div>
+        <div class="gl-name">BthLab</div>
+      </div>
+      <h2 class="gl-title">أهلاً بك مجدداً</h2>
+      <p class="gl-sub">سجّل دخولك للمتابعة</p>
+
+      <div class="input-group">
+        <div class="input-wrap"><input class="gl-input" placeholder="البريد الإلكتروني"><span class="input-ico" style="color:rgba(255,255,255,.5)">✉️</span></div>
+      </div>
+      <div class="input-group">
+        <div class="input-wrap"><input class="gl-input" type="password" placeholder="كلمة المرور" value="••••••"><span class="input-ico" style="color:rgba(255,255,255,.5)">🔒</span></div>
+      </div>
+
+      <div style="display:flex;justify-content:space-between;align-items:center;font-size:.78rem;margin-bottom:14px">
+        <label style="display:flex;align-items:center;gap:7px;color:rgba(255,255,255,.7);cursor:pointer">
+          <input type="checkbox" style="accent-color:#22d3ee" checked> تذكرني
+        </label>
+        <a style="color:#22d3ee;font-weight:900;font-size:.78rem;cursor:pointer">نسيت كلمة المرور؟</a>
+      </div>
+
+      <button class="gl-btn">تسجيل الدخول →</button>
+
+      <div class="gl-divider">OR</div>
+
+      <button class="gl-social">🌐 المتابعة باستخدام Google</button>
+
+      <p class="gl-foot">ليس لديك حساب؟ <a style="color:#22d3ee;font-weight:900;cursor:pointer">سجّل الآن</a></p>
+    </div>
+
+  </div>
+  <p class="note">تصميم <b>زجاجي عائم</b>: خلفية بـ blobs ملونة متحركة + شبكة tron + بطاقة زجاجية بـ blur عالي. <b>مذهل بصرياً</b> ومناسب للماركات الحديثة والشباب</p>
+</div>
+
+<!-- 4) Minimal Modern -->
+<div class="panel" id="panel-min">
+  <div class="page-wrap" id="p-min">
+
+    <div class="mn-content">
+      <a href="#" class="mn-back">← العودة للموقع</a>
+      <div class="mn-brand mn-nav">
+        <div class="logo">B</div>
+        <div class="name">BthLab</div>
+      </div>
+
+      <div class="mn-form">
+        <div class="mn-step">الخطوة <b>1</b> من 2</div>
+        <h2 class="mn-title">مرحباً بعودتك.</h2>
+        <p class="mn-sub">أدخل بياناتك للمتابعة إلى لوحة التحكم</p>
+
+        <div class="mn-input-wrap">
+          <label class="mn-input-label">البريد الإلكتروني</label>
+          <input class="mn-input" placeholder="you@example.com" value="abufahad@bthlab.live">
+        </div>
+
+        <div class="mn-input-wrap">
+          <label class="mn-input-label">كلمة المرور</label>
+          <input class="mn-input" type="password" placeholder="••••••••" value="password123">
+        </div>
+
+        <button class="mn-btn">المتابعة →</button>
+
+        <p class="mn-link-row">
+          ليس لديك حساب؟ <a>إنشاء حساب جديد</a>
+        </p>
+      </div>
+    </div>
+
+    <div class="mn-side">
+      <div class="mn-side-content">
+        <div class="mn-side-num">5K+</div>
+        <h3 class="mn-side-title">مضيف نشط</h3>
+        <p class="mn-side-text">يستخدمون BthLab يومياً لإثراء بثوثهم على TikTok Live</p>
+        <div class="mn-side-stats">
+          <div class="mn-side-st"><b>20+</b><span>فعالية</span></div>
+          <div class="mn-side-st"><b>2M+</b><span>مشاركة شهرياً</span></div>
+          <div class="mn-side-st"><b>4.9★</b><span>تقييم</span></div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+  <p class="note">تصميم <b>Minimal Modern</b>: حقول بـ underline فقط بدون إطار + زر دائري بأبيض + sidebar فيه إحصاء كبير (5K+). <b>أنيق ومتطور</b> للمنصات الاحترافية والـ B2B</p>
+</div>
+
+<a href="/" style="position:fixed;top:14px;right:14px;background:rgba(12,12,22,.85);backdrop-filter:blur(10px);color:#22d3ee;border:1px solid #0891b2;border-radius:30px;padding:8px 16px;font-family:Tajawal,sans-serif;font-weight:900;font-size:.78rem;text-decoration:none;z-index:200">← المعرض</a>
+
+<script>
+document.querySelectorAll(".tab").forEach(t=>t.onclick=()=>{
+  document.querySelectorAll(".tab,.panel").forEach(x=>x.classList.remove("active"));
+  t.classList.add("active");
+  document.getElementById("panel-"+t.dataset.p).classList.add("active");
+});
+</script>
+</body>
+</html>

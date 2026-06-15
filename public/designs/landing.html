@@ -1,0 +1,462 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>الصفحة الرئيسية — نماذج التصميم</title>
+<link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;900&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#06060b;--card:#0c0c16;--card2:#10101e;--border:#1c1c2e;--accent:#0891b2;--accent2:#22d3ee;--gold:#f5c542;--text:#e8eaf2;--muted:#8a8fa3;--green:#22c55e;--red:#ef4444;--purple:#a855f7;--pink:#ec4899;--blue:#3b82f6}
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:var(--bg);color:var(--text);font-family:'Tajawal',sans-serif;min-height:100vh;padding:18px 12px 60px}
+header.top{text-align:center;margin-bottom:18px}
+header.top h1{font-size:1.4rem;font-weight:900;background:linear-gradient(90deg,var(--accent2),var(--gold));-webkit-background-clip:text;background-clip:text;color:transparent}
+header.top p{color:var(--muted);font-size:.82rem;margin-top:4px}
+.tabs{display:flex;gap:7px;justify-content:center;margin-bottom:18px;flex-wrap:wrap}
+.tab{background:var(--card);border:1px solid var(--border);color:var(--muted);padding:9px 15px;border-radius:30px;font-family:inherit;font-size:.85rem;font-weight:900;cursor:pointer;transition:.25s}
+.tab.active{color:#fff;border-color:var(--accent2);box-shadow:0 0 14px rgba(34,211,238,.35)}
+.panel{display:none}
+.panel.active{display:block}
+.note{margin-top:14px;font-size:.78rem;color:var(--muted);max-width:600px;text-align:center;line-height:1.8;margin-left:auto;margin-right:auto}
+.note b{color:var(--accent2)}
+
+.page-wrap{max-width:1200px;margin:0 auto;border-radius:18px;overflow:hidden;border:1px solid var(--border);background:var(--bg)}
+
+/* ===================================================== */
+/* Common UI components                                  */
+/* ===================================================== */
+.nav{display:flex;align-items:center;justify-content:space-between;padding:14px 22px;border-bottom:1px solid var(--border)}
+.nav .brand{display:flex;align-items:center;gap:9px}
+.nav .logo{width:34px;height:34px;border-radius:9px;background:linear-gradient(135deg,var(--accent),var(--accent2));display:flex;align-items:center;justify-content:center;font-weight:900;font-size:1.05rem}
+.nav .name{font-weight:900;font-size:1.05rem}
+.nav .links{display:flex;gap:18px;font-size:.85rem;color:var(--muted);font-weight:700}
+.nav .links a{color:inherit;text-decoration:none;cursor:pointer;transition:.2s}
+.nav .links a:hover{color:var(--accent2)}
+.nav .actions{display:flex;gap:8px;align-items:center}
+.btn-ghost{background:transparent;border:1px solid var(--border);color:var(--text);padding:7px 16px;border-radius:30px;font-family:inherit;font-weight:900;font-size:.78rem;cursor:pointer;transition:.2s}
+.btn-ghost:hover{border-color:var(--accent2);color:var(--accent2)}
+.btn-primary{background:linear-gradient(135deg,var(--accent),var(--accent2));color:#fff;border:none;padding:8px 18px;border-radius:30px;font-family:inherit;font-weight:900;font-size:.82rem;cursor:pointer;box-shadow:0 4px 18px rgba(8,145,178,.4);transition:.2s}
+.btn-primary:hover{transform:translateY(-1px);box-shadow:0 6px 22px rgba(8,145,178,.5)}
+.btn-lg{padding:13px 26px;font-size:.95rem}
+
+/* ===================================================== */
+/* 1) Modern Hero with Stats                            */
+/* ===================================================== */
+.modern-hero{padding:50px 22px 30px;text-align:center;position:relative;overflow:hidden}
+.modern-hero::before{content:"";position:absolute;top:-100px;left:50%;transform:translateX(-50%);width:600px;height:600px;background:radial-gradient(circle,rgba(34,211,238,.12),transparent 65%);pointer-events:none}
+.mh-badge{display:inline-flex;align-items:center;gap:7px;background:rgba(34,211,238,.13);border:1px solid rgba(34,211,238,.4);color:var(--accent2);padding:5px 14px;border-radius:30px;font-weight:900;font-size:.74rem;margin-bottom:18px;position:relative}
+.mh-badge .dot{width:7px;height:7px;border-radius:50%;background:var(--green);animation:pulse 1.4s infinite}
+@keyframes pulse{50%{opacity:.4}}
+.mh-title{font-size:clamp(1.6rem,4vw,3rem);font-weight:900;line-height:1.15;margin-bottom:12px;position:relative;letter-spacing:-1px}
+.mh-title b{background:linear-gradient(135deg,var(--accent2),var(--gold));-webkit-background-clip:text;background-clip:text;color:transparent}
+.mh-sub{font-size:.95rem;color:var(--muted);max-width:540px;margin:0 auto 24px;line-height:1.7;position:relative}
+.mh-cta{display:flex;gap:10px;justify-content:center;margin-bottom:32px;flex-wrap:wrap;position:relative}
+.mh-stats{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;max-width:760px;margin:0 auto 30px;padding:14px;background:var(--card);border:1px solid var(--border);border-radius:18px;position:relative}
+.mh-st{padding:6px}
+.mh-st b{display:block;font-size:1.6rem;font-weight:900;background:linear-gradient(135deg,var(--accent2),var(--gold));-webkit-background-clip:text;background-clip:text;color:transparent;line-height:1}
+.mh-st span{font-size:.72rem;color:var(--muted);font-weight:700;margin-top:3px;display:block}
+
+.mh-preview{max-width:760px;margin:0 auto;background:var(--card);border:1px solid var(--border);border-radius:18px;padding:14px;position:relative;box-shadow:0 20px 60px rgba(34,211,238,.1)}
+.mh-prev-bar{display:flex;gap:5px;margin-bottom:10px}
+.mh-prev-bar i{width:9px;height:9px;border-radius:50%}
+.mh-prev-bar i:nth-child(1){background:#ef4444}.mh-prev-bar i:nth-child(2){background:#f5c542}.mh-prev-bar i:nth-child(3){background:#22c55e}
+.mh-prev-content{background:radial-gradient(ellipse at center,#0c2440,#06060b 70%);border-radius:10px;aspect-ratio:16/8;display:flex;align-items:center;justify-content:center;position:relative;overflow:hidden}
+.mh-wheel{width:55%;aspect-ratio:1;border-radius:50%;background:conic-gradient(from 0deg,#0891b2 0 60deg,#a855f7 60 120deg,#f5c542 120 180deg,#22c55e 180 240deg,#dc2626 240 300deg,#3b82f6 300 360deg);border:5px solid var(--gold);box-shadow:0 0 30px rgba(245,197,66,.4);animation:spinSlow 22s linear infinite}
+@keyframes spinSlow{to{transform:rotate(360deg)}}
+
+.mh-features{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:12px;padding:30px 22px;border-top:1px solid var(--border)}
+.mh-f{padding:14px}
+.mh-f-ico{width:38px;height:38px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:1.05rem;margin-bottom:8px}
+.mh-f h3{font-size:.95rem;font-weight:900;margin-bottom:4px}
+.mh-f p{font-size:.74rem;color:var(--muted);line-height:1.6}
+
+/* ===================================================== */
+/* 2) Split Hero (نص + معاينة)                          */
+/* ===================================================== */
+.split-hero{display:grid;grid-template-columns:1.1fr 1fr;gap:30px;padding:50px 30px;align-items:center;min-height:480px;position:relative}
+.split-hero::before{content:"";position:absolute;bottom:-100px;right:-100px;width:400px;height:400px;background:radial-gradient(circle,rgba(168,85,247,.15),transparent 65%);pointer-events:none}
+.sh-left{position:relative}
+.sh-eyebrow{display:inline-flex;align-items:center;gap:7px;background:rgba(168,85,247,.13);border:1px solid rgba(168,85,247,.4);color:#d8b4fe;padding:5px 14px;border-radius:30px;font-weight:900;font-size:.74rem;margin-bottom:14px}
+.sh-title{font-size:clamp(1.8rem,4vw,3.2rem);font-weight:900;line-height:1.1;margin-bottom:14px;letter-spacing:-1px}
+.sh-title b{display:block;background:linear-gradient(135deg,#a855f7,#22d3ee);-webkit-background-clip:text;background-clip:text;color:transparent}
+.sh-sub{font-size:.95rem;color:var(--muted);line-height:1.8;margin-bottom:22px;max-width:480px}
+.sh-cta{display:flex;gap:10px;margin-bottom:22px;flex-wrap:wrap}
+.sh-trust{display:flex;align-items:center;gap:12px;font-size:.78rem;color:var(--muted)}
+.sh-avatars{display:flex}
+.sh-avatars .av{width:30px;height:30px;border-radius:50%;border:2px solid var(--bg);margin-left:-8px;display:flex;align-items:center;justify-content:center;font-weight:900;font-size:.72rem;color:#fff}
+.sh-trust b{color:#fff;font-weight:900}
+
+.sh-right{position:relative}
+.sh-card{background:var(--card);border:1px solid var(--border);border-radius:20px;padding:18px;position:relative;box-shadow:0 20px 60px rgba(168,85,247,.15)}
+.sh-card-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px}
+.sh-card-head .title{display:flex;align-items:center;gap:8px;font-weight:900;font-size:.88rem}
+.sh-card-head .live{display:flex;align-items:center;gap:5px;background:rgba(239,68,68,.15);border:1px solid rgba(239,68,68,.35);color:#fca5a5;padding:3px 10px;border-radius:20px;font-weight:900;font-size:.65rem}
+.sh-card-head .live .d{width:6px;height:6px;border-radius:50%;background:#ef4444;animation:pulse 1.4s infinite}
+.sh-preview{background:radial-gradient(ellipse at center,#1e1145,#06060b 70%);border-radius:14px;aspect-ratio:16/10;display:flex;align-items:center;justify-content:center;position:relative;overflow:hidden;margin-bottom:12px}
+.sh-versus{display:flex;align-items:center;gap:14px;font-weight:900;color:#fff;font-size:1.05rem}
+.sh-team{display:flex;flex-direction:column;align-items:center;gap:5px}
+.sh-team .av{width:48px;height:48px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:1.4rem;border:3px solid #fff}
+.sh-team .av.b{background:linear-gradient(135deg,#3b82f6,#1e3a8a)}
+.sh-team .av.r{background:linear-gradient(135deg,#ef4444,#7f1d1d)}
+.sh-team .nm{font-size:.7rem;color:#94a3b8}
+.sh-vs{font-size:1.4rem;color:var(--gold);font-weight:900;font-family:Impact,sans-serif}
+
+.sh-card-stats{display:grid;grid-template-columns:repeat(3,1fr);gap:6px}
+.sh-card-st{background:rgba(255,255,255,.03);border:1px solid var(--border);border-radius:9px;padding:7px;text-align:center}
+.sh-card-st b{display:block;font-size:.95rem;font-weight:900}
+.sh-card-st span{font-size:.6rem;color:var(--muted)}
+
+.sh-feature-strip{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:10px;padding:24px 30px;border-top:1px solid var(--border);background:var(--card)}
+.sh-f{display:flex;align-items:center;gap:10px}
+.sh-f-ico{width:36px;height:36px;border-radius:9px;background:rgba(168,85,247,.1);border:1px solid rgba(168,85,247,.3);display:flex;align-items:center;justify-content:center;font-size:1rem;flex-shrink:0}
+.sh-f-text{font-size:.78rem;font-weight:900;line-height:1.3}
+.sh-f-text span{display:block;font-size:.65rem;color:var(--muted);font-weight:700}
+
+/* ===================================================== */
+/* 3) Bold Statement                                     */
+/* ===================================================== */
+.bs-hero{padding:60px 22px;text-align:center;position:relative;overflow:hidden}
+.bs-bg-text{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-size:11rem;font-weight:900;color:rgba(34,211,238,.04);font-family:Impact,sans-serif;letter-spacing:-6px;overflow:hidden;pointer-events:none;white-space:nowrap}
+.bs-eyebrow{display:inline-flex;align-items:center;gap:7px;background:#000;border:1px solid var(--accent);color:var(--accent2);padding:7px 18px;border-radius:30px;font-weight:900;font-size:.78rem;letter-spacing:2px;margin-bottom:18px;position:relative}
+.bs-title{font-size:clamp(2rem,6vw,4.2rem);font-weight:900;line-height:1;margin-bottom:18px;position:relative;letter-spacing:-2px}
+.bs-title .h1{color:#fff}
+.bs-title .h2{display:block;background:linear-gradient(135deg,var(--accent2),var(--gold));-webkit-background-clip:text;background-clip:text;color:transparent;margin-top:6px}
+.bs-sub{font-size:1.05rem;color:var(--muted);max-width:560px;margin:0 auto 28px;line-height:1.7;position:relative}
+.bs-cta-row{display:flex;gap:14px;justify-content:center;margin-bottom:24px;flex-wrap:wrap;position:relative}
+.bs-cta-row .btn-lg{padding:15px 30px;font-size:1rem}
+.bs-arrow{display:inline-flex;align-items:center;gap:8px;color:var(--muted);font-size:.85rem;font-weight:700;position:relative}
+.bs-arrow b{color:var(--accent2)}
+
+.bs-logos{display:flex;justify-content:center;align-items:center;gap:24px;padding:24px 22px;border-top:1px solid var(--border);background:var(--card);flex-wrap:wrap}
+.bs-logos-label{font-size:.72rem;color:var(--muted);font-weight:900;letter-spacing:2px}
+.bs-logo{font-weight:900;font-size:.95rem;color:var(--muted);opacity:.6;letter-spacing:1px}
+
+.bs-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:14px;padding:30px 22px}
+.bs-card{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:18px;transition:.25s;cursor:default}
+.bs-card:hover{transform:translateY(-3px);border-color:var(--accent2)}
+.bs-card-ico{font-size:1.8rem;margin-bottom:10px;filter:drop-shadow(0 0 12px currentColor)}
+.bs-card h4{font-size:1rem;font-weight:900;margin-bottom:6px}
+.bs-card p{font-size:.78rem;color:var(--muted);line-height:1.6}
+
+/* ===================================================== */
+/* 4) Gradient Galaxy                                    */
+/* ===================================================== */
+.gg-wrap{background:#000;position:relative;overflow:hidden}
+.gg-bg{position:absolute;inset:0;overflow:hidden}
+.gg-blob{position:absolute;border-radius:50%;filter:blur(80px);opacity:.5;animation:gFloat 18s ease-in-out infinite}
+.gg-b1{width:500px;height:500px;background:#0891b2;top:-150px;right:-100px}
+.gg-b2{width:450px;height:450px;background:#a855f7;bottom:-150px;left:-100px;animation-delay:-6s}
+.gg-b3{width:400px;height:400px;background:#ec4899;top:40%;left:40%;animation-delay:-12s;opacity:.3}
+@keyframes gFloat{0%,100%{transform:translate(0,0) scale(1)}33%{transform:translate(50px,-30px) scale(1.1)}66%{transform:translate(-30px,40px) scale(.9)}}
+.gg-stars{position:absolute;inset:0;background-image:radial-gradient(rgba(255,255,255,.4) 1px,transparent 1px);background-size:50px 50px;opacity:.3}
+
+.gg-content{position:relative;padding:50px 22px;text-align:center}
+.gg-eyebrow{display:inline-flex;align-items:center;gap:7px;background:rgba(255,255,255,.06);backdrop-filter:blur(10px);border:1px solid rgba(255,255,255,.15);color:#fff;padding:5px 14px;border-radius:30px;font-weight:900;font-size:.74rem;margin-bottom:18px}
+.gg-title{font-size:clamp(1.8rem,5vw,3.4rem);font-weight:900;line-height:1.1;margin-bottom:14px;letter-spacing:-1px;color:#fff}
+.gg-title b{background:linear-gradient(135deg,#22d3ee,#ec4899,#f5c542);background-size:200% 200%;-webkit-background-clip:text;background-clip:text;color:transparent;animation:gradientShift 6s ease-in-out infinite}
+@keyframes gradientShift{50%{background-position:100% 100%}}
+.gg-sub{font-size:.95rem;color:#cbd5e1;max-width:560px;margin:0 auto 26px;line-height:1.7}
+.gg-cta{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin-bottom:30px}
+.gg-btn-glass{background:rgba(255,255,255,.06);backdrop-filter:blur(14px);border:1px solid rgba(255,255,255,.15);color:#fff;padding:13px 26px;border-radius:30px;font-family:inherit;font-weight:900;font-size:.95rem;cursor:pointer}
+
+.gg-cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:14px;padding:0 22px 40px;position:relative}
+.gg-card{background:rgba(255,255,255,.04);backdrop-filter:blur(14px) saturate(140%);border:1px solid rgba(255,255,255,.1);border-radius:18px;padding:18px;text-align:right;transition:.25s}
+.gg-card:hover{transform:translateY(-4px);border-color:rgba(255,255,255,.25);background:rgba(255,255,255,.07)}
+.gg-c-ico{width:42px;height:42px;border-radius:12px;background:linear-gradient(135deg,var(--c1,#0891b2),var(--c2,#22d3ee));display:flex;align-items:center;justify-content:center;font-size:1.2rem;margin-bottom:10px;box-shadow:0 4px 14px var(--cs,rgba(34,211,238,.3))}
+.gg-card:nth-child(1){--c1:#0891b2;--c2:#22d3ee;--cs:rgba(34,211,238,.3)}
+.gg-card:nth-child(2){--c1:#a855f7;--c2:#d8b4fe;--cs:rgba(168,85,247,.3)}
+.gg-card:nth-child(3){--c1:#ec4899;--c2:#f9a8d4;--cs:rgba(236,72,153,.3)}
+.gg-card:nth-child(4){--c1:#f5c542;--c2:#fde68a;--cs:rgba(245,197,66,.3)}
+.gg-card h4{font-size:1rem;font-weight:900;margin-bottom:5px;color:#fff}
+.gg-card p{font-size:.76rem;color:#cbd5e1;line-height:1.6}
+
+@media(max-width:760px){
+  .split-hero{grid-template-columns:1fr;gap:18px;padding:30px 18px}
+  .nav .links{display:none}
+  .mh-stats{grid-template-columns:repeat(2,1fr)}
+}
+</style>
+</head>
+<body>
+<header class="top">
+  <h1>🏠 الصفحة الرئيسية للموقع</h1>
+  <p>4 أنماط للـ landing page الرئيسية لـ bthlab.live</p>
+</header>
+
+<div class="tabs">
+  <button class="tab active" data-p="modern">🌟 Modern Hero</button>
+  <button class="tab" data-p="split">⚡ Split Hero</button>
+  <button class="tab" data-p="bold">💥 Bold Statement</button>
+  <button class="tab" data-p="galaxy">🌌 Gradient Galaxy</button>
+</div>
+
+<!-- 1) Modern Hero -->
+<div class="panel active" id="panel-modern">
+  <div class="page-wrap">
+    <nav class="nav">
+      <div class="brand">
+        <div class="logo">B</div>
+        <div class="name">BthLab</div>
+      </div>
+      <div class="links">
+        <a>المميزات</a><a>الفعاليات</a><a>الأسعار</a><a>الدعم</a>
+      </div>
+      <div class="actions">
+        <button class="btn-ghost">تسجيل دخول</button>
+        <button class="btn-primary">ابدأ مجاناً</button>
+      </div>
+    </nav>
+
+    <section class="modern-hero">
+      <span class="mh-badge"><span class="dot"></span> أكثر من 5,000 مضيف نشط الآن</span>
+      <h1 class="mh-title">حوّل بثك على TikTok إلى<br><b>تجربة تفاعلية أسطورية 🎮</b></h1>
+      <p class="mh-sub">منصة الفعاليات التفاعلية الأولى لبث TikTok Live بالعربية. عجلة الحظ، حرب الكلمات، بطولات الإقصاء، وأكثر من 20 فعالية جاهزة للعب مع جمهورك مباشرة من الشات</p>
+      <div class="mh-cta">
+        <button class="btn-primary btn-lg">🚀 ابدأ بثاً تفاعلياً</button>
+        <button class="btn-ghost btn-lg" style="padding:13px 26px;font-size:.95rem">▶ شاهد العرض التجريبي</button>
+      </div>
+
+      <div class="mh-stats">
+        <div class="mh-st"><b>5,000+</b><span>مضيف نشط</span></div>
+        <div class="mh-st"><b>20+</b><span>فعالية تفاعلية</span></div>
+        <div class="mh-st"><b>2M+</b><span>مشاركة شهرياً</span></div>
+        <div class="mh-st"><b>99.9%</b><span>نسبة التشغيل</span></div>
+      </div>
+
+      <div class="mh-preview">
+        <div class="mh-prev-bar"><i></i><i></i><i></i></div>
+        <div class="mh-prev-content"><div class="mh-wheel"></div></div>
+      </div>
+    </section>
+
+    <section class="mh-features">
+      <div class="mh-f">
+        <div class="mh-f-ico" style="background:rgba(34,211,238,.13);color:var(--accent2)">⚡</div>
+        <h3>إعداد بدقيقة</h3>
+        <p>الصق رابط الأوفرلي في OBS وابدأ. بدون كود ولا تعقيد</p>
+      </div>
+      <div class="mh-f">
+        <div class="mh-f-ico" style="background:rgba(245,197,66,.13);color:var(--gold)">🎮</div>
+        <h3>20+ فعالية جاهزة</h3>
+        <p>عجلة، خيل، حرب كلمات، خروج، خمن، وأكثر</p>
+      </div>
+      <div class="mh-f">
+        <div class="mh-f-ico" style="background:rgba(168,85,247,.13);color:var(--purple)">📊</div>
+        <h3>إحصائيات حية</h3>
+        <p>تابع التفاعل والهدايا لحظة بلحظة</p>
+      </div>
+      <div class="mh-f">
+        <div class="mh-f-ico" style="background:rgba(34,197,94,.13);color:var(--green)">🇸🇦</div>
+        <h3>محتوى عربي</h3>
+        <p>1,600+ كلمة عربية و 222 سؤال جاهز للعب</p>
+      </div>
+    </section>
+  </div>
+  <p class="note">تصميم <b>عصري ومتوازن</b>: hero بإحصائيات + معاينة للمنتج (عجلة دوّارة) + شريط مميزات. مناسب للزوار الجدد، يشرح المنتج فوراً مع أرقام تبني الثقة</p>
+</div>
+
+<!-- 2) Split Hero -->
+<div class="panel" id="panel-split">
+  <div class="page-wrap">
+    <nav class="nav">
+      <div class="brand">
+        <div class="logo" style="background:linear-gradient(135deg,#a855f7,#22d3ee)">B</div>
+        <div class="name">BthLab</div>
+      </div>
+      <div class="links">
+        <a>المميزات</a><a>الفعاليات</a><a>الأسعار</a>
+      </div>
+      <div class="actions">
+        <button class="btn-ghost">دخول</button>
+        <button class="btn-primary" style="background:linear-gradient(135deg,#a855f7,#22d3ee)">جرّب الآن</button>
+      </div>
+    </nav>
+
+    <section class="split-hero">
+      <div class="sh-left">
+        <span class="sh-eyebrow">✨ منصة #1 للبث التفاعلي بالعربية</span>
+        <h1 class="sh-title">شات تيك توك<br><b>= ساحة معركة 🔥</b></h1>
+        <p class="sh-sub">حوّل تعليقات المشاهدين إلى أحداث مذهلة على البث. حرب كلمات، سباق خيل، بطولات إقصاء، عجلة حظ، وأكثر — كل شيء بأمر واحد من الشات</p>
+        <div class="sh-cta">
+          <button class="btn-primary btn-lg" style="background:linear-gradient(135deg,#a855f7,#22d3ee)">🎮 ابدأ التجربة</button>
+          <button class="btn-ghost btn-lg" style="padding:13px 26px;font-size:.95rem">💬 تواصل واتساب</button>
+        </div>
+        <div class="sh-trust">
+          <div class="sh-avatars">
+            <div class="av" style="background:linear-gradient(135deg,#dc2626,#f59e0b)">ن</div>
+            <div class="av" style="background:linear-gradient(135deg,#0891b2,#7c3aed)">س</div>
+            <div class="av" style="background:linear-gradient(135deg,#16a34a,#22c55e)">ر</div>
+            <div class="av" style="background:linear-gradient(135deg,#db2777,#831843)">+</div>
+          </div>
+          <div><b>5,000+ مضيف</b> يثقون بـ BthLab</div>
+        </div>
+      </div>
+
+      <div class="sh-right">
+        <div class="sh-card">
+          <div class="sh-card-head">
+            <div class="title">⚔️ معاينة حرب الكلمات</div>
+            <div class="live"><span class="d"></span> LIVE</div>
+          </div>
+          <div class="sh-preview">
+            <div class="sh-versus">
+              <div class="sh-team"><div class="av b">🐯</div><div class="nm">النمور</div></div>
+              <div class="sh-vs">VS</div>
+              <div class="sh-team"><div class="av r">🦅</div><div class="nm">الصقور</div></div>
+            </div>
+          </div>
+          <div class="sh-card-stats">
+            <div class="sh-card-st"><b style="color:#22d3ee">142</b><span>كلمة</span></div>
+            <div class="sh-card-st"><b style="color:#f5c542">38</b><span>مشارك</span></div>
+            <div class="sh-card-st"><b style="color:#22c55e">96%</b><span>تفاعل</span></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="sh-feature-strip">
+      <div class="sh-f"><div class="sh-f-ico">⚡</div><div class="sh-f-text">إعداد بدقيقة<span>بدون كود</span></div></div>
+      <div class="sh-f"><div class="sh-f-ico">🎮</div><div class="sh-f-text">20+ فعالية<span>جاهزة للعب</span></div></div>
+      <div class="sh-f"><div class="sh-f-ico">📊</div><div class="sh-f-text">إحصائيات حية<span>لحظة بلحظة</span></div></div>
+      <div class="sh-f"><div class="sh-f-ico">🛟</div><div class="sh-f-text">دعم 24/7<span>بالعربية</span></div></div>
+    </section>
+  </div>
+  <p class="note"><b>Split Hero</b>: نص يسار + بطاقة معاينة على اليمين تبين الفعالية شغّالة فعلاً. <b>أقوى نموذج تحويل</b> — الزائر يفهم المنتج فوراً ويشوف نتيجة حقيقية</p>
+</div>
+
+<!-- 3) Bold Statement -->
+<div class="panel" id="panel-bold">
+  <div class="page-wrap">
+    <nav class="nav">
+      <div class="brand">
+        <div class="logo" style="background:#fff;color:#000">B</div>
+        <div class="name">BthLab</div>
+      </div>
+      <div class="links">
+        <a>المميزات</a><a>الأسعار</a><a>الدعم</a>
+      </div>
+      <div class="actions">
+        <button class="btn-ghost">دخول</button>
+        <button class="btn-primary" style="background:#fff;color:#000;font-weight:900">ابدأ →</button>
+      </div>
+    </nav>
+
+    <section class="bs-hero">
+      <div class="bs-bg-text">BthLab · LIVE</div>
+      <span class="bs-eyebrow">⚡ BthLab v2.3</span>
+      <h1 class="bs-title">
+        <span class="h1">البث المباشر</span>
+        <span class="h2">صار لعبة 🎯</span>
+      </h1>
+      <p class="bs-sub">منصة الفعاليات التفاعلية الأولى لـ TikTok Live بالعربية. أكثر من 20 فعالية جاهزة للعب مع جمهورك مباشرة من شات البث</p>
+      <div class="bs-cta-row">
+        <button class="btn-primary btn-lg" style="background:#fff;color:#000;font-weight:900;font-size:1rem">ابدأ مجاناً ←</button>
+        <button class="btn-ghost btn-lg">▶ شاهد بثاً مباشراً</button>
+      </div>
+      <div class="bs-arrow">⬇️ <b>5,000+ مضيف</b> يستخدم BthLab الآن</div>
+    </section>
+
+    <section class="bs-logos">
+      <span class="bs-logos-label">— يثقون بنا —</span>
+      <span class="bs-logo">TikTok Live</span>
+      <span class="bs-logo">OBS Studio</span>
+      <span class="bs-logo">Streamlabs</span>
+      <span class="bs-logo">Live Studio</span>
+    </section>
+
+    <section class="bs-grid">
+      <div class="bs-card">
+        <div class="bs-card-ico" style="color:#22d3ee">⚡</div>
+        <h4>سريع جداً</h4>
+        <p>ابدأ فعالية بضغطة زر. كل شي معد ومجهز</p>
+      </div>
+      <div class="bs-card">
+        <div class="bs-card-ico" style="color:#f5c542">🎮</div>
+        <h4>20+ فعالية</h4>
+        <p>عجلة، خيل، حرب كلمات، خروج، خمن، وأكثر</p>
+      </div>
+      <div class="bs-card">
+        <div class="bs-card-ico" style="color:#a855f7">📊</div>
+        <h4>تحليلات حية</h4>
+        <p>تابع الأداء والتفاعل لحظة بلحظة</p>
+      </div>
+      <div class="bs-card">
+        <div class="bs-card-ico" style="color:#22c55e">🇸🇦</div>
+        <h4>محتوى عربي</h4>
+        <p>قواميس وأسئلة عربية أصيلة جاهزة</p>
+      </div>
+    </section>
+  </div>
+  <p class="note">تصميم <b>جريء وعصري</b> بنص ضخم وخلفية type كبيرة بشفافية + شعارات الشركاء + بطاقات مميزات. مثالي للماركة اللي تبي تعطي <b>انطباع قوي وفوري</b></p>
+</div>
+
+<!-- 4) Gradient Galaxy -->
+<div class="panel" id="panel-galaxy">
+  <div class="page-wrap gg-wrap">
+    <div class="gg-bg">
+      <div class="gg-stars"></div>
+      <div class="gg-blob gg-b1"></div>
+      <div class="gg-blob gg-b2"></div>
+      <div class="gg-blob gg-b3"></div>
+    </div>
+
+    <nav class="nav" style="border-bottom:1px solid rgba(255,255,255,.08);position:relative">
+      <div class="brand">
+        <div class="logo">B</div>
+        <div class="name">BthLab</div>
+      </div>
+      <div class="links" style="color:#cbd5e1">
+        <a>المميزات</a><a>الفعاليات</a><a>الأسعار</a>
+      </div>
+      <div class="actions">
+        <button class="gg-btn-glass" style="padding:7px 16px;font-size:.78rem">تسجيل دخول</button>
+      </div>
+    </nav>
+
+    <section class="gg-content">
+      <span class="gg-eyebrow">🌌 جيل جديد من البث التفاعلي</span>
+      <h1 class="gg-title">حوّل بثك إلى<br><b>تجربة لا تُنسى</b></h1>
+      <p class="gg-sub">أكثر من 20 فعالية تفاعلية لتحويل شات TikTok إلى محرك ترفيهي مذهل لجمهورك. ابدأ بثاً واحداً واشعر بالفرق فوراً</p>
+      <div class="gg-cta">
+        <button class="btn-primary btn-lg">🚀 ابدأ التجربة المجانية</button>
+        <button class="gg-btn-glass">📺 شاهد العرض</button>
+      </div>
+    </section>
+
+    <section class="gg-cards">
+      <div class="gg-card">
+        <div class="gg-c-ico">🎡</div>
+        <h4>عجلة الحظ</h4>
+        <p>اختر فائزاً عشوائياً من الشات بطريقة مذهلة</p>
+      </div>
+      <div class="gg-card">
+        <div class="gg-c-ico">⚔️</div>
+        <h4>حرب الكلمات</h4>
+        <p>معركة فرق بـ HP حقيقي وانفجارات بصرية</p>
+      </div>
+      <div class="gg-card">
+        <div class="gg-c-ico">💀</div>
+        <h4>بطولة الخروج</h4>
+        <p>222 سؤال — آخر الباقين يفوز بالجائزة</p>
+      </div>
+      <div class="gg-card">
+        <div class="gg-c-ico">🐎</div>
+        <h4>سباق الخيل</h4>
+        <p>4 فرق تتسابق بحسب الهدايا والتفاعل</p>
+      </div>
+    </section>
+  </div>
+  <p class="note">تصميم <b>بصري قوي</b> بـ blobs ملونة متحركة + شفافية glassmorphism + نجوم في الخلفية + تدرج لوني متحرك على النص. <b>مذهل للعرض</b> ومناسب لجذب جيل الشباب</p>
+</div>
+
+<a href="/" style="position:fixed;top:14px;right:14px;background:rgba(12,12,22,.85);backdrop-filter:blur(10px);color:#22d3ee;border:1px solid #0891b2;border-radius:30px;padding:8px 16px;font-family:Tajawal,sans-serif;font-weight:900;font-size:.78rem;text-decoration:none;z-index:200">← المعرض</a>
+
+<script>
+document.querySelectorAll(".tab").forEach(t=>t.onclick=()=>{
+  document.querySelectorAll(".tab,.panel").forEach(x=>x.classList.remove("active"));
+  t.classList.add("active");
+  document.getElementById("panel-"+t.dataset.p).classList.add("active");
+});
+</script>
+</body>
+</html>

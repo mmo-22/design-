@@ -238,6 +238,26 @@ body{
 @keyframes ringExpand{0%{width:30px;height:30px;opacity:1}100%{width:140px;height:140px;opacity:0}}
 @keyframes zzzFloat{0%{opacity:0;transform:translateY(20px) scale(.5)}40%{opacity:1;transform:translateY(0) scale(1)}100%{opacity:0;transform:translateY(-30px) scale(1.2)}}
 
+/* الصفحة الرئيسية */
+.prev-landing{background:radial-gradient(ellipse at 50% 0%,rgba(34,211,238,.15),transparent 60%),var(--bg);position:relative;display:flex;flex-direction:column}
+.prev-landing::after{display:none}
+.prev-landing .topbar{display:flex;align-items:center;justify-content:space-between;padding:6px 10px;border-bottom:1px solid #1c1c2e}
+.prev-landing .topbar i{width:18px;height:18px;border-radius:5px;background:linear-gradient(135deg,#0891b2,#22d3ee)}
+.prev-landing .topbar .dots{display:flex;gap:4px}
+.prev-landing .topbar .dots span{width:4px;height:4px;border-radius:50%;background:#2a2a44}
+.prev-landing .body{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:10px;text-align:center;gap:5px}
+.prev-landing .h{font-size:.85rem;font-weight:900;color:#fff}
+.prev-landing .h b{background:linear-gradient(135deg,#22d3ee,#f5c542);-webkit-background-clip:text;background-clip:text;color:transparent}
+.prev-landing .b{background:linear-gradient(135deg,#0891b2,#22d3ee);color:#fff;font-size:.55rem;font-weight:900;padding:3px 10px;border-radius:10px}
+
+/* صفحة الدخول */
+.prev-login{background:radial-gradient(ellipse at 20% 0%,rgba(8,145,178,.15),transparent 50%),radial-gradient(ellipse at 80% 100%,rgba(168,85,247,.12),transparent 50%),var(--bg);display:flex;align-items:center;justify-content:center;padding:14px}
+.prev-login::after{display:none}
+.prev-login .card{background:#0c0c16;border:1px solid #1c1c2e;border-radius:10px;padding:10px 14px;width:60%;max-width:160px;box-shadow:0 10px 24px rgba(0,0,0,.3)}
+.prev-login .card .lg{width:24px;height:24px;border-radius:7px;background:linear-gradient(135deg,#0891b2,#22d3ee);display:flex;align-items:center;justify-content:center;font-weight:900;color:#fff;font-size:.7rem;margin:0 auto 6px}
+.prev-login .card .i{height:8px;background:#10101e;border:1px solid #1c1c2e;border-radius:4px;margin-bottom:4px}
+.prev-login .card .btn{height:12px;background:linear-gradient(135deg,#0891b2,#22d3ee);border-radius:5px;margin-top:6px}
+
 /* تذييل */
 .footer{
   text-align:center;margin-top:60px;padding:20px;
@@ -265,8 +285,8 @@ body{
   <div class="disclaimer">⚠️ هذي البيئة منفصلة تماماً عن tiktok-live-reader و BthLab</div>
 
   <div class="stats">
-    <div class="stat"><b>18</b><span>أقسام</span></div>
-    <div class="stat"><b>57</b><span>تصميم</span></div>
+    <div class="stat"><b>20</b><span>أقسام</span></div>
+    <div class="stat"><b>65</b><span>تصميم</span></div>
     <div class="stat"><b>100%</b><span>تفاعلي</span></div>
   </div>
 </div>
@@ -645,6 +665,49 @@ body{
       <div class="card-title">📴 لا يوجد بث حالياً بأربعة أنماط</div>
       <div class="card-desc">وضع نوم بأفاتار وzzz متحركة + عداد البث القادم (ساعة:دقيقة:ثانية) + ملخص آخر بث بالإحصائيات + "قريباً" فاخر بشبكة tron. للزوار قبل البث</div>
       <div class="card-tags"><span class="tag">sleep</span><span class="tag">countdown</span><span class="tag">recap</span><span class="tag">coming soon</span></div>
+      <div class="card-arrow">←</div>
+    </a>
+  </div>
+</div>
+
+<!-- صفحات الموقع -->
+<div class="section">
+  <div class="section-h">
+    <span class="ico">🌐</span>
+    <h2>صفحات الموقع</h2>
+    <div class="line"></div>
+    <span class="count">8 تصاميم</span>
+  </div>
+  <div class="grid g2">
+    <a href="/designs/landing.html" class="card" style="--card-border:#22d3ee;--card-glow:rgba(34,211,238,.08);--card-arrow:#0891b2">
+      <div class="card-preview prev-landing">
+        <div class="topbar">
+          <i></i>
+          <div class="dots"><span></span><span></span><span></span></div>
+        </div>
+        <div class="body">
+          <div class="h">حوّل بثك إلى<br><b>تجربة أسطورية</b></div>
+          <div class="b">ابدأ مجاناً</div>
+        </div>
+      </div>
+      <div class="card-title">🏠 الصفحة الرئيسية للموقع</div>
+      <div class="card-desc">4 أنماط: Modern Hero بإحصائيات + Split Hero بمعاينة تفاعلية + Bold Statement بنص ضخم + Gradient Galaxy بـ blobs متحركة</div>
+      <div class="card-tags"><span class="tag">Modern</span><span class="tag">Split</span><span class="tag">Bold</span><span class="tag">Galaxy</span></div>
+      <div class="card-arrow">←</div>
+    </a>
+
+    <a href="/designs/login.html" class="card" style="--card-border:#a855f7;--card-glow:rgba(168,85,247,.08);--card-arrow:#7c3aed">
+      <div class="card-preview prev-login">
+        <div class="card">
+          <div class="lg">B</div>
+          <div class="i"></div>
+          <div class="i"></div>
+          <div class="btn"></div>
+        </div>
+      </div>
+      <div class="card-title">🔐 صفحة الدخول</div>
+      <div class="card-desc">4 أنماط: بطاقة في الوسط كلاسيكية + Split Branding بشهادة عميل + Glass Floating بـ blobs + Minimal Modern بإحصاء كبير</div>
+      <div class="card-tags"><span class="tag">Centered</span><span class="tag">Split</span><span class="tag">Glass</span><span class="tag">Minimal</span></div>
       <div class="card-arrow">←</div>
     </a>
   </div>

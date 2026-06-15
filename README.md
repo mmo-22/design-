@@ -54,3 +54,7 @@ npm start
 - 👋 **ترحيب المشاهدين**: pop banner / VIP / heart / achievement
 - 🎁 **شعارات الهدايا**: big bang / side banner / trophy / rain
 - 📴 **لا يوجد بث**: sleep / countdown / recap / coming soon
+
+### صفحات الموقع
+- 🏠 **الصفحة الرئيسية**: Modern Hero / Split Hero / Bold Statement / Gradient Galaxy
+- 🔐 **صفحة الدخول**: Centered / Split Branding / Floating Glass / Minimal Modern
