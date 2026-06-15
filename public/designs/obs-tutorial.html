@@ -1,0 +1,608 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>شرح إضافة الأوفرلي — نماذج التصميم</title>
+<link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;900&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#06060b;--card:#0c0c16;--card2:#10101e;--card3:#161628;--border:#1c1c2e;
+  --accent:#0891b2;--accent2:#22d3ee;--gold:#f5c542;
+  --text:#e8eaf2;--muted:#8a8fa3;
+  --green:#22c55e;--red:#ef4444;--purple:#a855f7;--orange:#f97316;--pink:#ec4899
+}
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:var(--bg);color:var(--text);font-family:'Tajawal',sans-serif;min-height:100vh;padding:18px 12px 60px}
+
+header{text-align:center;margin-bottom:20px}
+header h1{font-size:1.4rem;font-weight:900;background:linear-gradient(90deg,#ec4899,var(--accent2));-webkit-background-clip:text;background-clip:text;color:transparent}
+header p{color:var(--muted);font-size:.82rem;margin-top:4px}
+
+.tabs{display:flex;gap:7px;justify-content:center;margin-bottom:20px;flex-wrap:wrap}
+.tab{background:var(--card);border:1px solid var(--border);color:var(--muted);padding:9px 15px;border-radius:30px;font-family:inherit;font-size:.85rem;font-weight:900;cursor:pointer;transition:.25s}
+.tab.active{color:#fff;border-color:#ec4899;box-shadow:0 0 14px rgba(236,72,153,.35)}
+.panel{display:none;flex-direction:column;align-items:center;max-width:780px;margin:0 auto}
+.panel.active{display:flex}
+
+.demo-box{width:100%;background:var(--card);border:1px solid var(--border);border-radius:20px;padding:20px;margin-bottom:14px}
+.note{margin-top:8px;font-size:.78rem;color:var(--muted);max-width:600px;text-align:center;line-height:1.8}
+.note b{color:#f9a8d4}
+
+.btn{font-family:inherit;font-weight:900;border:none;border-radius:12px;cursor:pointer;transition:.2s;display:inline-flex;align-items:center;justify-content:center;gap:6px}
+.btn:active{transform:scale(.95)}
+.btn-pink{background:linear-gradient(135deg,#ec4899,#be185d);color:#fff;padding:10px 22px;font-size:.88rem;box-shadow:0 4px 18px rgba(236,72,153,.35)}
+.btn-ghost{background:transparent;border:1px solid var(--border);color:var(--text);padding:9px 18px;font-size:.82rem}
+.btn-ghost:hover{border-color:var(--accent2)}
+
+/* ============================================================ */
+/* 1) Step Carousel                                             */
+/* ============================================================ */
+.car-wrap{position:relative;background:var(--card);border:1px solid var(--border);border-radius:20px;overflow:hidden;width:100%}
+.car-head{padding:14px 20px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between}
+.car-head h2{font-size:1rem;font-weight:900;display:flex;align-items:center;gap:8px}
+.car-counter{background:var(--card3);border:1px solid var(--border);color:var(--accent2);padding:4px 12px;border-radius:20px;font-weight:900;font-size:.78rem}
+.car-progress{height:4px;background:var(--card2);overflow:hidden}
+.car-progress i{display:block;height:100%;background:linear-gradient(90deg,#ec4899,#22d3ee);transition:width .4s}
+.car-slides{display:flex;transition:transform .5s cubic-bezier(.2,.8,.3,1.2);direction:ltr}
+.car-slide{flex:0 0 100%;padding:24px 20px;min-height:300px;direction:rtl}
+.car-step-num{display:inline-flex;align-items:center;gap:8px;background:rgba(236,72,153,.13);border:1px solid rgba(236,72,153,.4);color:#f9a8d4;padding:4px 12px;border-radius:20px;font-weight:900;font-size:.74rem;margin-bottom:12px}
+.car-slide h3{font-size:1.2rem;font-weight:900;margin-bottom:6px}
+.car-slide p{font-size:.85rem;color:var(--muted);line-height:1.7;margin-bottom:14px}
+.car-visual{
+  background:linear-gradient(145deg,#0c0c16,#1a1a30);
+  border:1px solid var(--border);border-radius:14px;padding:14px;
+  margin-bottom:14px;position:relative;min-height:130px;overflow:hidden
+}
+.car-tip{background:rgba(34,211,238,.06);border:1px solid rgba(34,211,238,.25);border-radius:10px;padding:8px 12px;font-size:.74rem;color:var(--accent2);display:flex;align-items:flex-start;gap:7px}
+.car-tip::before{content:"💡";font-size:.95rem}
+.car-nav{display:flex;align-items:center;justify-content:space-between;padding:14px 20px;border-top:1px solid var(--border);background:var(--card2)}
+.car-dots{display:flex;gap:7px}
+.car-dot{width:8px;height:8px;border-radius:50%;background:var(--border);transition:.3s;cursor:pointer}
+.car-dot.active{width:24px;background:linear-gradient(90deg,#ec4899,#22d3ee);border-radius:5px}
+
+/* Mock UI of Live Studio */
+.mock-app{
+  background:#1a1a26;border-radius:8px;border:1px solid #2a2a40;
+  display:flex;flex-direction:column;overflow:hidden;height:120px
+}
+.mock-titlebar{display:flex;align-items:center;gap:5px;padding:6px 10px;background:#0f0f18;border-bottom:1px solid #2a2a40}
+.mock-titlebar .dot{width:9px;height:9px;border-radius:50%}
+.mock-titlebar .dot:nth-child(1){background:#ef4444}
+.mock-titlebar .dot:nth-child(2){background:#f5c542}
+.mock-titlebar .dot:nth-child(3){background:#22c55e}
+.mock-titlebar .title{margin-right:10px;font-size:.65rem;color:#999;font-weight:700}
+.mock-body{flex:1;display:flex}
+.mock-sidebar{width:42px;background:#0c0c14;border-left:1px solid #2a2a40;display:flex;flex-direction:column;gap:5px;padding:6px 4px;align-items:center}
+.mock-icon{width:28px;height:28px;border-radius:6px;background:#1a1a2c;display:flex;align-items:center;justify-content:center;font-size:.85rem;color:#888}
+.mock-icon.active{background:linear-gradient(135deg,#ec4899,#be185d);color:#fff}
+.mock-icon.highlight{box-shadow:0 0 0 2px #f5c542,0 0 12px rgba(245,197,66,.6);animation:wiggle 1.2s ease-in-out infinite}
+@keyframes wiggle{0%,100%{transform:scale(1)}50%{transform:scale(1.08)}}
+.mock-content{flex:1;padding:8px;position:relative;background:#0a0a14;display:flex;flex-direction:column;gap:4px}
+.mock-row{background:#1a1a26;height:14px;border-radius:3px}
+.mock-row.w-half{width:60%}
+.mock-row.w-third{width:35%}
+.mock-input{background:#0a0a14;border:1px solid #2a2a40;height:18px;border-radius:4px;padding:0 6px;display:flex;align-items:center;font-size:.55rem;color:#22d3ee;font-family:monospace}
+.mock-input.highlight{border-color:#f5c542;box-shadow:0 0 0 2px rgba(245,197,66,.3)}
+.mock-btn{background:linear-gradient(135deg,#ec4899,#be185d);color:#fff;padding:4px 10px;border-radius:5px;font-size:.62rem;font-weight:900;align-self:flex-start;display:inline-block}
+.mock-arrow{position:absolute;font-size:1.8rem;color:#f5c542;filter:drop-shadow(0 0 8px rgba(245,197,66,.6));animation:pointBounce 1s infinite}
+@keyframes pointBounce{0%,100%{transform:translateX(0)}50%{transform:translateX(6px)}}
+
+/* ============================================================ */
+/* 2) Vertical Timeline                                         */
+/* ============================================================ */
+.vt{position:relative;padding:8px 0}
+.vt::before{content:"";position:absolute;top:30px;bottom:30px;right:32px;width:3px;background:linear-gradient(180deg,#ec4899,#22d3ee);border-radius:3px}
+.vt-step{display:flex;gap:16px;padding:12px 0;align-items:flex-start;position:relative}
+.vt-num{
+  width:46px;height:46px;border-radius:50%;
+  background:linear-gradient(135deg,#0c0c16,#1a1a30);
+  border:3px solid var(--vc,#ec4899);
+  display:flex;align-items:center;justify-content:center;
+  font-weight:900;font-size:1.05rem;color:#fff;flex-shrink:0;z-index:2;
+  box-shadow:0 0 0 4px var(--bg),0 4px 16px rgba(0,0,0,.4)
+}
+.vt-step:nth-child(1){--vc:#ec4899}
+.vt-step:nth-child(2){--vc:#a855f7}
+.vt-step:nth-child(3){--vc:#0891b2}
+.vt-step:nth-child(4){--vc:#22c55e}
+.vt-step:nth-child(5){--vc:#f5c542}
+.vt-step:nth-child(6){--vc:#f97316}
+.vt-content{flex:1;background:var(--card2);border:1px solid var(--border);border-radius:14px;padding:14px 16px;transition:.25s}
+.vt-content:hover{border-color:var(--vc,#ec4899)}
+.vt-title{font-size:1rem;font-weight:900;margin-bottom:4px;display:flex;align-items:center;gap:7px}
+.vt-desc{font-size:.78rem;color:var(--muted);line-height:1.7;margin-bottom:10px}
+.vt-code{background:#06060b;border:1px solid var(--border);border-radius:8px;padding:8px 12px;font-family:monospace;font-size:.78rem;color:var(--accent2);display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.vt-code .label{font-size:.66rem;color:var(--muted);font-family:Tajawal,sans-serif;font-weight:900}
+.vt-tag{display:inline-block;background:rgba(245,197,66,.13);color:var(--gold);padding:2px 9px;border-radius:6px;font-size:.66rem;font-weight:900;margin-left:6px}
+
+/* ============================================================ */
+/* 3) Side-by-Side Visual                                       */
+/* ============================================================ */
+.sbs-stepper{display:flex;gap:8px;margin-bottom:18px;justify-content:center;flex-wrap:wrap}
+.sbs-pill{background:var(--card2);border:1px solid var(--border);color:var(--muted);padding:5px 14px;border-radius:20px;font-weight:900;font-size:.74rem;cursor:pointer;transition:.2s}
+.sbs-pill.active{background:linear-gradient(135deg,#ec4899,#be185d);color:#fff;border-color:transparent;box-shadow:0 4px 14px rgba(236,72,153,.3)}
+.sbs-pill:hover{color:var(--text)}
+
+.sbs-row{display:grid;grid-template-columns:1fr 1.2fr;gap:18px;align-items:center}
+.sbs-text h3{font-size:1.15rem;font-weight:900;margin-bottom:6px;display:flex;align-items:center;gap:8px}
+.sbs-text .badge{background:linear-gradient(135deg,#ec4899,#be185d);color:#fff;padding:2px 10px;border-radius:8px;font-size:.7rem;font-weight:900}
+.sbs-text p{font-size:.85rem;color:var(--muted);line-height:1.7;margin-bottom:14px}
+.sbs-checklist{display:flex;flex-direction:column;gap:7px}
+.sbs-check{display:flex;align-items:center;gap:9px;font-size:.78rem}
+.sbs-check::before{content:"✓";width:20px;height:20px;border-radius:50%;background:rgba(34,197,94,.15);border:1.5px solid var(--green);color:#86efac;display:flex;align-items:center;justify-content:center;font-weight:900;font-size:.7rem;flex-shrink:0}
+.sbs-visual{
+  background:linear-gradient(145deg,#0a0a14,#1a1a30);
+  border:1px solid var(--border);border-radius:14px;padding:14px;
+  position:relative;min-height:220px;overflow:hidden
+}
+.sbs-nav{display:flex;justify-content:space-between;margin-top:18px;padding-top:14px;border-top:1px solid var(--border)}
+
+/* ============================================================ */
+/* 4) Cheatsheet (Quick Reference)                              */
+/* ============================================================ */
+.cs-hero{
+  background:linear-gradient(145deg,#1a0a2e,#0c0c16);
+  border:1px solid var(--border);border-radius:18px;padding:18px;margin-bottom:14px;
+  text-align:center;position:relative;overflow:hidden
+}
+.cs-hero::before{content:"";position:absolute;top:-50px;right:-50px;width:160px;height:160px;background:radial-gradient(circle,rgba(236,72,153,.25),transparent 65%);pointer-events:none}
+.cs-hero h2{font-size:1.3rem;font-weight:900;margin-bottom:6px;position:relative}
+.cs-hero p{font-size:.85rem;color:var(--muted);position:relative}
+.cs-link{
+  display:inline-flex;align-items:center;gap:8px;margin-top:14px;
+  background:#06060b;border:1px solid var(--accent);color:var(--accent2);
+  padding:8px 14px;border-radius:30px;font-weight:900;font-size:.85rem;
+  font-family:monospace;position:relative
+}
+.cs-link b{flex:1}
+.cs-copy{background:var(--accent);color:#fff;border:none;border-radius:20px;padding:4px 12px;font-family:Tajawal,sans-serif;font-weight:900;font-size:.72rem;cursor:pointer}
+
+.cs-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:12px;margin-bottom:14px}
+.cs-card{
+  background:var(--card);border:1px solid var(--border);border-radius:14px;
+  padding:14px;position:relative;transition:.25s
+}
+.cs-card:hover{border-color:var(--cs-c,#ec4899)}
+.cs-num{
+  position:absolute;top:-10px;right:14px;
+  background:linear-gradient(135deg,var(--cs-c,#ec4899),var(--cs-c2,#be185d));
+  color:#fff;font-weight:900;font-size:.85rem;
+  width:30px;height:30px;border-radius:50%;
+  display:flex;align-items:center;justify-content:center;
+  box-shadow:0 4px 14px var(--cs-c-shadow,rgba(236,72,153,.4))
+}
+.cs-card:nth-child(1){--cs-c:#ec4899;--cs-c2:#be185d;--cs-c-shadow:rgba(236,72,153,.4)}
+.cs-card:nth-child(2){--cs-c:#a855f7;--cs-c2:#7c3aed;--cs-c-shadow:rgba(168,85,247,.4)}
+.cs-card:nth-child(3){--cs-c:#0891b2;--cs-c2:#0e7490;--cs-c-shadow:rgba(8,145,178,.4)}
+.cs-card:nth-child(4){--cs-c:#22c55e;--cs-c2:#16a34a;--cs-c-shadow:rgba(34,197,94,.4)}
+.cs-card:nth-child(5){--cs-c:#f5c542;--cs-c2:#d97706;--cs-c-shadow:rgba(245,197,66,.4)}
+.cs-card:nth-child(6){--cs-c:#f97316;--cs-c2:#ea580c;--cs-c-shadow:rgba(249,115,22,.4)}
+.cs-icon{font-size:1.6rem;margin-bottom:8px;filter:drop-shadow(0 0 10px currentColor)}
+.cs-card h4{font-size:.92rem;font-weight:900;margin-bottom:4px}
+.cs-card p{font-size:.74rem;color:var(--muted);line-height:1.6}
+.cs-kbd{display:inline-block;background:var(--card2);border:1px solid var(--border);padding:1px 7px;border-radius:5px;font-family:monospace;font-size:.7rem;color:var(--accent2);margin-top:6px}
+
+.cs-pro{
+  background:linear-gradient(135deg,rgba(245,197,66,.1),rgba(245,197,66,.02));
+  border:1px solid rgba(245,197,66,.35);border-radius:14px;padding:14px 16px;
+  display:flex;align-items:flex-start;gap:12px
+}
+.cs-pro-icon{font-size:1.6rem;flex-shrink:0}
+.cs-pro-body h4{font-size:.88rem;font-weight:900;color:var(--gold);margin-bottom:3px}
+.cs-pro-body p{font-size:.76rem;color:var(--muted);line-height:1.6}
+
+@media(max-width:680px){
+  .sbs-row{grid-template-columns:1fr}
+  .car-slide{min-height:auto}
+  .car-slide h3{font-size:1.05rem}
+  .vt-num{width:38px;height:38px;font-size:.9rem}
+  .vt::before{right:28px}
+}
+</style>
+</head>
+<body>
+<header>
+  <h1>🖥️ شرح إضافة الأوفرلي</h1>
+  <p>4 أنماط لشرح إضافة الأوفرلي في TikTok Live Studio / OBS</p>
+</header>
+
+<div class="tabs">
+  <button class="tab active" data-p="car">📑 شرائح متنقلة</button>
+  <button class="tab" data-p="vt">📋 خطوات عمودية</button>
+  <button class="tab" data-p="sbs">🔄 شرح بجنب الصورة</button>
+  <button class="tab" data-p="cs">⚡ مرجع سريع</button>
+</div>
+
+<!-- 1) Carousel -->
+<div class="panel active" id="panel-car">
+  <div class="car-wrap">
+    <div class="car-head">
+      <h2>🖥️ إضافة الأوفرلي في Live Studio</h2>
+      <div class="car-counter">الخطوة <b id="car-cur">1</b>/5</div>
+    </div>
+    <div class="car-progress"><i id="car-bar" style="width:20%"></i></div>
+    <div style="overflow:hidden">
+      <div class="car-slides" id="car-slides">
+
+        <div class="car-slide">
+          <span class="car-step-num">📌 الخطوة 1 من 5</span>
+          <h3>افتح TikTok Live Studio</h3>
+          <p>شغّل تطبيق Live Studio على جهازك. إذا ما عندك التطبيق، حمّله من موقع تيك توك الرسمي.</p>
+          <div class="car-visual">
+            <div class="mock-app">
+              <div class="mock-titlebar"><div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="title">TikTok Live Studio</div></div>
+              <div class="mock-body">
+                <div class="mock-sidebar"><div class="mock-icon">🏠</div><div class="mock-icon">📺</div><div class="mock-icon">⚙️</div></div>
+                <div class="mock-content"><div class="mock-row w-half"></div><div class="mock-row w-third"></div><div class="mock-row" style="width:80%"></div></div>
+              </div>
+            </div>
+          </div>
+          <div class="car-tip">تأكد إنك مسجّل دخول بحساب تيك توك حقك</div>
+        </div>
+
+        <div class="car-slide">
+          <span class="car-step-num">📌 الخطوة 2 من 5</span>
+          <h3>اضغط على زر + لإضافة مصدر</h3>
+          <p>من شريط الأدوات الجانبي، دور على أيقونة + (إضافة) لإضافة مصدر جديد للبث.</p>
+          <div class="car-visual">
+            <div class="mock-app">
+              <div class="mock-titlebar"><div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="title">Live Studio - إضافة مصدر</div></div>
+              <div class="mock-body">
+                <div class="mock-sidebar"><div class="mock-icon">🏠</div><div class="mock-icon highlight">➕</div><div class="mock-icon">⚙️</div></div>
+                <div class="mock-content"><div class="mock-arrow" style="right:48px;top:20px">←</div><div class="mock-row" style="width:50%"></div><div class="mock-row w-third"></div></div>
+              </div>
+            </div>
+          </div>
+          <div class="car-tip">الزر عادة في الشريط الجانبي الأيسر أو الأسفل</div>
+        </div>
+
+        <div class="car-slide">
+          <span class="car-step-num">📌 الخطوة 3 من 5</span>
+          <h3>اختر "Browser Source" (مصدر متصفح)</h3>
+          <p>من القائمة المنبثقة، اختر <b style="color:#22d3ee">Browser</b> أو <b style="color:#22d3ee">مصدر الويب</b>. هذا النوع يسمح بإضافة صفحة ويب كأوفرلي.</p>
+          <div class="car-visual">
+            <div class="mock-app">
+              <div class="mock-titlebar"><div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="title">اختر نوع المصدر</div></div>
+              <div class="mock-body">
+                <div class="mock-content" style="padding:10px;gap:5px">
+                  <div style="display:flex;gap:5px"><div class="mock-row" style="width:48%;height:24px"></div><div class="mock-row" style="width:48%;height:24px;background:linear-gradient(135deg,#22d3ee44,#0891b266);border:1px solid #22d3ee;box-shadow:0 0 8px rgba(34,211,238,.4);display:flex;align-items:center;justify-content:center;font-size:.62rem;color:#22d3ee;font-weight:900">🌐 Browser</div></div>
+                  <div style="display:flex;gap:5px"><div class="mock-row" style="width:48%;height:24px"></div><div class="mock-row" style="width:48%;height:24px"></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="car-tip">قد يسمى أيضاً "Web Source" أو "URL Source"</div>
+        </div>
+
+        <div class="car-slide">
+          <span class="car-step-num">📌 الخطوة 4 من 5</span>
+          <h3>الصق رابط الأوفرلي</h3>
+          <p>انسخ رابط الأوفرلي من لوحة التحكم، والصقه في حقل URL. اضبط الأبعاد على <b style="color:#22d3ee">1920×1080</b>.</p>
+          <div class="car-visual">
+            <div class="mock-app">
+              <div class="mock-titlebar"><div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="title">إعدادات Browser Source</div></div>
+              <div class="mock-body">
+                <div class="mock-content">
+                  <div style="font-size:.6rem;color:#888;font-weight:700">URL:</div>
+                  <div class="mock-input highlight">bthlab.live/o/wheel/abufahad</div>
+                  <div style="display:flex;gap:5px;margin-top:3px">
+                    <div style="flex:1"><div style="font-size:.55rem;color:#888">العرض</div><div class="mock-input">1920</div></div>
+                    <div style="flex:1"><div style="font-size:.55rem;color:#888">الارتفاع</div><div class="mock-input">1080</div></div>
+                  </div>
+                  <span class="mock-btn" style="margin-top:5px">إضافة</span>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="car-tip">الرابط تنسخه من لوحة الأدمن → روابط OBS</div>
+        </div>
+
+        <div class="car-slide">
+          <span class="car-step-num">🎉 الخطوة 5 من 5</span>
+          <h3>اسحب الأوفرلي لمكانه</h3>
+          <p>الأوفرلي ظهر على شاشة المعاينة! اسحبه لتحريكه واسحب من الزوايا لتكبيره أو تصغيره.</p>
+          <div class="car-visual" style="background:linear-gradient(135deg,#0a3d2a,#0c0c16)">
+            <div class="mock-app" style="height:120px">
+              <div class="mock-titlebar"><div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="title">جاهز للبث!</div></div>
+              <div class="mock-body">
+                <div class="mock-content" style="background:#0a1a14;align-items:center;justify-content:center;padding:8px">
+                  <div style="border:2px dashed #22c55e;border-radius:6px;padding:6px 14px;color:#86efac;font-size:.72rem;font-weight:900;background:rgba(34,197,94,.1)">🎡 الأوفرلي يعمل</div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="car-tip">احفظ المشهد لاستخدامه في كل البثوث القادمة</div>
+        </div>
+
+      </div>
+    </div>
+    <div class="car-nav">
+      <button class="btn btn-ghost" onclick="carPrev()">→ السابق</button>
+      <div class="car-dots" id="car-dots"></div>
+      <button class="btn btn-pink" onclick="carNext()">التالي ←</button>
+    </div>
+  </div>
+  <p class="note">عرض <b>شرائح متنقلة</b> بشريط تقدم وأزرار سابق/تالي. مع لقطات محاكاة لواجهة Live Studio وأسهم تأشير صفراء. <b>الأفضل للمبتدئين</b> اللي يفضلون التدرج خطوة بخطوة</p>
+</div>
+
+<!-- 2) Vertical Timeline -->
+<div class="panel" id="panel-vt">
+  <div class="demo-box">
+    <h2 style="font-size:1.1rem;font-weight:900;margin-bottom:6px;text-align:center">🖥️ خطوات إضافة الأوفرلي</h2>
+    <p style="text-align:center;color:var(--muted);font-size:.78rem;margin-bottom:18px">تابع الخطوات بالترتيب لإضافة الأوفرلي بنجاح</p>
+
+    <div class="vt">
+      <div class="vt-step">
+        <div class="vt-num">1</div>
+        <div class="vt-content">
+          <div class="vt-title">📥 شغّل Live Studio</div>
+          <div class="vt-desc">افتح تطبيق TikTok Live Studio وسجّل دخول بحسابك</div>
+          <div class="vt-code"><span class="label">رابط التحميل:</span> livestudio.tiktok.com</div>
+        </div>
+      </div>
+
+      <div class="vt-step">
+        <div class="vt-num">2</div>
+        <div class="vt-content">
+          <div class="vt-title">➕ اضغط زر إضافة مصدر <span class="vt-tag">+ Add Source</span></div>
+          <div class="vt-desc">من الشريط الجانبي، اضغط على زر + الإضافة. تظهر قائمة بأنواع المصادر المتاحة</div>
+        </div>
+      </div>
+
+      <div class="vt-step">
+        <div class="vt-num">3</div>
+        <div class="vt-content">
+          <div class="vt-title">🌐 اختر Browser Source</div>
+          <div class="vt-desc">من القائمة، اختر "مصدر متصفح" أو "Browser Source". هذا يسمح بعرض صفحة ويب فوق البث</div>
+        </div>
+      </div>
+
+      <div class="vt-step">
+        <div class="vt-num">4</div>
+        <div class="vt-content">
+          <div class="vt-title">📋 الصق الرابط</div>
+          <div class="vt-desc">انسخ رابط الأوفرلي من لوحة التحكم في BthLab، والصقه في حقل URL</div>
+          <div class="vt-code"><span class="label">مثال:</span> bthlab.live/o/wheel/abufahad</div>
+        </div>
+      </div>
+
+      <div class="vt-step">
+        <div class="vt-num">5</div>
+        <div class="vt-content">
+          <div class="vt-title">📐 اضبط الأبعاد</div>
+          <div class="vt-desc">حدّد العرض والارتفاع. الأفضل استخدام أبعاد البث الكاملة</div>
+          <div class="vt-code"><span class="label">العرض:</span> 1920 <span class="label">·</span> <span class="label">الارتفاع:</span> 1080</div>
+        </div>
+      </div>
+
+      <div class="vt-step">
+        <div class="vt-num">6</div>
+        <div class="vt-content">
+          <div class="vt-title">🎯 اسحب لموقعه ✨</div>
+          <div class="vt-desc">حرّك الأوفرلي بالسحب على شاشة المعاينة، واسحب من الزوايا لضبط الحجم. احفظ المشهد للاستخدام لاحقاً</div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <p class="note"><b>خط زمني عمودي</b> مع أرقام كبيرة بألوان متدرجة + بطاقات معلومات لكل خطوة + أكواد قابلة للنسخ. منظم وواضح وسهل المراجعة. <b>الأفضل للتطبيق المحمول</b> ومستندات المساعدة</p>
+</div>
+
+<!-- 3) Side-by-Side -->
+<div class="panel" id="panel-sbs">
+  <div class="demo-box">
+    <div class="sbs-stepper" id="sbs-stepper">
+      <button class="sbs-pill active" data-i="0">1 · افتح التطبيق</button>
+      <button class="sbs-pill" data-i="1">2 · أضف مصدر</button>
+      <button class="sbs-pill" data-i="2">3 · الصق الرابط</button>
+      <button class="sbs-pill" data-i="3">4 · جاهز!</button>
+    </div>
+
+    <div class="sbs-row" id="sbs-row">
+      <div class="sbs-text">
+        <h3>افتح Live Studio <span class="badge">1/4</span></h3>
+        <p id="sbs-desc">شغّل تطبيق TikTok Live Studio على جهازك وسجّل دخولك. تأكد إن الحساب نفسه اللي تبث منه.</p>
+        <div class="sbs-checklist" id="sbs-check">
+          <div class="sbs-check">حمّل التطبيق من livestudio.tiktok.com</div>
+          <div class="sbs-check">سجّل دخول بحساب تيك توك</div>
+          <div class="sbs-check">تأكد من اتصال الإنترنت</div>
+        </div>
+      </div>
+      <div class="sbs-visual" id="sbs-visual">
+        <div class="mock-app" style="height:100%">
+          <div class="mock-titlebar"><div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="title">TikTok Live Studio</div></div>
+          <div class="mock-body">
+            <div class="mock-sidebar"><div class="mock-icon">🏠</div><div class="mock-icon">📺</div><div class="mock-icon">⚙️</div></div>
+            <div class="mock-content"><div class="mock-row w-half"></div><div class="mock-row w-third"></div><div class="mock-row" style="width:80%"></div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="sbs-nav">
+      <button class="btn btn-ghost" onclick="sbsGo(-1)">→ السابق</button>
+      <button class="btn btn-pink" onclick="sbsGo(1)">التالي ←</button>
+    </div>
+  </div>
+  <p class="note"><b>شرح بجنب الصورة</b> مع pills للتنقل المباشر بين الخطوات + checklist لكل خطوة + لقطة محاكاة على اليمين. مثالي للشروحات السريعة عند تجاوز <b>4-5 خطوات</b>. <b>الأفضل للشاشات الكبيرة</b></p>
+</div>
+
+<!-- 4) Cheatsheet -->
+<div class="panel" id="panel-cs">
+  <div class="demo-box" style="background:transparent;border:none;padding:0">
+    <div class="cs-hero">
+      <h2>🚀 إضافة الأوفرلي بأقل من دقيقة</h2>
+      <p>مرجع سريع لـ TikTok Live Studio و OBS</p>
+      <div class="cs-link">
+        🔗 <b>bthlab.live/o/wheel/abufahad</b>
+        <button class="cs-copy">📋 نسخ</button>
+      </div>
+    </div>
+
+    <div class="cs-grid">
+      <div class="cs-card">
+        <div class="cs-num">1</div>
+        <div class="cs-icon" style="color:#ec4899">📥</div>
+        <h4>افتح Live Studio</h4>
+        <p>أو OBS — التطبيقين يدعمون نفس الطريقة</p>
+      </div>
+      <div class="cs-card">
+        <div class="cs-num">2</div>
+        <div class="cs-icon" style="color:#a855f7">➕</div>
+        <h4>أضف مصدر</h4>
+        <p>اضغط زر + من الشريط الجانبي</p>
+        <span class="cs-kbd">Ctrl + N</span>
+      </div>
+      <div class="cs-card">
+        <div class="cs-num">3</div>
+        <div class="cs-icon" style="color:#0891b2">🌐</div>
+        <h4>اختر Browser</h4>
+        <p>"مصدر متصفح" من قائمة الأنواع</p>
+      </div>
+      <div class="cs-card">
+        <div class="cs-num">4</div>
+        <div class="cs-icon" style="color:#22c55e">📋</div>
+        <h4>الصق الرابط</h4>
+        <p>في حقل URL، الصق الرابط أعلاه</p>
+        <span class="cs-kbd">Ctrl + V</span>
+      </div>
+      <div class="cs-card">
+        <div class="cs-num">5</div>
+        <div class="cs-icon" style="color:#f5c542">📐</div>
+        <h4>الأبعاد</h4>
+        <p>1920 × 1080 (نفس البث)</p>
+      </div>
+      <div class="cs-card">
+        <div class="cs-num">6</div>
+        <div class="cs-icon" style="color:#f97316">✨</div>
+        <h4>اسحب للموقع</h4>
+        <p>حرّكه واحفظ المشهد</p>
+      </div>
+    </div>
+
+    <div class="cs-pro">
+      <div class="cs-pro-icon">💎</div>
+      <div class="cs-pro-body">
+        <h4>نصيحة احترافية</h4>
+        <p>احفظ الأوفرلي كمشهد مخصّص (Scene) في التطبيق عشان تستخدمه بدون إعادة إعداد كل بث. كذلك فعّل "Refresh Cache" لما تغيّر شي في الإعدادات</p>
+      </div>
+    </div>
+  </div>
+  <p class="note"><b>مرجع سريع</b> بـ hero لرابط الأوفرلي + 6 بطاقات صغيرة بألوان متدرجة + اختصارات لوحة المفاتيح + نصيحة احترافية. <b>الأفضل للمحترفين</b> اللي يبون مرجع سريع بدون قراءة طويلة</p>
+</div>
+
+<a href="/" style="position:fixed;top:14px;right:14px;background:rgba(12,12,22,.85);backdrop-filter:blur(10px);color:#22d3ee;border:1px solid #0891b2;border-radius:30px;padding:8px 16px;font-family:Tajawal,sans-serif;font-weight:900;font-size:.78rem;text-decoration:none;z-index:200">← المعرض</a>
+
+<script>
+document.querySelectorAll(".tab").forEach(t=>t.onclick=()=>{
+  document.querySelectorAll(".tab,.panel").forEach(x=>x.classList.remove("active"));
+  t.classList.add("active");
+  document.getElementById("panel-"+t.dataset.p).classList.add("active");
+});
+
+/* ============ Carousel ============ */
+let carIdx=0;
+const carTotal=5;
+function buildDots(){
+  const d=document.getElementById("car-dots");
+  for(let i=0;i<carTotal;i++){
+    const dot=document.createElement("div");
+    dot.className="car-dot"+(i===0?" active":"");
+    dot.onclick=()=>carGo(i);
+    d.appendChild(dot);
+  }
+}
+buildDots();
+function carGo(i){
+  carIdx=(i+carTotal)%carTotal;
+  document.getElementById("car-slides").style.transform=`translateX(${carIdx*100}%)`;
+  document.getElementById("car-bar").style.width=((carIdx+1)/carTotal*100)+"%";
+  document.getElementById("car-cur").textContent=carIdx+1;
+  document.querySelectorAll(".car-dot").forEach((d,i)=>d.classList.toggle("active",i===carIdx));
+}
+function carNext(){carGo(carIdx+1)}
+function carPrev(){carGo(carIdx-1)}
+
+/* ============ Side-by-side ============ */
+const SBS=[
+  {
+    title:"افتح Live Studio",
+    badge:"1/4",
+    desc:"شغّل تطبيق TikTok Live Studio على جهازك وسجّل دخولك. تأكد إن الحساب نفسه اللي تبث منه.",
+    check:["حمّل التطبيق من livestudio.tiktok.com","سجّل دخول بحساب تيك توك","تأكد من اتصال الإنترنت"],
+    visual:`<div class="mock-app" style="height:100%">
+      <div class="mock-titlebar"><div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="title">TikTok Live Studio</div></div>
+      <div class="mock-body">
+        <div class="mock-sidebar"><div class="mock-icon">🏠</div><div class="mock-icon">📺</div><div class="mock-icon">⚙️</div></div>
+        <div class="mock-content"><div class="mock-row w-half"></div><div class="mock-row w-third"></div><div class="mock-row" style="width:80%"></div></div>
+      </div>
+    </div>`
+  },
+  {
+    title:"أضف مصدر جديد",
+    badge:"2/4",
+    desc:"اضغط على زر + من الشريط الجانبي لإضافة مصدر جديد للبث. ثم اختر Browser Source من القائمة.",
+    check:["اضغط على زر + الإضافة","اختر Browser Source","تأكد إنه ضمن المشهد الحالي"],
+    visual:`<div class="mock-app" style="height:100%">
+      <div class="mock-titlebar"><div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="title">إضافة مصدر</div></div>
+      <div class="mock-body">
+        <div class="mock-sidebar"><div class="mock-icon">🏠</div><div class="mock-icon highlight">➕</div><div class="mock-icon">⚙️</div></div>
+        <div class="mock-content"><div class="mock-arrow" style="right:48px;top:20px">←</div><div class="mock-row" style="width:50%"></div><div class="mock-row w-third"></div></div>
+      </div>
+    </div>`
+  },
+  {
+    title:"الصق رابط الأوفرلي",
+    badge:"3/4",
+    desc:"انسخ الرابط من لوحة التحكم في BthLab، والصقه في حقل URL. اضبط الأبعاد على 1920×1080.",
+    check:["انسخ الرابط من لوحة BthLab","الصق في حقل URL","العرض: 1920 — الارتفاع: 1080"],
+    visual:`<div class="mock-app" style="height:100%">
+      <div class="mock-titlebar"><div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="title">إعدادات Browser</div></div>
+      <div class="mock-body">
+        <div class="mock-content">
+          <div style="font-size:.6rem;color:#888;font-weight:700">URL:</div>
+          <div class="mock-input highlight">bthlab.live/o/wheel/abufahad</div>
+          <div style="display:flex;gap:5px;margin-top:3px">
+            <div style="flex:1"><div style="font-size:.55rem;color:#888">العرض</div><div class="mock-input">1920</div></div>
+            <div style="flex:1"><div style="font-size:.55rem;color:#888">الارتفاع</div><div class="mock-input">1080</div></div>
+          </div>
+        </div>
+      </div>
+    </div>`
+  },
+  {
+    title:"جاهز للبث!",
+    badge:"4/4",
+    desc:"الأوفرلي ظهر على المعاينة! اسحبه لتحريكه واسحب الزوايا للتحكم في الحجم. احفظ المشهد لاستخدامه لاحقاً.",
+    check:["اسحب الأوفرلي لمكانه","حدّد حجمه من الزوايا","احفظ المشهد"],
+    visual:`<div class="mock-app" style="height:100%">
+      <div class="mock-titlebar"><div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="title">جاهز للبث ✓</div></div>
+      <div class="mock-body">
+        <div class="mock-content" style="background:#0a1a14;align-items:center;justify-content:center;padding:8px">
+          <div style="border:2px dashed #22c55e;border-radius:6px;padding:10px 18px;color:#86efac;font-size:.78rem;font-weight:900;background:rgba(34,197,94,.1)">🎡 الأوفرلي يعمل بنجاح</div>
+        </div>
+      </div>
+    </div>`
+  }
+];
+let sbsIdx=0;
+function sbsRender(){
+  const s=SBS[sbsIdx];
+  document.querySelector(".sbs-text h3").innerHTML=`${s.title} <span class="badge">${s.badge}</span>`;
+  document.getElementById("sbs-desc").textContent=s.desc;
+  document.getElementById("sbs-check").innerHTML=s.check.map(c=>`<div class="sbs-check">${c}</div>`).join("");
+  document.getElementById("sbs-visual").innerHTML=s.visual;
+  document.querySelectorAll(".sbs-pill").forEach((p,i)=>p.classList.toggle("active",i===sbsIdx));
+}
+function sbsGo(d){sbsIdx=(sbsIdx+d+SBS.length)%SBS.length;sbsRender();}
+document.querySelectorAll(".sbs-pill").forEach(p=>p.onclick=()=>{sbsIdx=+p.dataset.i;sbsRender();});
+
+/* Copy button */
+document.querySelectorAll(".cs-copy").forEach(b=>b.onclick=()=>{
+  const orig=b.textContent;
+  b.textContent="✓ نُسخ!";
+  setTimeout(()=>b.textContent=orig,1500);
+});
+</script>
+</body>
+</html>

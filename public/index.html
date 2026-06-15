@@ -171,6 +171,27 @@ body{
 .prev-evctrl .r{background:radial-gradient(ellipse at center,#0c2440,#06060b);border:1px solid #1c1c2e;border-radius:6px;position:relative;display:flex;align-items:center;justify-content:center}
 .prev-evctrl .r::after{content:"🎡";font-size:1.8rem;filter:drop-shadow(0 0 12px #f5c542)}
 
+/* شروط اللعب */
+.prev-rules{background:linear-gradient(135deg,#1a0a2e,#06060b);padding:8px;display:grid;grid-template-columns:1fr 1fr;grid-template-rows:1fr 1fr;gap:5px}
+.prev-rules::after{display:none}
+.prev-rules i{border:2px solid #fff;border-radius:6px;display:flex;align-items:center;justify-content:center;font-size:1.1rem;box-shadow:3px 3px 0 #000;color:#fff;font-weight:900;text-shadow:1px 1px 0 #000}
+.prev-rules i:nth-child(1){background:linear-gradient(135deg,#0891b2,#0e7490);transform:rotate(-2deg)}
+.prev-rules i:nth-child(2){background:linear-gradient(135deg,#dc2626,#991b1b);transform:rotate(2deg)}
+.prev-rules i:nth-child(3){background:linear-gradient(135deg,#16a34a,#15803d);transform:rotate(-1deg)}
+.prev-rules i:nth-child(4){background:linear-gradient(135deg,#d97706,#92400e);transform:rotate(1deg)}
+
+/* شرح الأوفرلي */
+.prev-obs{background:linear-gradient(135deg,#1a1a26,#06060b);padding:14px;display:flex;align-items:center;justify-content:center}
+.prev-obs::after{display:none}
+.prev-obs .mock{background:#1a1a26;border:1px solid #2a2a40;border-radius:6px;width:80%;height:70%;display:flex;flex-direction:column;overflow:hidden}
+.prev-obs .mock .tb{background:#0f0f18;border-bottom:1px solid #2a2a40;height:14px;display:flex;align-items:center;gap:4px;padding:0 8px}
+.prev-obs .mock .tb i{width:6px;height:6px;border-radius:50%;background:#666}
+.prev-obs .mock .body{flex:1;display:flex}
+.prev-obs .mock .sb{width:28px;background:#0c0c14;border-left:1px solid #2a2a40;display:flex;flex-direction:column;gap:3px;padding:4px 2px;align-items:center}
+.prev-obs .mock .sb i{width:18px;height:18px;border-radius:4px;background:#1a1a2c}
+.prev-obs .mock .sb i.h{background:linear-gradient(135deg,#ec4899,#be185d);box-shadow:0 0 8px rgba(236,72,153,.6)}
+.prev-obs .mock .ct{flex:1;display:flex;align-items:center;justify-content:center;font-size:.65rem;color:#22c55e;font-weight:900;background:#0a0a14}
+
 /* تذييل */
 .footer{
   text-align:center;margin-top:60px;padding:20px;
@@ -198,8 +219,8 @@ body{
   <div class="disclaimer">⚠️ هذي البيئة منفصلة تماماً عن tiktok-live-reader و BthLab</div>
 
   <div class="stats">
-    <div class="stat"><b>10</b><span>أقسام</span></div>
-    <div class="stat"><b>25</b><span>تصميم</span></div>
+    <div class="stat"><b>12</b><span>أقسام</span></div>
+    <div class="stat"><b>33</b><span>تصميم</span></div>
     <div class="stat"><b>100%</b><span>تفاعلي</span></div>
   </div>
 </div>
@@ -395,6 +416,51 @@ body{
       <div class="card-title">🎛️ لوحات تحكم الفعاليات بأربعة أنماط</div>
       <div class="card-desc">Split View (تحكم + معاينة) + Vertical Wizard (تدفق خطوات) + Command Center (لوحة شاملة بثلاث أعمدة) + Floating Hub (مدمج بصري). كل نمط مناسب لنوع فعالية مختلف</div>
       <div class="card-tags"><span class="tag">Split View</span><span class="tag">Wizard</span><span class="tag">Command Center</span><span class="tag">Floating Hub</span></div>
+      <div class="card-arrow">←</div>
+    </a>
+  </div>
+</div>
+
+<!-- شروط اللعب -->
+<div class="section">
+  <div class="section-h">
+    <span class="ico">📋</span>
+    <h2>عرض شروط اللعب</h2>
+    <div class="line"></div>
+    <span class="count">4 أنماط</span>
+  </div>
+  <div class="grid g1">
+    <a href="/designs/rules.html" class="card" style="--card-border:#f5c542;--card-glow:rgba(245,197,66,.08);--card-arrow:#d97706">
+      <div class="card-preview prev-rules">
+        <i>1</i><i>2</i><i>3</i><i>4</i>
+      </div>
+      <div class="card-title">📋 شروط اللعب بأربعة أنماط</div>
+      <div class="card-desc">كوميك بوك (بطاقات ملونة بنمط كاريكاتير) + خط زمني أفقي + أرقام كبيرة minimalist + بطاقات زجاجية متراصة. مع تأثيرات ظهور تتابعية وأصوات</div>
+      <div class="card-tags"><span class="tag">comic</span><span class="tag">timeline</span><span class="tag">minimal</span><span class="tag">glass</span></div>
+      <div class="card-arrow">←</div>
+    </a>
+  </div>
+</div>
+
+<!-- شرح إضافة الأوفرلي -->
+<div class="section">
+  <div class="section-h">
+    <span class="ico">🖥️</span>
+    <h2>شرح إضافة الأوفرلي</h2>
+    <div class="line"></div>
+    <span class="count">4 أنماط</span>
+  </div>
+  <div class="grid g1">
+    <a href="/designs/obs-tutorial.html" class="card" style="--card-border:#ec4899;--card-glow:rgba(236,72,153,.08);--card-arrow:#be185d">
+      <div class="card-preview prev-obs">
+        <div class="mock">
+          <div class="tb"><i></i><i></i><i></i></div>
+          <div class="body"><div class="sb"><i></i><i class="h"></i><i></i></div><div class="ct">✓ جاهز</div></div>
+        </div>
+      </div>
+      <div class="card-title">🖥️ شرح إضافة الأوفرلي في Live Studio / OBS</div>
+      <div class="card-desc">شرائح متنقلة بمحاكاة واجهة + خطوات عمودية بأكواد + شرح بجنب الصورة مع checklist + مرجع سريع بـ 6 بطاقات. كل الأنماط فيها لقطات محاكاة للتطبيق</div>
+      <div class="card-tags"><span class="tag">carousel</span><span class="tag">timeline</span><span class="tag">side-by-side</span><span class="tag">cheatsheet</span></div>
       <div class="card-arrow">←</div>
     </a>
   </div>
